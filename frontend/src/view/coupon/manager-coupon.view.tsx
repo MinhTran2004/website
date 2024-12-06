@@ -13,13 +13,13 @@ const ManagerCoupon = () => {
           id: 'UserName',
           numeric: true,
           disablePadding: false,
-          label: 'UserName',
+          label: 'Tên mã',
         },
         {
           id: 'Account',
           numeric: true,
           disablePadding: false,
-          label: 'Account',
+          label: 'Thể loại',
         },
         {
           id: 'Password',
@@ -31,25 +31,31 @@ const ManagerCoupon = () => {
           id: 'Image',
           numeric: true,
           disablePadding: false,
-          label: 'Image',
+          label: 'Số lượng',
         },
         {
             id: 'Role',
             numeric: true,
             disablePadding: false,
-            label: 'Password',
+            label: 'Điều kiện đơn hàng',
           },
           {
             id: 'Create At',
             numeric: true,
             disablePadding: false,
-            label: 'Create At',
-          },,
+            label: 'Ngày bắt đầu',
+          },
+          {
+            id: 'End Date',
+            numeric: true,
+            disablePadding: false,
+            label: 'Ngày kết thúc',
+          },
           {
             id: 'Status',
             numeric: true,
             disablePadding: false,
-            label: 'Status',
+            label: 'Trạng thái',
           },
       ];
     return(

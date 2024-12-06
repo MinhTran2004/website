@@ -1,4 +1,4 @@
-import { Box, TextareaAutosize, TextField } from "@mui/material";
+import { Box, Button, TextareaAutosize, TextField } from "@mui/material";
 import ViewModelCreateProduct from "../../viewmodel/create-product.viewmodel";
 import ItemInputText from "../../component/ItemInputText";
 
@@ -43,13 +43,6 @@ const CreateProduct = () => {
                 setvalue={viewmodel.setImage}
                 textError={viewmodel.errorImage}
             />
-            <ItemInputText
-                label="Tên sản phẩm"
-                inputRef={viewmodel.refName}
-                value={viewmodel.name}
-                setvalue={viewmodel.setName}
-                textError={viewmodel.errorName}
-            />
 
             <TextareaAutosize
                 aria-label="minimum height"
@@ -57,6 +50,8 @@ const CreateProduct = () => {
                 maxRows={10}
                 placeholder="Minimum 3 rows"
                 style={{ width: '100%' }} />
+
+                <Button onClick={() => {viewmodel.createProduct()}}>Tạo sản phẩm</Button>
         </Box>
     )
 }

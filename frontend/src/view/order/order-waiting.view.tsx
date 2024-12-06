@@ -13,44 +13,51 @@ const OrderWaiting = () => {
           id: 'UserName',
           numeric: true,
           disablePadding: false,
-          label: 'UserName',
+          label: 'ID khách hàng',
         },
         {
           id: 'Account',
           numeric: true,
           disablePadding: false,
-          label: 'Account',
+          label: 'Số lượng',
         },
         {
           id: 'Password',
           numeric: true,
           disablePadding: false,
-          label: 'Password',
+          label: 'Địa chỉ',
         },
         {
           id: 'Image',
           numeric: true,
           disablePadding: false,
-          label: 'Image',
+          label: 'Số điện thoại',
         },
         {
             id: 'Role',
             numeric: true,
             disablePadding: false,
-            label: 'Password',
+            label: 'Thời gian tạo',
           },
           {
-            id: 'Create At',
+            id: 'Price',
             numeric: true,
             disablePadding: false,
-            label: 'Create At',
+            label: 'Tổng tiền',
           },,
           {
             id: 'Status',
             numeric: true,
             disablePadding: false,
-            label: 'Status',
+            label: 'Trạng thái',
           },
+          {
+            id: 'Confirm',
+            numeric: true,
+            disablePadding: false,
+            label: 'Xác nhận',
+          },
+
       ];
     return(
         <Box>
