@@ -1,10 +1,10 @@
 const express = require('express');
-const Account = require('../model/account');
+const Coupon = require('../model/coupon');
 
 const router = express.Router();
 
-router.get('/getAllAccount', async (req, res) => {
-    const reponse = await Account.find().limit(10);
+router.get('/getAllCoupon', async (req, res) => {
+    const reponse = await Coupon.find().limit(10);
     
     if (reponse.length != 0) {
         res.send({status: true, data:reponse})

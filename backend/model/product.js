@@ -11,7 +11,8 @@ const ProductSchema = new mongoose.Schema({
     rate: { type: String, required: true },
     describe: { type: String, required: true },
     status: { type: String, required: true },
-}, {timestamps: true})
+    createAt: { type: String, required: true },
+})
 
 const Product = mongoose.model('Products', ProductSchema);
 

@@ -7,6 +7,7 @@ const AddressSchema = new mongoose.Schema({
     commune: {type:String, required: true},
     detail: {type:String, required: true},
     status: {type:String, required: true},
+    createAt: {type:String, required: true},
 });
 
 const Address = mongoose.model('Address', AddressSchema);

@@ -8,8 +8,7 @@ const AccountSchema = new mongoose.Schema({
     phone: {type:String, required: true},
     role: {type:String, required: true},
     status: {type:String, required: true},
-},{
-    timestamps:true
+    craeteAt: {type:String, required: true},
 })
 
 const Account = mongoose.model('Account', AccountSchema);
