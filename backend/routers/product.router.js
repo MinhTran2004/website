@@ -1,5 +1,5 @@
 const express = require('express');
-const Product = require('../Model/product');
+const Product = require('../model/product')
 
 const router = express.Router();
 
@@ -20,13 +20,22 @@ router.post('/createProduct', async (req, res) => {
 })
 
 router.get('/getAllProduct', async (req, res) => {
-    try{
-        const product = await Product.find(); 
+    const reponse = await Product.find().limit(10);
+    console.log('fddd');
 
-        res.send(product);
-    }catch(err){
-        console.log(err);
+    if(reponse.length !=0){
+        res.send({status: true, data:reponse})
+    }else{
+        res.send({status:false});
     }
+
+    // try{
+    //     const product = await Product.find(); 
+
+    //     res.send(product);
+    // }catch(err){
+    //     console.log(err);
+    // }
 })
 
 module.exports = router;
