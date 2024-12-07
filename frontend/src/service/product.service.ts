@@ -1,5 +1,4 @@
 import axios from "axios";
-import ProductModel from "../model/product.model";
 
 export default class ProductService {
     static url = 'http://localhost:5000/product';

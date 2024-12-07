@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import EnhancedTable from "../../component/EnhancedTable";
 import TableCoupon from "../../component/TableCoupon";
 import ViewModelManageCoupon from "../../viewmodel/manager-coupon.viewmodel";
 

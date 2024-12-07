@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import ItemInputSearch from './ItemInputSearch';
 
 interface Data {
   id: number;
@@ -179,6 +180,13 @@ const TableCoupon: React.FC<Props> = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  // thuc hien chuc nang tim kiem
+  const [search, setSearch] = React.useState('');
+  const eventSearch = () => {
+
+  }
+
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data,
@@ -240,6 +248,13 @@ const TableCoupon: React.FC<Props> = (props) => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
+
+
+        {/* nut bam  */}
+        <ItemInputSearch value={search} setValue={setSearch} placeholder='Nhập tên tài khoản' onPressSearch={()=>{eventSearch()}}/>
+
+
+
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

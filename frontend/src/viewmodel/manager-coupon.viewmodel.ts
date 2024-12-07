@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react"
 import { Coupon } from "../model/coupon.model"
 import CouponService from "../service/coupon.service";
-import { log } from "console";
-
-
 
 const ViewModelManageCoupon = () =>{
     const [dataCoupon, setDataCoupon] = useState<Coupon[]>([]);
