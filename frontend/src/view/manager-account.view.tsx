@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../component/EnhancedTable";
 import ViewModelAccount from "../viewmodel/manager-account.viewmodel";
+import TableAccount from "../component/TableAccount";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
@@ -52,7 +53,7 @@ const ManagerAccount = () => {
 
     return (
         <Box>
-            <EnhancedTable title="Quản lý tài khoản" data={viewmodel.dataAccount} dataTableHeader={headCells} />
+            <TableAccount title="Quản lý tài khoản" data={viewmodel.dataAccount} dataTableHeader={headCells} />
         </Box>
     )
 }

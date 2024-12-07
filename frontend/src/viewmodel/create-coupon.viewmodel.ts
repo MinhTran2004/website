@@ -46,9 +46,22 @@ const ViewModelCreateCoupon = () =>{
 
     }
 
+    const setInputNull = () =>{
+        setName('');
+        setCategory('');
+        setQuantity('');
+        setDiscount('');
+        setValue('');
+        setCondition('');
+        setImage('');
+        setStartdate('');
+        setEnddate('');
+        setDescribe('');
+    }
 
 
     return {
+        setInputNull,
         createCoupon,
         name, category, quantity,  discount, value, condition, image, startdate, enddate, describe,
         setName,setCategory, setQuantity, setDiscount, setValue, setCondition, setImage, setStartdate, setEnddate, setDescribe,

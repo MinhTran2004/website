@@ -1,11 +1,13 @@
-import { Box, Button, TextareaAutosize, TextField } from "@mui/material";
+import { Box, Button, TextareaAutosize, TextField, Typography } from "@mui/material";
 import ViewModelCreateProduct from "../../viewmodel/create-product.viewmodel";
 import ItemInputText from "../../component/ItemInputText";
+import PrimaryButton from "../../component/PrimaryButton";
 
 const CreateProduct = () => {
     const viewmodel = ViewModelCreateProduct();
     return (
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Typography sx={{textAlign: 'center', fontSize: 25, fontWeight: 600}}>Tạo sản phẩm</Typography>
             <Box sx={{display: 'flex', gap: 1}}>
                 <ItemInputText
                     label="Tên sản phẩm"
@@ -51,8 +53,17 @@ const CreateProduct = () => {
                 placeholder="Minimum 3 rows"
                 style={{ width: '100%' }} />
 
-                <Button onClick={() => {viewmodel.createProduct()}}>Tạo sản phẩm</Button>
-        </Box>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+                <PrimaryButton
+                    onClick={() => { viewmodel.createProduct() }}
+                    label="Tạo sản phẩm"
+                />
+                <PrimaryButton
+                    onClick={() => { viewmodel.setInputNull()}}
+                    label="Xóa"
+                />
+                </Box>
+            </Box>
     )
 }
 

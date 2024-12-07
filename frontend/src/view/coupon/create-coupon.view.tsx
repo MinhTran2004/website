@@ -1,12 +1,14 @@
-import { Box, Button, TextareaAutosize } from "@mui/material";
+import { Box, Button, TextareaAutosize, Typography } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
 import ViewModelCreateCoupon from "../../viewmodel/create-coupon.viewmodel";
 import ItemInputText from "../../component/ItemInputText";
+import PrimaryButton from "../../component/PrimaryButton";
 
 const CreateCoupon = () => {
     const viewmodel = ViewModelCreateCoupon();
     return(
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Typography sx={{textAlign: 'center', fontSize: 25, fontWeight: 600}}>Tạo mã giảm giá</Typography>
         <Box sx={{display: 'flex', gap: 1}}>
             <ItemInputText
                 label="Tên mã giảm giá"
@@ -94,7 +96,16 @@ const CreateCoupon = () => {
             placeholder="Minimum 3 rows"
             style={{ width: '100%' }} />
 
-        <Button onClick={() => {viewmodel.createCoupon()}}>Tạo sản phẩm</Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+                <PrimaryButton
+                    onClick={() => { viewmodel.createCoupon() }}
+                    label="Tạo mã giảm giá"
+                />
+                <PrimaryButton
+                    onClick={() => { viewmodel.setInputNull() }}
+                    label="Xóa"
+                />
+            </Box>
     </Box>
     )
 }

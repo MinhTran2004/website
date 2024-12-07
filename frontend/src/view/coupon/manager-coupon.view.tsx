@@ -1,7 +1,10 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
+import TableCoupon from "../../component/TableCoupon";
+import ViewModelManageCoupon from "../../viewmodel/manager-coupon.viewmodel";
 
 const ManagerCoupon = () => {
+  const ViewModel = ViewModelManageCoupon();
     const headCells = [
         {
           id: 'id',
@@ -11,56 +14,50 @@ const ManagerCoupon = () => {
         },
         {
           id: 'UserName',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Tên mã',
         },
         {
           id: 'Account',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Thể loại',
         },
         {
-          id: 'Password',
-          numeric: true,
-          disablePadding: false,
-          label: 'Password',
-        },
-        {
           id: 'Image',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Số lượng',
         },
         {
             id: 'Role',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Điều kiện đơn hàng',
           },
           {
             id: 'Create At',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Ngày bắt đầu',
           },
           {
             id: 'End Date',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Ngày kết thúc',
           },
           {
             id: 'Status',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Trạng thái',
           },
       ];
     return(
         <Box>
-            <EnhancedTable title="Quản lý mã giảm giá" data={[]} dataTableHeader={headCells}/>
+            <TableCoupon title="Quản lý mã giảm giá" data={ViewModel.dataCoupon} dataTableHeader={headCells}/>
         </Box>
     )
 }

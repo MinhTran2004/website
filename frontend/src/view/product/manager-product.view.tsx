@@ -1,7 +1,12 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
+import ViewModelCreateProduct from "../../viewmodel/create-product.viewmodel";
+import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
+import TableProduct from "../../component/TableProduct";
 
 const ManagerProduct = () => {
+
+  const ViewModel = ViewModelManageProduct();
     const headCells = [
         {
           id: 'id',
@@ -11,62 +16,62 @@ const ManagerProduct = () => {
         },
         {
           id: 'UserName',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Tên sản phẩm',
         },
         {
           id: 'Account',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Giá sản phẩm',
         },
         {
           id: 'Password',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Thể loại',
         },
         {
           id: 'Image',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Ảnh',
         },
         {
             id: 'Role',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Đã bán',
           },
           {
             id: 'Create At',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Còn lại',
           },
           {
             id: 'Vote',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Bình chọn',
           },
           {
             id: 'Describe',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Mô tả',
           },
           {
             id: 'Status',
-            numeric: true,
+            numeric: false,
             disablePadding: false,
             label: 'Trạng thái',
           },
       ];
     return(
         <Box>
-            <EnhancedTable title="Quản lý sản phẩm" data={[]} dataTableHeader={headCells}/>
+            <TableProduct title="Quản lý sản phẩm" data={ViewModel.dataProduct} dataTableHeader={headCells}/>
         </Box>
     )
 }

@@ -1,6 +1,7 @@
 import { error } from "console";
 import { useRef, useState } from "react"
 import ModelAccount from "../model/account.model";
+import ProductModel from "../model/product.model";
 
 const ViewModelCreateProduct = () => {
     // vale
@@ -28,16 +29,27 @@ const ViewModelCreateProduct = () => {
     const refDescribe = useRef<HTMLInputElement>(null);
 
     const createProduct = async () => {
-        ModelAccount.checkData(name, price, quantity, category, image, describe,
-                               setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setDescribe,
-                               refName, refPrice, refQuantity, refCategory, refImage, refDescribe
+        ProductModel.checkData(
+            name, price, quantity, category, image, describe,
+            setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setDescribe,
+            refName, refPrice, refQuantity, refCategory, refImage, refDescribe
         );
-        
+
+    }
+
+    const setInputNull = () => {
+        setName('');
+        setPrice('');
+        setQuantity('');
+        setCategory('');
+        setImage('');
+        setDescribe('');
+
     }
 
 
     return {
-        createProduct,
+        createProduct, setInputNull,
         name, price, quantity, category, image, describe,
         setName, setPrice, setQuantity, setCategory, setImage, setDescribe,
         errorName, errorPrice, errorQuantity, errorCategory, errorImage, errorDescribe,

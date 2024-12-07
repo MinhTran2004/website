@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react"
 import { Account } from "../model/account.model"
 import AccountService from "../service/account.service";
+import { Product } from "../model/product.model";
+import ProductService from "../service/product.service";
 
-const ViewModelAccount4 = () => {
-    const [dataAccount, setDataAccount] = useState<Account[]>([]);
+const ViewModelManageProduct = () => {
+    const [dataProduct, setDataProdut] = useState<Product[]>([]);
 
-    const getAllAccount = async () => {
-        const reponse = await AccountService.getAllAccount();
-        setDataAccount(reponse);
+    const getAllProduct = async () => {
+        const reponse = await ProductService.getAllProduct();
+        console.log(reponse);
+        setDataProdut(reponse);
     }
 
     useEffect(() => {
-        getAllAccount();
+        getAllProduct();
     }, [])
 
     return{
-        dataAccount,
+        dataProduct,
     }
 
 }
+
+export default ViewModelManageProduct;
