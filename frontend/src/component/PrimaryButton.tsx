@@ -11,7 +11,8 @@ const PrimaryButton: React.FC<Props> = (props) => {
         <Button
             variant="contained"
             sx={{width: '100%', ...props.styleButton}}
-            onClick={props.onClick}
+            onClick={props.onClick }
+            
         >{props.label}</Button>
     )
 }

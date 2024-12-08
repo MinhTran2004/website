@@ -114,8 +114,9 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
+  const { numSelected, onDelete } = props;
+
   return (
     <Toolbar
       sx={[
@@ -150,7 +151,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={onDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -164,14 +165,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-
+// truyen du lieu
 interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: () => void;
+  onDelete: (id: string) => void;
 }
-
-// o day nay
 
 const TableProduct: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<Order>('asc');
@@ -179,13 +182,6 @@ const TableProduct: React.FC<Props> = (props) => {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  // thuc hien chuc nang tim kiem
-  const [search, setSearch] = React.useState('');
-  const eventSearch = () => {
-
-  }
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -232,6 +228,11 @@ const TableProduct: React.FC<Props> = (props) => {
     setPage(0);
   };
 
+  const handleDelete = () => {
+    // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
+    selected.forEach((id) => props.onDelete(id.toString()));
+    setSelected([]); // Reset danh sách đã chọn
+  };
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
@@ -247,13 +248,19 @@ const TableProduct: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
-
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          title={props.title}
+          onDelete={handleDelete} // Truyền hàm xử lý xóa
+        />
 
         {/* nut bam */}
-        <ItemInputSearch value={search} setValue={setSearch} placeholder='Nhập tên tài khoản' onPressSearch={()=>{eventSearch()}}/>
-
-
+        <ItemInputSearch
+          value={props.search}
+          setValue={props.setSearch}
+          placeholder="Nhập tên sản phẩm"
+          onPressSearch={() => props.onSearch()}
+        />
 
         <TableContainer>
           <Table
@@ -313,7 +320,7 @@ const TableProduct: React.FC<Props> = (props) => {
                   </TableRow>
                 );
               })}
-              
+
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
