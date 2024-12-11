@@ -19,7 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from './ItemInputSearch';
-
+import ViewModelAccount from '../viewmodel/manager-account.viewmodel';
 interface Data {
   id: number;
   calories: number;
@@ -114,8 +114,8 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void}) {
+  const { numSelected, onDelete } = props;
   return (
     <Toolbar
       sx={[
@@ -150,10 +150,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <IconButton onClick={onDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
@@ -169,6 +169,8 @@ interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
+  onSearch?: (email: string) => Promise<void>;
+  onDelete: (id: string) => void;
 }
 
 // o day nay
@@ -182,9 +184,11 @@ const TableAccount: React.FC<Props> = (props) => {
   
   // thuc hien chuc nang tim kiem
   const [search, setSearch] = React.useState('');
-  const eventSearch = () => {
-
-  }
+  const eventSearch = async () => {
+    if (props.onSearch) {
+        await props.onSearch(search); // Gọi hàm tìm kiếm từ ViewModel
+    }
+};
 
 
 
@@ -233,6 +237,11 @@ const TableAccount: React.FC<Props> = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleDelete = () => {
+    // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
+    selected.forEach((id) => props.onDelete(id.toString()));
+    setSelected([]); // Reset danh sách đã chọn
+  };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -249,8 +258,17 @@ const TableAccount: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
-        <ItemInputSearch value={search} setValue={setSearch} placeholder='Nhập tên tài khoản' onPressSearch={()=>{eventSearch()}}/>
+      <EnhancedTableToolbar
+          numSelected={selected.length}
+          title={props.title}
+          onDelete={handleDelete} // Truyền hàm xử lý xóa
+        />
+        <ItemInputSearch
+                    value={search}
+                    setValue={setSearch}
+                    placeholder='Nhập email tài khoản'
+                    onPressSearch={eventSearch}
+                />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

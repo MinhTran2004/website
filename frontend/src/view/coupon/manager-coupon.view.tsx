@@ -56,7 +56,8 @@ const ManagerCoupon = () => {
       ];
     return(
         <Box>
-            <TableCoupon title="Quản lý mã giảm giá" data={ViewModel.dataCoupon} dataTableHeader={headCells}/>
+            <TableCoupon title="Quản lý mã giảm giá" data={ViewModel.dataCoupon} dataTableHeader={headCells}  
+             onDelete={ViewModel.deleteCouponById}/>
         </Box>
     )
 }

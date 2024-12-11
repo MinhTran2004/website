@@ -54,7 +54,8 @@ const ManagerAccount = () => {
 
     return (
         <Box>
-            <TableAccount title="Quản lý tài khoản" data={viewmodel.dataAccount} dataTableHeader={headCells} />
+            <TableAccount title="Quản lý tài khoản" data={viewmodel.dataAccount} dataTableHeader={headCells}   onSearch={viewmodel.searchAccount} 
+             onDelete={viewmodel.deleteAccountById}/>
         </Box>
     )
 }

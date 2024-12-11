@@ -1,12 +1,14 @@
 import { Box } from "@mui/material";
-import EnhancedTable from "../../component/EnhancedTable";
-import ViewModelCreateProduct from "../../viewmodel/create-product.viewmodel";
 import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
 import TableProduct from "../../component/TableProduct";
+
 
 const ManagerProduct = () => {
 
   const ViewModel = ViewModelManageProduct();
+
+  // console.log(ViewModel.dataProduct);
+  
     const headCells = [
         {
           id: 'id',
@@ -68,13 +70,27 @@ const ManagerProduct = () => {
             disablePadding: false,
             label: 'Trạng thái',
           },
+          {
+            id: "action",
+            numeric: false,
+            disablePadding: false,
+            label: "Hành động",
+        },
       ];
 
       console.log(ViewModel.dataProduct);
       
     return(
         <Box>
-            <TableProduct title="Quản lý sản phẩm" data={ViewModel.dataProduct} dataTableHeader={headCells}/>
+           <TableProduct
+        title="Quản lý sản phẩm"
+        data={ViewModel.dataProduct}
+        dataTableHeader={headCells}
+        search={ViewModel.name}         // Thêm giá trị tìm kiếm
+        setSearch={ViewModel.setName}   // Hàm cập nhật giá trị tìm kiếm
+        onSearch={ViewModel.searchProduct} // Hàm tìm kiếm sản phẩm
+        onDelete={ViewModel.deleteProduct}
+      />
         </Box>
     )
 }
