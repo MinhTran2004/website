@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react"
-import { Account } from "../model/account.model"
-import AccountService from "../service/account.service";
+import { OrderService } from "../service/order.service";
+import { Order } from "../model/order.model";
 
-const ViewModelAccount3 = () => {
-    const [dataAccount, setDataAccount] = useState<Account[]>([]);
+const ViewModelOrderSuccess = () => {
+    const [dataOrder, setDataOrder] = useState<Order[]>([]);
 
-    const getAllAccount = async () => {
-        const reponse = await AccountService.getAllAccount();
-        setDataAccount(reponse);
+    const getAllBillByStatus = async () => {
+        const reponse = await OrderService.getAllBillByStatus('Hoàn thành');
+        setDataOrder(reponse);
     }
 
     useEffect(() => {
-        getAllAccount();
+        getAllBillByStatus();
     }, [])
 
-    return{
-        dataAccount,
+    return {
+        dataOrder,
     }
-
 }
+
+export default ViewModelOrderSuccess;

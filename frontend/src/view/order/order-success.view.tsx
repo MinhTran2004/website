@@ -1,7 +1,10 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
+import ViewModelOrderSuccess from "../../viewmodel/order-success.viewmodel";
 
 const OrderSuccess = () => {
+  const viewmodel = ViewModelOrderSuccess();
+
     const headCells = [
         {
           id: 'id',
@@ -60,7 +63,7 @@ const OrderSuccess = () => {
       ];
     return(
         <Box>
-            <EnhancedTable  title="Đơn hàng thành công" data={[]} dataTableHeader={headCells}/>
+            <EnhancedTable  title="Đơn hàng thành công" data={viewmodel.dataOrder} dataTableHeader={headCells}/>
         </Box>
     )
 }

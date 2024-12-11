@@ -1,7 +1,10 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
+import ViewModelOrderWaiting from "../../viewmodel/order-waiting.viewmodel";
 
 const OrderWaiting = () => {
+    const viewmodel = ViewModelOrderWaiting();
+  
     const headCells = [
         {
           id: 'id',
@@ -61,7 +64,7 @@ const OrderWaiting = () => {
       ];
     return(
         <Box>
-            <EnhancedTable title="Đơn hàng chờ xác nhận" data={[]} dataTableHeader={headCells}/>
+            <EnhancedTable title="Đơn hàng chờ xác nhận" data={viewmodel.dataOrder} dataTableHeader={headCells}/>
         </Box>
     )
 }

@@ -1,7 +1,12 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../../component/EnhancedTable";
+import ViewModelOrderCancel from "../../viewmodel/order-cancel.viewmodel";
 
-const OrderCancel = () => {    const headCells = [
+const OrderCancel = () => {
+  const viewmodel = ViewModelOrderCancel();
+  console.log(viewmodel.dataOrder);
+  
+  const headCells = [
     {
       id: 'id',
       numeric: false,
@@ -33,36 +38,36 @@ const OrderCancel = () => {    const headCells = [
       label: 'Số điện thoại',
     },
     {
-        id: 'Role',
-        numeric: true,
-        disablePadding: false,
-        label: 'Thời gian tạo',
-      },
-      {
-        id: 'Create At',
-        numeric: true,
-        disablePadding: false,
-        label: 'Thời gian hủy',
-      },
+      id: 'Role',
+      numeric: true,
+      disablePadding: false,
+      label: 'Thời gian tạo',
+    },
+    {
+      id: 'Create At',
+      numeric: true,
+      disablePadding: false,
+      label: 'Thời gian hủy',
+    },
 
-         {
-        id: 'Price',
-        numeric: true,
-        disablePadding: false,
-        label: 'Tổng tiền',
-      },
-      {
-        id: 'Status',
-        numeric: true,
-        disablePadding: false,
-        label: 'Trạng thái',
-      },
+    {
+      id: 'Price',
+      numeric: true,
+      disablePadding: false,
+      label: 'Tổng tiền',
+    },
+    {
+      id: 'Status',
+      numeric: true,
+      disablePadding: false,
+      label: 'Trạng thái',
+    },
   ];
-    return(
-        <Box>
-            <EnhancedTable title="Đơn hàng đã hủy" data={[]} dataTableHeader={headCells}/>
-        </Box>
-    )
+  return (
+    <Box>
+      <EnhancedTable title="Đơn hàng đã hủy" data={viewmodel.dataOrder} dataTableHeader={headCells} />
+    </Box>
+  )
 }
 
 export default OrderCancel;

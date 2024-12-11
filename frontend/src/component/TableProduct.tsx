@@ -19,6 +19,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from './ItemInputSearch';
+import { Button } from '@mui/material';
+import ItemModal from './ItemModal';
 
 interface Data {
   id: number;
@@ -125,7 +127,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: (theme) =>
+          bgcolor: (theme: any) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
@@ -182,6 +184,9 @@ const TableProduct: React.FC<Props> = (props) => {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [modal, setModal] = React.useState(false);
+
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -291,7 +296,9 @@ const TableProduct: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell padding="checkbox" sx={{
+                      with: '500px',
+                    }}>
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -308,15 +315,40 @@ const TableProduct: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.price}</TableCell>
-                    <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="left">{row.image}</TableCell>
-                    <TableCell align="left">{row.sold}</TableCell>
-                    <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="left">{row.rate}</TableCell>
-                    <TableCell align="left">{row.describe}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.price}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.image}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.sold}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.rate}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.describe}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.status}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      <Button variant="contained"
+                        onClick={() => {
+                          setModal(true);
+                        }}
+                      >Thay đổi</Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -339,6 +371,8 @@ const TableProduct: React.FC<Props> = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <ItemModal
+      />
     </Box>
   );
 }

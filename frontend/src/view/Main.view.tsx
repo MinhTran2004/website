@@ -15,6 +15,7 @@ import OrderSuccess from './order/order-success.view';
 import OrderCancel from './order/order-cancel.view';
 import CreateCoupon from './coupon/create-coupon.view';
 import ManagerCoupon from './coupon/manager-coupon.view';
+import DashboardScreen from './dashboard';
 
 const NAVIGATION: Navigation = [
   {
@@ -135,7 +136,8 @@ export default function Main(props: any) {
     >
       <DashboardLayout sx={{ padding: '10px' }}>
 
-        <Box sx={{padding: '10px'}}>
+        <Box sx={{ padding: '10px' }}>
+          {router.pathname === '/dashboard' && <DashboardScreen />}
           {router.pathname === '/account' && <ManagerAccount />}
           {router.pathname === '/create-product' && <CreateProduct />}
           {router.pathname === '/manager-product' && <ManagerProduct />}
