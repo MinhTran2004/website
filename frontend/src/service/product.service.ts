@@ -6,6 +6,8 @@ export default class ProductService {
     static getAllProduct = async () => {
         try{
             const reponse = (await axios.get(`${this.url}/getAllProduct`)).data;
+            console.log(reponse);
+            
             if(reponse.status){
                 return reponse.data;
             }else{

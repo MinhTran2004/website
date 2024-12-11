@@ -9,7 +9,6 @@ const ViewModelManageProduct = () => {
 
     const getAllProduct = async () => {
         const reponse = await ProductService.getAllProduct();
-        console.log(reponse);
         setDataProdut(reponse);
     }
 

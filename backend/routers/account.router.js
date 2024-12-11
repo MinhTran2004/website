@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/getAllAccount', async (req, res) => {
     const reponse = await Account.find().limit(10);
+    console.log(reponse);
     
     if (reponse.length != 0) {
         res.send({status: true, data:reponse})

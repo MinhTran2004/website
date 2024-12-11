@@ -5,7 +5,8 @@ import TableAccount from "../component/TableAccount";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
-
+    console.log(viewmodel.dataAccount);
+    
     const headCells = [
         {
             id: 'id',

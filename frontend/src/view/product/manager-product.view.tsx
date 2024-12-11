@@ -69,6 +69,9 @@ const ManagerProduct = () => {
             label: 'Trạng thái',
           },
       ];
+
+      console.log(ViewModel.dataProduct);
+      
     return(
         <Box>
             <TableProduct title="Quản lý sản phẩm" data={ViewModel.dataProduct} dataTableHeader={headCells}/>
