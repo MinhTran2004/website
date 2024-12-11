@@ -1,5 +1,5 @@
 const express = require('express');
-const Address = require('../model/address');
+const Bill = require('../model/order');
 
 const router = express.Router();
 

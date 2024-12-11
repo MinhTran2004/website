@@ -286,12 +286,15 @@ const EnhancedTable: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.username}</TableCell>
                     <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.password}</TableCell>
-                    <TableCell align="left">{row.image}</TableCell>
-                    <TableCell align="left">{row.createdAt}</TableCell>
+                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.detailAddress}</TableCell>
+                    <TableCell align="left">{row.address.phone}</TableCell>
+                    <TableCell align="left">{row.createAt}</TableCell>
+                    <TableCell align="left">{row.totalCost}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
+                    {/* <TableCell align="left">{row.createdAt}</TableCell> */}
+                    {/* <TableCell align="left">{row.status}</TableCell> */}
                   </TableRow>
                 );
               })}
