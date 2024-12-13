@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
-import TableProduct from "../../component/TableProduct";
+import TableProduct from "../../component/table/TableProduct";
 
 const ManagerProduct = () => {
 

@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import EnhancedTable from "../component/EnhancedTable";
 import ViewModelAccount from "../viewmodel/manager-account.viewmodel";
-import TableAccount from "../component/TableAccount";
+import TableAccount from "../component/table/TableAccount";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
     console.log(viewmodel.dataAccount);
-    
+
     const headCells = [
         {
             id: 'id',
@@ -26,36 +26,46 @@ const ManagerAccount = () => {
             disablePadding: false,
             label: 'Account',
         },
-        {
-            id: 'Password',
-            numeric: false,
-            disablePadding: false,
-            label: 'Password',
-        },
-        {
-            id: 'Image',
-            numeric: false,
-            disablePadding: false,
-            label: 'Image',
-        },
+        // {
+        //     id: 'Password',
+        //     numeric: false,
+        //     disablePadding: false,
+        //     label: 'Password',
+        // },
+        // {
+        //     id: 'Image',
+        //     numeric: false,
+        //     disablePadding: false,
+        //     label: 'Image',
+        // },
         {
             id: 'Create At',
             numeric: false,
             disablePadding: false,
-            label: 'Create At',
-        }, ,
+            label: 'Ngày tạo',
+        },
         {
             id: 'Status',
             numeric: false,
             disablePadding: false,
-            label: 'Status',
+            label: 'Trạng thái',
         },
+        {
+            id: 'updateupdate',
+            numeric: false,
+            disablePadding: false,
+            label: 'Thay đổi',
+        }
     ];
 
     return (
         <Box>
-            <TableAccount title="Quản lý tài khoản" data={viewmodel.dataAccount} dataTableHeader={headCells}   onSearch={viewmodel.searchAccount} 
-             onDelete={viewmodel.deleteAccountById}/>
+            <TableAccount
+                title="Quản lý tài khoản"
+                data={viewmodel.dataAccount}
+                dataTableHeader={headCells}
+                onSearch={viewmodel.searchAccount}
+                onDelete={viewmodel.deleteAccountById} />
         </Box>
     )
 }

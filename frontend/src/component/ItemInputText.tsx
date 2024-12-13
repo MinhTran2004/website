@@ -2,11 +2,11 @@ import { Box, TextField, Typography } from "@mui/material"
 import React from "react"
 
 interface Props {
-    label: string,
-    value: string,
+    label?: string,
+    value?: string,
     setvalue: (text: string) => void,
-    textError: string,
-    inputRef: React.RefObject<HTMLInputElement>
+    textError?: string,
+    inputRef?: React.RefObject<HTMLInputElement>
     styteLayout?: React.CSSProperties,
 }
 

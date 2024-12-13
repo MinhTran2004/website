@@ -18,9 +18,8 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import ItemInputSearch from './ItemInputSearch';
+import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
 import { Button } from '@mui/material';
-import ItemModal from './ItemModal';
 
 interface Data {
   id: number;
@@ -116,9 +115,8 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
-  const { numSelected, onDelete } = props;
-
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const { numSelected } = props;
   return (
     <Toolbar
       sx={[
@@ -127,7 +125,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: (theme: any) =>
+          bgcolor: (theme) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
@@ -153,7 +151,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={onDelete}>
+          <IconButton>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -167,18 +165,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
     </Toolbar>
   );
 }
-// truyen du lieu
+
 interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  onSearch: () => void;
-  onDelete: (id: string) => void;
 }
 
-const TableProduct: React.FC<Props> = (props) => {
+// o day nay
+
+const TableOrderWaiting: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -186,7 +182,6 @@ const TableProduct: React.FC<Props> = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [modal, setModal] = React.useState(false);
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -233,11 +228,6 @@ const TableProduct: React.FC<Props> = (props) => {
     setPage(0);
   };
 
-  const handleDelete = () => {
-    // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-    selected.forEach((id) => props.onDelete(id.toString()));
-    setSelected([]); // Reset danh sách đã chọn
-  };
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
@@ -253,20 +243,7 @@ const TableProduct: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          title={props.title}
-          onDelete={handleDelete} // Truyền hàm xử lý xóa
-        />
-
-        {/* nut bam */}
-        <ItemInputSearch
-          value={props.search}
-          setValue={props.setSearch}
-          placeholder="Nhập tên sản phẩm"
-          onPressSearch={() => props.onSearch()}
-        />
-
+        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -296,9 +273,7 @@ const TableProduct: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox" sx={{
-                      with: '500px',
-                    }}>
+                    <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -315,44 +290,26 @@ const TableProduct: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.price}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.image}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.sold}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.rate}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.describe}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.status}
-                    </TableCell>
+                    <TableCell align="left">{row.account}</TableCell>
+                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.detailAddress}</TableCell>
+                    <TableCell align="left">{row.address.phone}</TableCell>
+                    <TableCell align="left">{row.createAt}</TableCell>
+                    <TableCell align="left">{row.totalCost}</TableCell>
+                    <TableCell align="left">{row.status}</TableCell>
+                    {/* <TableCell align="left">{row.createdAt}</TableCell> */}
+                    {/* <TableCell align="left">{row.status}</TableCell> */}
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
                         }}
-                      >Thay đổi</Button>
+                      >Chỉnh sửa</Button>
                     </TableCell>
                   </TableRow>
                 );
               })}
-
+              
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
@@ -371,10 +328,17 @@ const TableProduct: React.FC<Props> = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ItemModal
+
+      
+      <DialogOrderWaiting
+        modal = {modal}
+        onPress={() => setModal(false)}
       />
+
+
+
     </Box>
   );
 }
 
-export default TableProduct;
+export default TableOrderWaiting;

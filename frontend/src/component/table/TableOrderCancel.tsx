@@ -18,7 +18,6 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import ItemInputSearch from './ItemInputSearch';
 
 interface Data {
   id: number;
@@ -114,8 +113,8 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps  & { onDelete: () => void}) {
-  const { numSelected, onDelete } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const { numSelected } = props;
   return (
     <Toolbar
       sx={[
@@ -149,11 +148,11 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps  & { onDelete: ()
         </Typography>
       )}
       {numSelected > 0 ? (
-         <Tooltip title="Delete">
-         <IconButton onClick={onDelete}>
-           <DeleteIcon />
-         </IconButton>
-       </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
@@ -169,24 +168,16 @@ interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
-  onDelete: (id: string) => void;
 }
 
 // o day nay
 
-const TableCoupon: React.FC<Props> = (props) => {
+const TableOrderCancel: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  // thuc hien chuc nang tim kiem
-  const [search, setSearch] = React.useState('');
-  const eventSearch = () => {
-
-  }
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -236,11 +227,7 @@ const TableCoupon: React.FC<Props> = (props) => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
-    const handleDelete = () => {
-      // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-      selected.forEach((id) => props.onDelete(id.toString()));
-      setSelected([]); // Reset danh sách đã chọn
-    };
+
   const visibleRows = React.useMemo(
     () =>
       [...props.data]
@@ -252,18 +239,7 @@ const TableCoupon: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-      <EnhancedTableToolbar
-          numSelected={selected.length}
-          title={props.title}
-          onDelete={handleDelete} // Truyền hàm xử lý xóa
-        />
-
-
-        {/* nut bam  */}
-        <ItemInputSearch value={search} setValue={setSearch} placeholder='Nhập tên tài khoản' onPressSearch={()=>{eventSearch()}}/>
-
-
-
+        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -310,13 +286,15 @@ const TableCoupon: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.discountType}</TableCell>
-                    <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="left">{row.condition}</TableCell>
-                    <TableCell align="left">{row.startDate}</TableCell>
-                    <TableCell align="left">{row.endDate}</TableCell>
+                    <TableCell align="left">{row.account}</TableCell>
+                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.detailAddress}</TableCell>
+                    <TableCell align="left">{row.address.phone}</TableCell>
+                    <TableCell align="left">{row.createAt}</TableCell>
+                    <TableCell align="left">{row.totalCost}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
+                    {/* <TableCell align="left">{row.createdAt}</TableCell> */}
+                    {/* <TableCell align="left">{row.status}</TableCell> */}
                   </TableRow>
                 );
               })}
@@ -343,4 +321,4 @@ const TableCoupon: React.FC<Props> = (props) => {
   );
 }
 
-export default TableCoupon;
+export default TableOrderCancel;

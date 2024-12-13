@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import EnhancedTable from "../../component/EnhancedTable";
 import ViewModelOrderWaiting from "../../viewmodel/order-waiting.viewmodel";
+import TableOrderWaiting from "../../component/table/TableOrderWaiting";
 
 const OrderWaiting = () => {
   const viewmodel = ViewModelOrderWaiting();
@@ -54,17 +54,19 @@ const OrderWaiting = () => {
       disablePadding: false,
       label: 'Trạng thái',
     },
-    // {
-    //   id: 'Confirm',
-    //   numeric: false,
-    //   disablePadding: false,
-    //   label: 'Xác nhận',
-    // },
-
+    {
+      id: 'Confirm',
+      numeric: false,
+      disablePadding: false,
+      label: 'Thay đổi',
+    },
   ];
   return (
     <Box>
-      <EnhancedTable title="Đơn hàng chờ xác nhận" data={viewmodel.dataOrder} dataTableHeader={headCells} />
+      <TableOrderWaiting
+        title="Đơn hàng chờ xác nhận"
+        data={viewmodel.dataOrder}
+        dataTableHeader={headCells} />
     </Box>
   )
 }

@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
-import EnhancedTable from "../../component/EnhancedTable";
 import ViewModelOrderCancel from "../../viewmodel/order-cancel.viewmodel";
+import TableOrderCancel from "../../component/table/TableOrderCancel";
 
 const OrderCancel = () => {
   const viewmodel = ViewModelOrderCancel();
   console.log(viewmodel.dataOrder);
-  
+
   const headCells = [
     {
       id: 'id',
@@ -64,7 +64,11 @@ const OrderCancel = () => {
   ];
   return (
     <Box>
-      <EnhancedTable title="Đơn hàng đã hủy" data={viewmodel.dataOrder} dataTableHeader={headCells} />
+      <TableOrderCancel
+        title="Đơn hàng đã hủy"
+        data={viewmodel.dataOrder}
+        dataTableHeader={headCells}
+      />
     </Box>
   )
 }

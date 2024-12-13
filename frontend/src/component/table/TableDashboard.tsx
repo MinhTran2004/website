@@ -18,8 +18,10 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import ItemInputSearch from './ItemInputSearch';
-import ViewModelAccount from '../viewmodel/manager-account.viewmodel';
+import ItemInputSearch from '../ItemInputSearch';
+import { Button } from '@mui/material';
+import ItemModal from '../ItemModal';
+
 interface Data {
   id: number;
   calories: number;
@@ -114,8 +116,9 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void}) {
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
   const { numSelected, onDelete } = props;
+
   return (
     <Toolbar
       sx={[
@@ -124,7 +127,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
           pr: { xs: 1, sm: 1 },
         },
         numSelected > 0 && {
-          bgcolor: (theme) =>
+          bgcolor: (theme: any) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         },
       ]}
@@ -150,10 +153,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-        <IconButton onClick={onDelete}>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
+          <IconButton onClick={onDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       ) : (
         <Tooltip title="Filter list">
           <IconButton>
@@ -164,33 +167,25 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
     </Toolbar>
   );
 }
-
+// truyen du lieu
 interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
-  onSearch?: (email: string) => Promise<void>;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: () => void;
   onDelete: (id: string) => void;
 }
 
-// o day nay
-
-const TableAccount: React.FC<Props> = (props) => {
+const TableDashboard: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  
-  // thuc hien chuc nang tim kiem
-  const [search, setSearch] = React.useState('');
-  const eventSearch = async () => {
-    if (props.onSearch) {
-        await props.onSearch(search); // Gọi hàm tìm kiếm từ ViewModel
-    }
-};
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-
+  const [modal, setModal] = React.useState(false);
 
 
   const handleRequestSort = (
@@ -237,12 +232,12 @@ const TableAccount: React.FC<Props> = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   const handleDelete = () => {
     // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
     selected.forEach((id) => props.onDelete(id.toString()));
     setSelected([]); // Reset danh sách đã chọn
   };
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
@@ -258,17 +253,20 @@ const TableAccount: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-      <EnhancedTableToolbar
+        <EnhancedTableToolbar
           numSelected={selected.length}
           title={props.title}
           onDelete={handleDelete} // Truyền hàm xử lý xóa
         />
+
+        {/* nut bam */}
         <ItemInputSearch
-                    value={search}
-                    setValue={setSearch}
-                    placeholder='Nhập email tài khoản'
-                    onPressSearch={eventSearch}
-                />
+          value={props.search}
+          setValue={props.setSearch}
+          placeholder="Nhập tên sản phẩm"
+          onPressSearch={() => props.onSearch()}
+        />
+
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -298,7 +296,9 @@ const TableAccount: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell padding="checkbox" sx={{
+                      with: '500px',
+                    }}>
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -315,12 +315,33 @@ const TableAccount: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.username}</TableCell>
-                    <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.password}</TableCell>
-                    <TableCell align="left">{row.image}</TableCell>
-                    <TableCell align="left">{row.createdAt}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.price}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.image}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.sold}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.rate}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.describe}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.status}
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -343,8 +364,10 @@ const TableAccount: React.FC<Props> = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <ItemModal
+      />
     </Box>
   );
 }
 
-export default TableAccount;
+export default TableDashboard;

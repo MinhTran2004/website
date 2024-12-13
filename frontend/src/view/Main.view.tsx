@@ -122,7 +122,7 @@ const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
 export default function Main(props: any) {
   const { window } = props;
 
-  const router = useDemoRouter('/create-product');
+  const router = useDemoRouter('/manager-product');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
