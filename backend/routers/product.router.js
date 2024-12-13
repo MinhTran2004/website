@@ -31,6 +31,14 @@ router.get('/getAllProduct', async (req, res) => {
     }catch(err){
         console.log(err);
     }
+
+    // try{
+    //     const product = await Product.find(); 
+
+    //     res.send(product);
+    // }catch(err){
+    //     console.log(err);
+    // }
 })
 router.get('/getProductByName', async (req, res) => {
     const { name } = req.query; 
