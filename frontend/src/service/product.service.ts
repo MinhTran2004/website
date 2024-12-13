@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class ProductService {
-    static url = 'http://localhost:5000/product';
+    static url = 'http://192.168.0.105:5001/product';
 
     static getAllProduct = async () => {
         try{

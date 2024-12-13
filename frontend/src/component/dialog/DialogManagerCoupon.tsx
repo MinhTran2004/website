@@ -8,6 +8,9 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
+import ItemInputText from '../ItemInputText';
+import ViewModelCreateCoupon from '../../viewmodel/create-coupon.viewmodel';
 
 
 interface Props {
@@ -25,7 +28,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const DialogmanagerCoupon: React.FC<Props> = (props) => {
-
+    const [value , setValue] = React.useState('');
+    const ViewModel = ViewModelCreateCoupon();
     return (
         <React.Fragment>
             <BootstrapDialog
@@ -49,23 +53,56 @@ const DialogmanagerCoupon: React.FC<Props> = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+                <Box>
+                    <ItemInputText 
+                    label='Tên mã giảm giá' 
+                    inputRef={ViewModel.refName}
+                    textError={ViewModel.errorName}
+                    value={ViewModel.name} 
+                    setvalue={ViewModel.setName} />
+                    <ItemInputText 
+                     label='Thể loại' 
+                     inputRef={ViewModel.refCategory}
+                     textError={ViewModel.errorCategory}
+                     value={ViewModel.category} 
+                     setvalue={ViewModel.setCategory} />
+                    <ItemInputText
+                     label='Số lượng mã giảm giá' 
+                     inputRef={ViewModel.refQuantity}
+                     textError={ViewModel.errorQuantity}
+                     value={ViewModel.quantity} 
+                     setvalue={ViewModel.setQuantity} />
+                     <ItemInputText
+                     label='Điều kiện đơn hàng' 
+                     inputRef={ViewModel.refCondition}
+                     textError={ViewModel.errorCondition}
+                     value={ViewModel.condition} 
+                     setvalue={ViewModel.setCondition} />
+                    <ItemInputText
+                     label='Ngày bắt đầu' 
+                     inputRef={ViewModel.refStartdate}
+                     value={ViewModel.startdate} 
+                     textError={ViewModel.errorStartdate}
+                     setvalue={ViewModel.setStartdate} />
+                     <ItemInputText
+                     label='Ngày kết thúc' 
+                     inputRef={ViewModel.refEnddate}
+                     value={ViewModel.enddate} 
+                     textError={ViewModel.errorEnddate}
+                     setvalue={ViewModel.setEnddate} />
+
+                     <ItemInputText
+                     label='Trạng thái' 
+                     inputRef={ViewModel.refDescribe}
+                     value={ViewModel.describe} 
+                     textError={ViewModel.errorDescribe}
+                     setvalue={ViewModel.setDescribe} />
+
+
+                </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
+                    <Button autoFocus onClick={() => {ViewModel.createCoupon()}}>
                         Save changes
                     </Button>
                 </DialogActions>

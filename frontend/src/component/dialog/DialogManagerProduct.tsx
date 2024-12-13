@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import ItemInputText from '../ItemInputText';
+import ViewModelCreateProduct from '../../viewmodel/create-product.viewmodel';
 
 
 interface Props {
@@ -32,7 +33,7 @@ const checknull = (value:string) => {
 
 const DialogManagerProduct: React.FC<Props> = (props) => {
     const [value , setValue] = React.useState('');
-
+    const ViewModel = ViewModelCreateProduct();
     checknull(value);
 
     return (
@@ -59,19 +60,44 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                 </IconButton>
                 <DialogContent dividers>
                 <Box>
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
+                    <ItemInputText 
+                    label='Tên sản phẩm' 
+                    inputRef={ViewModel.refName}
+                    textError={ViewModel.errorName}
+                    value={ViewModel.name} 
+                    setvalue={ViewModel.setName} />
+                    <ItemInputText 
+                    label='Giá sản phẩm' 
+                    inputRef={ViewModel.refPrice}
+                    textError={ViewModel.errorPrice}
+                    value={ViewModel.price}
+                    setvalue={ViewModel.setPrice} />
+                    <ItemInputText 
+                     label='Thể loại sản phẩm' 
+                     inputRef={ViewModel.refCategory}
+                     textError={ViewModel.errorCategory}
+                     value={ViewModel.category} 
+                     setvalue={ViewModel.setCategory} />
+                    <ItemInputText
+                     label='Ảnh sản phẩm' 
+                     inputRef={ViewModel.refImage}
+                     textError={ViewModel.errorImage}
+                     value={ViewModel.image} 
+                     setvalue={ViewModel.setImage} />
+                    <ItemInputText
+                     label='Mô tả sản phẩm' 
+                     inputRef={ViewModel.refDescribe}
+                     value={ViewModel.describe} 
+                     textError={ViewModel.errorDescribe}
+                     setvalue={ViewModel.setDescribe} />
                     <ItemInputText setvalue={()=> {}} />
 
                 </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
+                    <Button  autoFocus onClick={() =>{ ViewModel.createProduct()}}>
                         Save changes
+                        
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
