@@ -68,5 +68,42 @@ router.delete('/deleteProductById/:id', async (req, res) => {
         res.send({ status: false });
     }
 });
+// router.post('/createProduct', async (req, res) => {
+//     try {
+//         const data = req.body;
+//         console.log("Dữ liệu nhận từ client:", data); // Log
+
+//         if (!data.name || !data.price || !data.quantity) {
+//             return res.status(400).send({
+//                 status: false,
+//                 message: "Thiếu thông tin cần thiết: name, price, hoặc quantity",
+//             });
+//         }
+
+//         const product = new Product(data);
+//         const response = await product.save();
+
+//         if (response) {
+//             console.log("Sản phẩm đã được lưu:", response); // Log
+//             res.status(201).send({
+//                 status: true,
+//                 message: "Tạo sản phẩm thành công",
+//                 product: response,
+//             });
+//         } else {
+//             res.status(500).send({
+//                 status: false,
+//                 message: "Không thể tạo sản phẩm",
+//             });
+//         }
+//     } catch (err) {
+//         console.error("Lỗi khi tạo sản phẩm:", err); // Log
+//         res.status(500).send({
+//             status: false,
+//             message: "Có lỗi xảy ra",
+//             error: err.message,
+//         });
+//     }
+// });
 
 module.exports = router;

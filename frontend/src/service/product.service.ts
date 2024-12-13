@@ -1,4 +1,12 @@
 import axios from "axios";
+interface Product {
+    name: string;
+    price: number;
+    quantity: number;
+    idCategory: string; 
+    image: string;
+    describe: string;
+}
 
 export default class ProductService {
     static url = 'http://localhost:5000/product';
@@ -41,5 +49,13 @@ export default class ProductService {
             return false; // Nếu có lỗi xảy ra, trả về false
         }
     };
-    
+    static createProduct = async (productData: Product): Promise<boolean> => {
+        try {
+            const response = (await axios.post(`${this.url}/createProduct`, productData)).data;
+            return response.status; // Trả về true nếu thành công
+        } catch (err) {
+            console.error('Lỗi khi gọi API tạo sản phẩm:', err);
+            return false;
+        }
+    };
 }

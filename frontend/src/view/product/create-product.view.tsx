@@ -7,8 +7,8 @@ const CreateProduct = () => {
     const viewmodel = ViewModelCreateProduct();
     return (
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Typography sx={{textAlign: 'center', fontSize: 25, fontWeight: 600}}>Tạo sản phẩm</Typography>
-            <Box sx={{display: 'flex', gap: 1}}>
+            <Typography sx={{ textAlign: 'center', fontSize: 25, fontWeight: 600 }}>Tạo sản phẩm</Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
                 <ItemInputText
                     label="Tên sản phẩm"
                     inputRef={viewmodel.refName}
@@ -50,20 +50,27 @@ const CreateProduct = () => {
                 aria-label="minimum height"
                 minRows={5}
                 maxRows={10}
-                placeholder="Minimum 3 rows"
-                style={{ width: '100%' }} />
+                placeholder="Nhập mô tả sản phẩm"
+                style={{ width: '100%' }}
+                value={viewmodel.describe}
+                onChange={(e) => viewmodel.setDescribe(e.target.value)}
+            />
 
             <Box sx={{ display: 'flex', gap: 2 }}>
                 <PrimaryButton
-                    onClick={() => { viewmodel.createProduct() }}
+                    onClick={() => {
+                        console.log("Button Create Product Clicked"); // Log để kiểm tra
+                        viewmodel.createProduct();
+                    }}
                     label="Tạo sản phẩm"
                 />
+
                 <PrimaryButton
-                    onClick={() => { viewmodel.setInputNull()}}
+                    onClick={() => { viewmodel.setInputNull() }}
                     label="Xóa"
                 />
-                </Box>
             </Box>
+        </Box>
     )
 }
 

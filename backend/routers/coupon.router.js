@@ -12,6 +12,30 @@ router.get('/getAllCoupon', async (req, res) => {
         res.send({status:false});
     }
 })
+
+
+router.post('/createCoupon', async (req, res) => {
+    try {
+        const data = req.body;
+
+        // Log dữ liệu để kiểm tra
+        console.log('Received data:', data);
+
+        const coupon = new Coupon(data);
+        const response = await coupon.save();
+
+        if (response) {
+            res.send({ status: true });
+        } else {
+            res.send({ status: false });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: false, message: "Error creating coupon" });
+    }
+});
+
+
 router.delete('/deleteCouponById/:id', async (req, res) => {
     const { id } = req.params;
     const reponse = await Coupon.findByIdAndDelete(id);
