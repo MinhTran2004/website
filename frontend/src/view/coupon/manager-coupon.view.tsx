@@ -17,12 +17,12 @@ const ManagerCoupon = () => {
       disablePadding: false,
       label: 'Tên mã',
     },
-    {
-      id: 'Account',
-      numeric: false,
-      disablePadding: false,
-      label: 'Thể loại',
-    },
+    // {
+    //   id: 'Account',
+    //   numeric: false,
+    //   disablePadding: false,
+    //   label: 'Thể loại',
+    // },
     {
       id: 'Image',
       numeric: false,

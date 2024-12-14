@@ -53,20 +53,20 @@ const ManagerProduct = () => {
       id: 'Vote',
       numeric: false,
       disablePadding: false,
-      label: 'Bình chọn',
+      label: 'Đánh giá',
     },
-    {
-      id: 'Describe',
-      numeric: false,
-      disablePadding: false,
-      label: 'Mô tả',
-    },
-    {
-      id: 'Status',
-      numeric: false,
-      disablePadding: false,
-      label: 'Trạng thái',
-    },
+    // {
+    //   id: 'Describe',
+    //   numeric: false,
+    //   disablePadding: false,
+    //   label: 'Mô tả',
+    // },
+    // {
+    //   id: 'Status',
+    //   numeric: false,
+    //   disablePadding: false,
+    //   label: 'Trạng thái',
+    // },
     {
       id: "action",
       numeric: false,
@@ -75,6 +75,8 @@ const ManagerProduct = () => {
     },
   ];
 
+  console.log(ViewModel.dataProduct);
+  
   return (
     <Box>
       <TableProduct

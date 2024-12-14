@@ -8,7 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Box, FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import PrimaryButton from '../PrimaryButton';
 
 
 interface Props {
@@ -55,19 +56,21 @@ const DialogmanagerAccount: React.FC<Props> = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <Select
-                            value={age}
-                            onChange={handleChange}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                            sx={{ width: 500 }}
-                        >
-                            <MenuItem value={10}>Đang sử dụng</MenuItem>
-                            <MenuItem value={20}>Hạn chế sử dụng</MenuItem>
-                        </Select>
-                        {/* <FormHelperText>Without label</FormHelperText> */}
-                    </FormControl>
+                    <Box sx={{
+                        display: 'flex',
+                        gap: 2,
+                        width: 400,
+                        padding: '20px 40px'
+                    }}>
+                        <PrimaryButton
+                            label='Đang sử dụng'
+                            onClick={() => { }} //su kien xoa
+                        />
+                        <PrimaryButton
+                            label='Hạn chế'
+                            onClick={() => { }} //Xac nhận
+                        />
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={props.onPress}>

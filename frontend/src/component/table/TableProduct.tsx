@@ -21,6 +21,7 @@ import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from '../ItemInputSearch';
 import { Button } from '@mui/material';
 import DialogManagerProduct from '../dialog/DialogManagerProduct';
+import { Product } from '../../model/product.model';
 
 interface Data {
   id: number;
@@ -186,7 +187,7 @@ const TableProduct: React.FC<Props> = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [modal, setModal] = React.useState(false);
-
+  const [item, setItem] = React.useState<Product>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -308,6 +309,7 @@ const TableProduct: React.FC<Props> = (props) => {
                       />
                     </TableCell>
                     <TableCell
+                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 1 }}
                       component="th"
                       id={labelId}
                       scope="row"
@@ -315,14 +317,14 @@ const TableProduct: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
                       {row.name}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.price}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.quantity}
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.idCategory}
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.image}
@@ -330,22 +332,23 @@ const TableProduct: React.FC<Props> = (props) => {
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.sold}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.quantity}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.rate}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    {/* <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.describe}
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.status}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
+                          setItem(row);
                         }}
                       >Thay đổi</Button>
                     </TableCell>
@@ -371,12 +374,15 @@ const TableProduct: React.FC<Props> = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      
+
       {/* dialog */}
-      <DialogManagerProduct
-        modal = {modal}
-        onPress={() => {setModal(false)}}
-      />
+      {item != undefined &&
+        <DialogManagerProduct
+          modal={modal}
+          data={item}
+          onPress={() => { setModal(false) }}
+        />
+      }
 
     </Box>
   );

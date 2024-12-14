@@ -7,10 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-
+import { Box } from '@mui/material';
+import ItemInputText from '../ItemInputText';
+import { Coupon } from '../../model/coupon.model';
+import ViewModelCreateCoupon from '../../viewmodel/create-coupon.viewmodel';
 
 interface Props {
+    data: Coupon,
     modal: boolean,
     onPress: () => void,
 }
@@ -24,7 +27,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const DialogmanagerCoupon: React.FC<Props> = (props) => {
+const DialogManagerCoupon: React.FC<Props> = (props) => {
+
+    const viewmodel = ViewModelCreateCoupon();
 
     return (
         <React.Fragment>
@@ -33,8 +38,8 @@ const DialogmanagerCoupon: React.FC<Props> = (props) => {
                 aria-labelledby="customized-dialog-title"
                 open={props.modal}
             >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Modal title
+                <DialogTitle sx={{ m: 0, p: 2, textAlign: 'center' }} id="customized-dialog-title">
+                    Thay đổi thông tin sản phẩm
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -49,24 +54,72 @@ const DialogmanagerCoupon: React.FC<Props> = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+                    <Box sx={{
+                        width: 500,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2
+                    }}>
+                        <ItemInputText
+                            disabled
+                            value={props.data._id}
+                            setvalue={() => { }}
+                        />
+                        <ItemInputText
+                            label="Tên mã giảm giá"
+                            inputRef={viewmodel.refName}
+                            value={viewmodel.name}
+                            setvalue={viewmodel.setName}
+                            textError={viewmodel.errorName}
+                        />
+
+                        <Box sx={{
+                            display: 'flex',
+                            gap: 2
+                        }}>
+                            <ItemInputText
+                                label="Ngày bắt đầu"
+                                inputRef={viewmodel.refStartdate}
+                                value={viewmodel.startdate}
+                                setvalue={viewmodel.setStartdate}
+                                textError={viewmodel.errorStartdate}
+                            />
+                            <ItemInputText
+                                label="Ngày kết thúc"
+                                inputRef={viewmodel.refEnddate}
+                                value={viewmodel.enddate}
+                                setvalue={viewmodel.setEnddate}
+                                textError={viewmodel.errorEnddate}
+                            />
+                        </Box>
+                        <ItemInputText
+                            label="Số lượng"
+                            inputRef={viewmodel.refQuantity}
+                            value={viewmodel.quantity}
+                            setvalue={viewmodel.setQuantity}
+                            textError={viewmodel.errorQuantity}
+                        />
+                        <ItemInputText
+                            label="Giảm giá"
+                            inputRef={viewmodel.refDiscount}
+                            value={viewmodel.discount}
+                            setvalue={viewmodel.setDiscount}
+                            textError={viewmodel.errorDiscount}
+                        />
+                        <ItemInputText
+                            label="Điều kiện đơn hàng"
+                            inputRef={viewmodel.refCondition}
+                            value={viewmodel.condition}
+                            setvalue={viewmodel.setCondition}
+                            textError={viewmodel.errorCondition}
+                        />
+                    </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
-                        Save changes
+                    <Button autoFocus onClick={() => {
+                        // viewmodel.createProduct;
+                    }}>
+                        Lưu thay đổi
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
@@ -74,4 +127,4 @@ const DialogmanagerCoupon: React.FC<Props> = (props) => {
     );
 }
 
-export default DialogmanagerCoupon;
+export default DialogManagerCoupon;

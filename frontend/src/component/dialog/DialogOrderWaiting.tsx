@@ -8,6 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import PrimaryButton from '../PrimaryButton';
 
 
 interface Props {
@@ -26,6 +28,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const DialogOrderWaiting: React.FC<Props> = (props) => {
 
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setAge(event.target.value);
+    };
+
     return (
         <React.Fragment>
             <BootstrapDialog
@@ -34,7 +42,7 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                 open={props.modal}
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Modal title
+                    Thay đổi trạng thái đơn hàng
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -49,24 +57,24 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+                    <Box sx={{
+                        display: 'flex',
+                        gap: 2,
+                        padding: '20px'
+                    }}>
+                        <PrimaryButton
+                            label='Hủy đơn hàng'
+                            onClick={() => { }} //su kien xoa
+                        />
+                        <PrimaryButton
+                            label='Hủy đơn hàng'
+                            onClick={() => { }} //Xac nhận
+                        />
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={props.onPress}>
-                        Save changes
+                        Lưu thay đổi
                     </Button>
                 </DialogActions>
             </BootstrapDialog>

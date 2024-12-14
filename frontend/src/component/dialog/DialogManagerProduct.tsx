@@ -7,12 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, TextareaAutosize } from '@mui/material';
 import ItemInputText from '../ItemInputText';
-
+import ViewModelCreateProduct from '../../viewmodel/create-product.viewmodel';
+import { Product } from '../../model/product.model';
 
 interface Props {
+    data: Product,
     modal: boolean,
     onPress: () => void,
 }
@@ -26,14 +27,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const checknull = (value:string) => {
-    // check 
-}
-
 const DialogManagerProduct: React.FC<Props> = (props) => {
-    const [value , setValue] = React.useState('');
 
-    checknull(value);
+    const viewmodel = ViewModelCreateProduct();
 
     return (
         <React.Fragment>
@@ -58,20 +54,71 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <DialogContent dividers>
-                <Box>
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-                    <ItemInputText setvalue={()=> {}} />
-
-                </Box>
+                    <Box sx={{
+                        width: 500,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 2
+                    }}>
+                        <ItemInputText
+                            disabled
+                            value={props.data._id}
+                            setvalue={() => { }}
+                        />
+                        <ItemInputText
+                            label="Tên sản phẩm"
+                            placeholder={props.data.name}
+                            inputRef={viewmodel.refName}
+                            value={viewmodel.name}
+                            setvalue={viewmodel.setName}
+                            textError={viewmodel.errorName}
+                        />
+                        <ItemInputText
+                            label="Giá sản phẩm"
+                            placeholder={props.data.price}
+                            inputRef={viewmodel.refPrice}
+                            value={viewmodel.price}
+                            setvalue={viewmodel.setPrice}
+                            textError={viewmodel.errorPrice}
+                        />
+                        <ItemInputText
+                            label="Số lượng sản phẩm"
+                            placeholder={props.data.quantity}
+                            inputRef={viewmodel.refQuantity}
+                            value={viewmodel.quantity}
+                            setvalue={viewmodel.setQuantity}
+                            textError={viewmodel.errorQuantity}
+                        />
+                        <ItemInputText
+                            label="Thể loại sản phẩm"
+                            placeholder={props.data.category}
+                            inputRef={viewmodel.refCategory}
+                            value={viewmodel.category}
+                            setvalue={viewmodel.setCategory}
+                            textError={viewmodel.errorCategory}
+                        />
+                        <ItemInputText
+                            label="Ảnh sản phẩm"
+                            placeholder={props.data.image}
+                            inputRef={viewmodel.refImage}
+                            value={viewmodel.image}
+                            setvalue={viewmodel.setImage}
+                            textError={viewmodel.errorImage}
+                        />
+                        <TextareaAutosize
+                            aria-label="minimum height"
+                            minRows={5}
+                            maxRows={10}
+                            placeholder="Mô tả sản phẩm"
+                            style={{ width: '100%' }} />
+                    </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
-                        Save changes
+                    <Button autoFocus onClick={() => {
+                        console.log(props.data);
+                        // viewmodel.createProduct;
+                    }}>
+                        Lưu thay đổi
                     </Button>
                 </DialogActions>
             </BootstrapDialog>

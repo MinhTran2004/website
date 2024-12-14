@@ -20,7 +20,8 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from '../ItemInputSearch';
 import { Button } from '@mui/material';
-import DialogmanagerCoupon from '../dialog/DialogManagerCoupon';
+import { Coupon } from '../../model/coupon.model';
+import DialogManagerCoupon from '../dialog/DialogManagerCoupon';
 
 interface Data {
   id: number;
@@ -184,6 +185,7 @@ const TableCoupon: React.FC<Props> = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [modal, setModal] = React.useState(false);
+  const [item, setItem] = React.useState<Coupon>();
 
   // thuc hien chuc nang tim kiem
   const [search, setSearch] = React.useState('');
@@ -307,6 +309,7 @@ const TableCoupon: React.FC<Props> = (props) => {
                       />
                     </TableCell>
                     <TableCell
+                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}
                       component="th"
                       id={labelId}
                       scope="row"
@@ -314,19 +317,34 @@ const TableCoupon: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.discountType}</TableCell>
-                    <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="left">{row.condition}</TableCell>
-                    <TableCell align="left">{row.startDate}</TableCell>
-                    <TableCell align="left">{row.endDate}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '250px', overflow: 'hidden', WebkitLineClamp: 2 }}
+                    >{row.name}
+                    </TableCell>
+                    {/* <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.discountType}
+                    </TableCell> */}
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.condition}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.startDate}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.endDate}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                      {row.status}
+                    </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
+                          setItem(row);
                         }}
-                      >Chỉnh sửa</Button>
+                      >Thay đổi</Button>
                     </TableCell>
                   </TableRow>
                 );
@@ -351,11 +369,13 @@ const TableCoupon: React.FC<Props> = (props) => {
         />
       </Paper>
 
-      
-      <DialogmanagerCoupon 
-        modal={modal}
-        onPress={() => {setModal(false)}}
-      />
+      {item != undefined &&
+        <DialogManagerCoupon
+          modal={modal}
+          data={item}
+          onPress={() => { setModal(false) }}
+        />
+      }
 
 
     </Box>

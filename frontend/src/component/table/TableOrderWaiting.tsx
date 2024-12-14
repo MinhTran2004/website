@@ -287,16 +287,31 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                       id={labelId}
                       scope="row"
                       padding="none"
+                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.dataProduct.length}</TableCell>
-                    <TableCell align="left">{row.address.detailAddress}</TableCell>
-                    <TableCell align="left">{row.address.phone}</TableCell>
-                    <TableCell align="left">{row.createAt}</TableCell>
-                    <TableCell align="left">{row.totalCost}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '120px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.account}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '50px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.dataProduct.length}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.address.detailAddress}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.address.phone}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.createAt}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.totalCost}
+                    </TableCell>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                      {row.status}
+                    </TableCell>
                     {/* <TableCell align="left">{row.createdAt}</TableCell> */}
                     {/* <TableCell align="left">{row.status}</TableCell> */}
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
@@ -309,7 +324,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                   </TableRow>
                 );
               })}
-              
+
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
@@ -329,9 +344,9 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
         />
       </Paper>
 
-      
+
       <DialogOrderWaiting
-        modal = {modal}
+        modal={modal}
         onPress={() => setModal(false)}
       />
 
