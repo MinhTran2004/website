@@ -28,21 +28,25 @@ const ViewModelCreateProduct = () => {
     const refImage = useRef<HTMLInputElement>(null);
     const refDescribe = useRef<HTMLInputElement>(null);
 
-    const createProduct = async () => {
-        console.log('hihihihi');
+    // dialog
+    const [dialogSuccess, setDialogSuccess] = useState(false);
+    const [dialogError, setDialogError] = useState(false);
 
+
+    const createProduct = async () => {
         const check = ProductModel.checkData(
             name, price, quantity, category, image, describe,
-            setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setDescribe,
+            setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setErrorDescribe,
             refName, refPrice, refQuantity, refCategory, refImage, refDescribe
         );
         
         if (check) {
-            console.log('hihihii');
             const dataModel = new ProductModel(category, name, price, image, quantity, describe, GetDay(), 'Đang sử dụng');
-            // const reponse = await ProductService.createProduct(dataModel);
-            console.log(category);
-            
+            const reponse = await ProductService.createProduct(dataModel);
+            console.log(reponse);
+            setDialogSuccess(true);
+        }else{
+            setDialogSuccess(false);
         }
     }
 
@@ -53,14 +57,13 @@ const ViewModelCreateProduct = () => {
         setCategory('');
         setImage('');
         setDescribe('');
-
     }
 
 
     return {
         createProduct, setInputNull,
-        name, price, quantity, category, image, describe,
-        setName, setPrice, setQuantity, setCategory, setImage, setDescribe,
+        name, price, quantity, category, image, describe, dialogSuccess, dialogError,
+        setName, setPrice, setQuantity, setCategory, setImage, setDescribe, setDialogError, setDialogSuccess,
         errorName, errorPrice, errorQuantity, errorCategory, errorImage, errorDescribe,
         refName, refPrice, refQuantity, refCategory, refImage, refDescribe,
     }

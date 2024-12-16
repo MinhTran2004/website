@@ -91,7 +91,7 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Thể loại sản phẩm"
-                            placeholder={props.data.category}
+                            placeholder={props.data.idCategory}
                             inputRef={viewmodel.refCategory}
                             value={viewmodel.category}
                             setvalue={viewmodel.setCategory}

@@ -1,8 +1,10 @@
 import React from "react"
 import PrimaryButton from "../PrimaryButton"
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material"
+import { Box, Dialog, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material"
 
 interface Props {
+    isModel:boolean,
+    onClick?:(status:boolean) => void;
     title?: string,
     label?: string,
     layoutButton?: 'row' | 'single',
@@ -48,8 +50,8 @@ const StatusModal: React.FC<Props> = (props) => {
     return (
         <React.Fragment>
             <Dialog
-                open={true}
-                // onClose={handleClose}
+                open={props.isModel}
+                onClose={props.onClick}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

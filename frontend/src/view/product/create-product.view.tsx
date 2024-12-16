@@ -55,13 +55,14 @@ const CreateProduct = () => {
                     <MenuItem disabled value="" >
                         <em style={{ color: "#aeb8ae" }}>-- Chọn thể loại sản phẩm --</em>
                     </MenuItem>
-                    <MenuItem value={'Gà Rán'}>Gà</MenuItem>
-                    <MenuItem value={'Burger'}>Burger</MenuItem>
-                    <MenuItem value={'Mì'}>Mì</MenuItem>
-                    <MenuItem value={'Khai tây chiên'}>Khai tây chiên</MenuItem>
-                    <MenuItem value={'Nước'}>Nước</MenuItem>
+                    <MenuItem value={'Chicken'}>Chicken</MenuItem>
+                    <MenuItem value={'Burger'}>Hamburger</MenuItem>
+                    <MenuItem value={'French fries'}>French fries</MenuItem>
+                    <MenuItem value={'Drink'}>Drink</MenuItem>
                     <MenuItem value={'Pizza'}>Pizza</MenuItem>
-                    <MenuItem value={'Cơm'}>Cơm</MenuItem>
+                    <MenuItem value={'Rice'}>Rice</MenuItem>
+                    <MenuItem value={'Noodles'}>Noodles</MenuItem>
+                    <MenuItem value={'Cake'}>Cake</MenuItem>
                 </Select>
                 {viewmodel.errorCategory && <Typography sx={{ color: 'red', fontSize: 12 }}>{viewmodel.errorCategory}</Typography>}
             </FormControl>
@@ -79,8 +80,10 @@ const CreateProduct = () => {
                 aria-label="minimum height"
                 minRows={5}
                 maxRows={10}
+                onChange={(text) => { viewmodel.setDescribe(text.target.value) }}
                 placeholder="Minimum 3 rows"
                 style={{ width: '100%' }} />
+            {viewmodel.errorDescribe && <Typography sx={{ color: 'red', fontSize: 12 }}>{viewmodel.errorDescribe}</Typography>}
 
             <Box sx={{ display: 'flex', gap: 2 }}>
                 <PrimaryButton
@@ -96,13 +99,27 @@ const CreateProduct = () => {
             </Box>
 
             <StatusModal
+                isModel={viewmodel.dialogSuccess}
                 title="Thông báo"
                 label="Tạo sản phẩm thành công"
                 layoutButton="single"
                 primaryButton={{
                     label: "OK",
                     onPress: () => {
-                        
+                        viewmodel.setDialogSuccess(!viewmodel.dialogSuccess)
+                    }
+                }}
+            />
+
+            <StatusModal
+                isModel={viewmodel.dialogError}
+                title="Thông báo"
+                label="Tạo sản phẩm thất bại"
+                layoutButton="single"
+                primaryButton={{
+                    label: "OK",
+                    onPress: () => {
+                        viewmodel.setDialogError(!viewmodel.dialogError)
                     }
                 }}
             />

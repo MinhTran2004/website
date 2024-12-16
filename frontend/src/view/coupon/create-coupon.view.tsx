@@ -4,6 +4,7 @@ import ItemInputText from "../../component/ItemInputText";
 import PrimaryButton from "../../component/PrimaryButton";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import StatusModal from "../../component/dialog/StatusModal";
 
 const CreateCoupon = () => {
     const viewmodel = ViewModelCreateCoupon();
@@ -102,6 +103,32 @@ const CreateCoupon = () => {
                     label="Xóa"
                 />
             </Box>
+
+            <StatusModal
+                isModel={viewmodel.dialogSuccess}
+                title="Thông báo"
+                label="Tạo mã giảm giá thành công"
+                layoutButton="single"
+                primaryButton={{
+                    label: "OK",
+                    onPress: () => {
+                        viewmodel.setDialogSuccess(!viewmodel.dialogSuccess)
+                    }
+                }}
+            />
+
+            <StatusModal
+                isModel={viewmodel.dialogError}
+                title="Thông báo"
+                label="Tạo mã giảm giá thất bại"
+                layoutButton="single"
+                primaryButton={{
+                    label: "OK",
+                    onPress: () => {
+                        viewmodel.setDialogError(!viewmodel.dialogError)
+                    }
+                }}
+            />
         </Box>
     )
 }
