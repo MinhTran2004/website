@@ -1,7 +1,18 @@
 import axios from "axios";
+import ModelCoupon from "../model/coupon.model";
 
 export default class CouponService {
     static url = 'http://localhost:5000/coupon';
+
+    static createCoupon = async (data:ModelCoupon) => {
+        try{
+            const reponse = (await axios.post(`${this.url}/createCoupon`, data)).data;
+
+            return reponse.status;
+        }catch(err){
+            console.log(err);
+        }
+    }
     
     static getAllCoupon = async () => {
         try{

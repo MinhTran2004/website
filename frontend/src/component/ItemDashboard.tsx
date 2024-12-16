@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material"
 import React from "react";
+import { ConvertMonney } from "../hook/ConvertMonney";
 
 interface Props {
-    title?: string,
-    monney?: string,
-    icon?: string,
+    title: string,
+    monney: string,
+    icon: string,
     style?: React.CSSProperties;
 }
 
@@ -29,7 +30,7 @@ const ItemDashboard: React.FC<Props> = (props) => {
                 <Typography sx={{
                     fontSize: 18
                 }}>
-                    {props.monney}
+                    {ConvertMonney(props.monney)}
                 </Typography>
             </Box>
 

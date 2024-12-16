@@ -24,7 +24,7 @@ const ManagerCoupon = () => {
     //   label: 'Thể loại',
     // },
     {
-      id: 'Image',
+      id: 'quantity',
       numeric: false,
       disablePadding: false,
       label: 'Số lượng',

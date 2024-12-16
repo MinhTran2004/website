@@ -5,9 +5,15 @@ import { Order } from "../model/order.model";
 const ViewModelOrderWaiting = () => {
     const [dataOrder, setDataOrder] = useState<Order[]>([]);
 
+
     const getAllBillByStatus = async () => {
         const reponse = await OrderService.getAllBillByStatus('Chờ xác nhận');
         setDataOrder(reponse);
+    }
+
+    const updateStatusOrder = async (data: Order, status: string) => {
+        const reponse = await OrderService.updateStatusOrder(data, status);
+        await getAllBillByStatus();
     }
 
     useEffect(() => {
@@ -15,7 +21,7 @@ const ViewModelOrderWaiting = () => {
     }, [])
 
     return {
-        dataOrder,
+        dataOrder, updateStatusOrder,
     }
 }
 

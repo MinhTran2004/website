@@ -1,11 +1,9 @@
 import { Box } from "@mui/material";
-import EnhancedTable from "../component/EnhancedTable";
 import ViewModelAccount from "../viewmodel/manager-account.viewmodel";
 import TableAccount from "../component/table/TableAccount";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
-    console.log(viewmodel.dataAccount);
 
     const headCells = [
         {

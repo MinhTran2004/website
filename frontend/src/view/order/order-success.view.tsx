@@ -9,7 +9,7 @@ const OrderSuccess = () => {
         {
           id: 'id',
           numeric: false,
-          disablePadding: true,
+          disablePadding: false,
           label: 'ID',
         },
         {

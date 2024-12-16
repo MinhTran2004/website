@@ -1,20 +1,20 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import PrimaryButton from '../PrimaryButton';
+import { Order } from '../../model/order.model';
 
 
 interface Props {
+    data?: Order,
     modal: boolean,
     onPress: () => void,
+    viewmodel: any
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -27,13 +27,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const DialogOrderWaiting: React.FC<Props> = (props) => {
-
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
-    };
-
     return (
         <React.Fragment>
             <BootstrapDialog
@@ -41,7 +34,7 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                 aria-labelledby="customized-dialog-title"
                 open={props.modal}
             >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                <DialogTitle sx={{ m: 0, p: 2, textAlign: 'center' }} id="customized-dialog-title">
                     Thay đổi trạng thái đơn hàng
                 </DialogTitle>
                 <IconButton
@@ -60,23 +53,30 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                     <Box sx={{
                         display: 'flex',
                         gap: 2,
-                        padding: '20px'
+                        padding: '10px',
+                        width: 450
                     }}>
                         <PrimaryButton
                             label='Hủy đơn hàng'
-                            onClick={() => { }} //su kien xoa
+                            onClick={() => {
+                                props.viewmodel.updateStatusOrder(props.data, "Người bán đã hủy");
+                                props.onPress();
+                            }}
                         />
                         <PrimaryButton
-                            label='Hủy đơn hàng'
-                            onClick={() => { }} //Xac nhận
+                            label='Xác nhận đơn hàng'
+                            onClick={() => {
+                                props.viewmodel.updateStatusOrder(props.data, "Hoàn thành");
+                                props.onPress()
+                            }}
                         />
                     </Box>
                 </DialogContent>
-                <DialogActions>
+                {/* <DialogActions>
                     <Button autoFocus onClick={props.onPress}>
                         Lưu thay đổi
                     </Button>
-                </DialogActions>
+                </DialogActions> */}
             </BootstrapDialog>
         </React.Fragment>
     );

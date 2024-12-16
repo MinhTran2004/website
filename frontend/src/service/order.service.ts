@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Order } from "../model/order.model";
 
 export class OrderService {
     static url = 'http://localhost:5000/order';
@@ -27,6 +28,33 @@ export class OrderService {
             const reponse = await (await axios.delete(`${this.url}/deleteBillById/${id}`)).data;
             return reponse.status;
         } catch (err) {
+            console.log(err);
+        }
+    }
+
+    static updateStatusOrder = async (data:Order, status: string ) => {
+        try {
+            const reponse = await axios.patch(`${this.url}/updateStatusOrder`, {
+                data :data,
+                status: status,
+            });
+
+            return reponse.data.status;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    static getOrderDataForDashboard = async () => {
+        try{
+            const reponse = (await axios.get(`${this.url}/getOrderDataForDashboard`)).data;
+
+            if (reponse.status) {
+                return reponse.data;
+            }else{
+                return []
+            }
+        }catch(err){
             console.log(err);
         }
     }

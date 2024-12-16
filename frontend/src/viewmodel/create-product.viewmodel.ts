@@ -1,7 +1,7 @@
-import { error } from "console";
 import { useRef, useState } from "react"
-import ModelAccount from "../model/account.model";
 import ProductModel from "../model/product.model";
+import ProductService from "../service/product.service";
+import { GetDay } from "../hook/GetDay";
 
 const ViewModelCreateProduct = () => {
     // vale
@@ -29,12 +29,21 @@ const ViewModelCreateProduct = () => {
     const refDescribe = useRef<HTMLInputElement>(null);
 
     const createProduct = async () => {
-        ProductModel.checkData(
+        console.log('hihihihi');
+
+        const check = ProductModel.checkData(
             name, price, quantity, category, image, describe,
             setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setDescribe,
             refName, refPrice, refQuantity, refCategory, refImage, refDescribe
         );
-
+        
+        if (check) {
+            console.log('hihihii');
+            const dataModel = new ProductModel(category, name, price, image, quantity, describe, GetDay(), 'Đang sử dụng');
+            // const reponse = await ProductService.createProduct(dataModel);
+            console.log(category);
+            
+        }
     }
 
     const setInputNull = () => {

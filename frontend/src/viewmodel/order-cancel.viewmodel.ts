@@ -6,7 +6,7 @@ const ViewModelOrderCancel = () => {
     const [dataOrder, setDataOrder] = useState<Order[]>([]);
 
     const getAllBillByStatus = async () => {
-        const reponse = await OrderService.getAllBillByStatus('Đã hủy');
+        const reponse = await OrderService.getAllBillByStatus('Người bán đã hủy');
         setDataOrder(reponse);
     }
 

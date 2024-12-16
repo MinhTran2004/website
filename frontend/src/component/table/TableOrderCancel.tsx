@@ -73,7 +73,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -83,7 +83,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -261,7 +261,7 @@ const TableOrderCancel: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row._id)}
+                    // onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -269,7 +269,7 @@ const TableOrderCancel: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -277,12 +277,13 @@ const TableOrderCancel: React.FC<Props> = (props) => {
                           'aria-labelledby': labelId,
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
+                      align='center'
                     >
                       {row._id}
                     </TableCell>

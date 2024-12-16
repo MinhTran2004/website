@@ -15,7 +15,7 @@ import OrderSuccess from './order/order-success.view';
 import OrderCancel from './order/order-cancel.view';
 import CreateCoupon from './coupon/create-coupon.view';
 import ManagerCoupon from './coupon/manager-coupon.view';
-import DashboardScreen from './dashboard';
+import DashboardScreen from './dashboard.view';
 
 const NAVIGATION: Navigation = [
   {
@@ -122,7 +122,7 @@ const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
 export default function Main(props: any) {
   const { window } = props;
 
-  const router = useDemoRouter('/manager-product');
+  const router = useDemoRouter('/dashboard');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;

@@ -10,7 +10,7 @@ const OrderCancel = () => {
     {
       id: 'id',
       numeric: false,
-      disablePadding: true,
+      disablePadding: false,
       label: 'ID',
     },
     {

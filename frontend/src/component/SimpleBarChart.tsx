@@ -2,19 +2,18 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts';
 import { Box } from '@mui/material';
 
-const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-const xLabels = [
-  'Page A',
-  'Page B',
-  'Page C',
-  'Page D',
-  'Page E',
-  'Page F',
-  'Page G',
-];
+export interface DataDate {
+  year: number,
+  month: number,
+  revenue: number,
+}
 
-export default function SimpleBarChart() {
+export interface Props {
+  data: DataDate[];
+}
+
+const SimpleBarChart: React.FC<Props> = (props) => {
+  console.log(props.data);
 
   const chartContainerRef = React.useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
@@ -39,6 +38,17 @@ export default function SimpleBarChart() {
     };
   }, []);
 
+  // Nam thang
+  const listDate: any[] = []
+  props.data.map((item) => {
+    listDate.push(item.month + "/" + item.year)
+  })
+
+  // doanh thu theo thang
+  const listRevenue: any[] = [];
+  props.data.map((item) => {
+    listRevenue.push(item.revenue);
+  })
 
   return (
     <Box sx={{
@@ -58,14 +68,17 @@ export default function SimpleBarChart() {
 
     }}>
       <BarChart
+      sx={{padding: 1}}
         // width={containerWidth}    // Set width to 100% of parent
         // height={containerHeight}  // Set height to 100% of parent
         series={[
-          { data: pData, label: 'Doanh thu', id: 'pvId' },
+          { data: listRevenue, label: 'Doanh thu', id: 'pvId' },
           // { data: uData, label: 'uv', id: 'uvId' },
         ]}
-        xAxis={[{ data: xLabels, scaleType: 'band' }]}
+        xAxis={[{ data: listDate, scaleType: 'band' }]}
       />
     </Box >
   );
 }
+
+export default SimpleBarChart;

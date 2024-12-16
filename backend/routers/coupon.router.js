@@ -3,13 +3,24 @@ const Coupon = require('../model/coupon');
 
 const router = express.Router();
 
+router.post('/createCoupon', async (req, res) => {
+    const data = req.body;
+    const coupon = new Coupon(data);
+    const reponse = await coupon.save();
+
+    if (reponse.lenght != 0) {
+        res.send({ status: true })
+    } else {
+        res.send({ status: false })
+    }
+})
+
 router.get('/getAllCoupon', async (req, res) => {
     const reponse = await Coupon.find().limit(10);
-    
     if (reponse.length != 0) {
-        res.send({status: true, data:reponse})
-    }else{
-        res.send({status:false});
+        res.send({ status: true, data: reponse })
+    } else {
+        res.send({ status: false });
     }
 })
 router.delete('/deleteCouponById/:id', async (req, res) => {

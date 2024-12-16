@@ -20,6 +20,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
 import { Button } from '@mui/material';
+import OrderModel, { Order } from '../../model/order.model';
 
 interface Data {
   id: number;
@@ -40,10 +41,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
+// type Order = 'asc' | 'desc';
 
 function getComparator<Key extends keyof any>(
-  order: Order,
+  order: any,
   orderBy: Key,
 ): (
   a: { [key in Key]: number | string },
@@ -58,7 +59,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
+  order: any;
   orderBy: string;
   rowCount: number;
   dataHeaderRow: any[],
@@ -75,7 +76,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -85,7 +86,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -170,18 +171,20 @@ interface Props {
   title: string,
   data: any[],
   dataTableHeader: any[],
+  viewmodel: any,
 }
 
 // o day nay
 
 const TableOrderWaiting: React.FC<Props> = (props) => {
-  const [order, setOrder] = React.useState<Order>('asc');
+  const [order, setOrder] = React.useState<any>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [modal, setModal] = React.useState(false);
+  const [dataOrder, setDataOrder] = React.useState<Order>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -265,7 +268,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row._id)}
+                    // onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -273,7 +276,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -281,43 +284,30 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                           'aria-labelledby': labelId,
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
-                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}
+                      align='center'
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '120px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.account}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '50px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.dataProduct.length}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.address.detailAddress}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.address.phone}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.createAt}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.totalCost}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.status}
-                    </TableCell>
+                    <TableCell align="left">{row.account}</TableCell>
+                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.detailAddress}</TableCell>
+                    <TableCell align="left">{row.address.phone}</TableCell>
+                    <TableCell align="left">{row.createAt}</TableCell>
+                    <TableCell align="left">{row.totalCost}</TableCell>
+                    <TableCell align="left">{row.status}</TableCell>
                     {/* <TableCell align="left">{row.createdAt}</TableCell> */}
                     {/* <TableCell align="left">{row.status}</TableCell> */}
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left">
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
+                          setDataOrder(row);
                         }}
                       >Chỉnh sửa</Button>
                     </TableCell>
@@ -346,11 +336,11 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
 
 
       <DialogOrderWaiting
+        data={dataOrder}
         modal={modal}
+        viewmodel={props.viewmodel}
         onPress={() => setModal(false)}
       />
-
-
 
     </Box>
   );

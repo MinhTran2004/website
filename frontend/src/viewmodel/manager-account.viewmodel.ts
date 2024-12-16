@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Account } from "../model/account.model"
 import AccountService from "../service/account.service";
-import ProductService from "../service/product.service";
 
 const ViewModelAccount = () => {
     const [dataAccount, setDataAccount] = useState<Account[]>([]);

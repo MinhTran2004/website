@@ -9,7 +9,7 @@ const OrderWaiting = () => {
     {
       id: 'id',
       numeric: false,
-      disablePadding: true,
+      disablePadding: false,
       label: 'ID',
     },
     {
@@ -66,7 +66,9 @@ const OrderWaiting = () => {
       <TableOrderWaiting
         title="Đơn hàng chờ xác nhận"
         data={viewmodel.dataOrder}
-        dataTableHeader={headCells} />
+        dataTableHeader={headCells}
+        viewmodel = {viewmodel}
+         />
     </Box>
   )
 }

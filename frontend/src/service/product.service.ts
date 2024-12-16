@@ -1,7 +1,17 @@
 import axios from "axios";
+import ProductModel, { Product } from "../model/product.model";
 
 export default class ProductService {
     static url = 'http://localhost:5000/product';
+
+    static createProduct = async (data:ProductModel) => {
+        try{
+            const reponse = (await axios.post(`${this.url}/createProduct`, data)).data;
+            return reponse.status;
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     static getAllProduct = async () => {
         try{

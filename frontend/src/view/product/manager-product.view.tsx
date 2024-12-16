@@ -3,7 +3,6 @@ import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
 import TableProduct from "../../component/table/TableProduct";
 
 const ManagerProduct = () => {
-
   const ViewModel = ViewModelManageProduct();
 
   const headCells = [
@@ -75,8 +74,6 @@ const ManagerProduct = () => {
     },
   ];
 
-  console.log(ViewModel.dataProduct);
-  
   return (
     <Box>
       <TableProduct

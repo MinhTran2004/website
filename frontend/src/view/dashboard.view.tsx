@@ -1,11 +1,13 @@
 import { Box } from "@mui/material";
-import SimpleBarChart from "../component/SimpleBarChart";
 import ItemDashboard from "../component/ItemDashboard";
 import TableDashboard from "../component/table/TableDashboard";
 import ViewModelManageProduct from "../viewmodel/manager-product.viewmodel";
+import ViewmodelDashboard from "../viewmodel/dashboard.viewmodel";
+import SimpleBarChart from "../component/SimpleBarChart";
 
 export default function DashboardScreen() {
-    const ViewModel = ViewModelManageProduct();
+    const ViewModelProduct = ViewModelManageProduct();
+    const viewmodalDashBoard = ViewmodelDashboard();
 
     const headCells = [
         {
@@ -79,7 +81,7 @@ export default function DashboardScreen() {
         }}>
             <Box sx={{
                 display: 'grid',
-                gridTemplateColumns: 'auto auto auto',
+                gridTemplateColumns: 'auto auto',
                 gap: '20px',
                 '@media (max-width: 900px)': {
                     display: 'flex',
@@ -88,35 +90,35 @@ export default function DashboardScreen() {
                 }
             }}>
                 <ItemDashboard
-                    title="Doanh thu"
-                    monney="20202020"
+                    title="Doanh thu của tháng"
+                    monney={viewmodalDashBoard?.dataDate[11]?.revenue?.toString()}
                     icon={require('../assets/images/icon_revenue.png')}
                 />
 
                 <ItemDashboard
-                    title="Đơn hàng"
-                    monney="20202020"
+                    title="Đơn hàng của tháng"
+                    monney={viewmodalDashBoard?.dataDate[11]?.order?.toString()}
                     icon={require('../assets/images/icon_product.png')}
                 />
-
+{/* 
                 <ItemDashboard
                     title="Tài khoản"
                     monney="20202020"
                     icon={require('../assets/images/icon_user.png')}
-                />
+                /> */}
             </Box>
 
 
-            <SimpleBarChart />
+            <SimpleBarChart data={viewmodalDashBoard.dataDate}/>
 
-            <TableDashboard
+            {/* <TableDashboard
                 title="Sản phẩm được mua nhiều nhất"
                 data={ViewModel.dataProduct}
                 dataTableHeader={headCells}
                 search={ViewModel.name}         // Thêm giá trị tìm kiếm
                 setSearch={ViewModel.setName}   // Hàm cập nhật giá trị tìm kiếm
                 onSearch={ViewModel.searchProduct} // Hàm tìm kiếm sản phẩm
-                onDelete={ViewModel.deleteProduct} />
+                onDelete={ViewModel.deleteProduct} /> */}
         </Box>
     )
 }

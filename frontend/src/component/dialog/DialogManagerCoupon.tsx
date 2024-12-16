@@ -80,15 +80,15 @@ const DialogManagerCoupon: React.FC<Props> = (props) => {
                             <ItemInputText
                                 label="Ngày bắt đầu"
                                 inputRef={viewmodel.refStartdate}
-                                value={viewmodel.startdate}
-                                setvalue={viewmodel.setStartdate}
+                                value={viewmodel.dateStart}
+                                setvalue={viewmodel.setDateStart}
                                 textError={viewmodel.errorStartdate}
                             />
                             <ItemInputText
                                 label="Ngày kết thúc"
                                 inputRef={viewmodel.refEnddate}
-                                value={viewmodel.enddate}
-                                setvalue={viewmodel.setEnddate}
+                                value={viewmodel.dateEnd}
+                                setvalue={viewmodel.setDateEnd}
                                 textError={viewmodel.errorEnddate}
                             />
                         </Box>
