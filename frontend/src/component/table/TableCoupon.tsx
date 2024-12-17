@@ -77,7 +77,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -87,13 +87,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{ paddingLeft: 1 }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -173,6 +174,7 @@ interface Props {
   data: any[],
   dataTableHeader: any[],
   onDelete: (id: string) => void;
+  viewmodel: any,
 }
 
 // o day nay
@@ -264,11 +266,8 @@ const TableCoupon: React.FC<Props> = (props) => {
           onDelete={handleDelete} // Truyền hàm xử lý xóa
         />
 
-
         {/* nut bam  */}
         <ItemInputSearch value={search} setValue={setSearch} placeholder='Nhập tên tài khoản' onPressSearch={() => { eventSearch() }} />
-
-
 
         <TableContainer>
           <Table
@@ -299,7 +298,7 @@ const TableCoupon: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -307,13 +306,14 @@ const TableCoupon: React.FC<Props> = (props) => {
                           'aria-labelledby': labelId,
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
-                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
+                      align='left'
+                      sx={{ paddingLeft: 1 }}
                     >
                       {row._id}
                     </TableCell>
@@ -369,8 +369,9 @@ const TableCoupon: React.FC<Props> = (props) => {
         />
       </Paper>
 
-      {item != undefined &&
+      {item !== undefined &&
         <DialogManagerCoupon
+          viewmodel={props.viewmodel}
           modal={modal}
           data={item}
           onPress={() => { setModal(false) }}

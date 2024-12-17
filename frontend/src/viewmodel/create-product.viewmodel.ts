@@ -39,14 +39,15 @@ const ViewModelCreateProduct = () => {
             setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setErrorDescribe,
             refName, refPrice, refQuantity, refCategory, refImage, refDescribe
         );
-        
+
         if (check) {
             const dataModel = new ProductModel(category, name, price, image, quantity, describe, GetDay(), 'Đang sử dụng');
             const reponse = await ProductService.createProduct(dataModel);
-            console.log(reponse);
-            setDialogSuccess(true);
-        }else{
-            setDialogSuccess(false);
+            if (reponse) {
+                setDialogSuccess(true);
+            } else {
+                setDialogSuccess(false);
+            }
         }
     }
 

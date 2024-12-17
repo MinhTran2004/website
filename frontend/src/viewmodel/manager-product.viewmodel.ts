@@ -1,24 +1,29 @@
-import { useEffect, useState } from "react"
-import { Product } from "../model/product.model";
+import { useEffect, useRef, useState } from "react"
+import ProductModel, { Product } from "../model/product.model";
 import ProductService from "../service/product.service";
+import { GetDay } from "../hook/GetDay";
 
 const ViewModelManageProduct = () => {
     const [dataProduct, setDataProduct] = useState<Product[]>([]);
-    const [name, setName] = useState("");
+    const [nameSearch, setNameSearch] = useState("");
+    const [page, setPage] = useState(1);
+
     const getAllProduct = async () => {
-        const reponse = await ProductService.getAllProduct();
+        // setPage(page + 1);
+        const reponse = await ProductService.getAllProduct(page);
         setDataProduct(reponse);
     }
-  
+
+
     const searchProduct = async () => {
         if (name.trim() === "") {
-          await getAllProduct();
+            await getAllProduct();
         } else {
-          const response = await ProductService.searchProductByName(name);
-          setDataProduct(response);
+            const response = await ProductService.searchProductByName(name);
+            setDataProduct(response);
         }
-      };
-      const deleteProduct = async (id: string) => {
+    };
+    const deleteProduct = async (id: string) => {
         try {
             const success = await ProductService.deleteProductById(id);
             if (success) {
@@ -36,13 +41,63 @@ const ViewModelManageProduct = () => {
     }, [])
     useEffect(() => {
         searchProduct();
-    }, [name])
+    }, [nameSearch])
 
-    return{
-        dataProduct, name,
-        searchProduct , setName,
-        deleteProduct,
-       
+    // vale
+    const [name, setName] = useState('');
+    const [price, setPrice] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [category, setCategory] = useState('');
+    const [image, setImage] = useState('');
+    const [describe, setDescribe] = useState('');
+
+    // error
+    const [errorName, setErrorName] = useState('');
+    const [errorPrice, setErrorPrice] = useState('');
+    const [errorQuantity, setErrorQuantity] = useState('');
+    const [errorCategory, setErrorCategory] = useState('');
+    const [errorImage, setErrorImage] = useState('');
+    const [errorDescribe, setErrorDescribe] = useState('');
+
+    // ref
+    const refName = useRef<HTMLInputElement>(null);
+    const refPrice = useRef<HTMLInputElement>(null);
+    const refQuantity = useRef<HTMLInputElement>(null);
+    const refCategory = useRef<HTMLInputElement>(null);
+    const refImage = useRef<HTMLInputElement>(null);
+    const refDescribe = useRef<HTMLInputElement>(null);
+
+    // dialog
+    const [dialogSuccess, setDialogSuccess] = useState(false);
+    const [dialogError, setDialogError] = useState(false);
+
+    const updateProduct = async (id: string) => {
+        const check = ProductModel.checkData(
+            name, price, quantity, category, image, describe,
+            setErrorName, setErrorPrice, setErrorQuantity, setErrorCategory, setErrorImage, setErrorDescribe,
+            refName, refPrice, refQuantity, refCategory, refImage, refDescribe
+        );
+
+        if (check) {
+            const dataModel = new ProductModel(category, name, price, image, quantity, describe, GetDay(), 'Đang sử dụng');
+            const reponse = await ProductService.updateProduct(id, dataModel);
+            if (reponse) {
+                await getAllProduct();
+                setDialogSuccess(true);
+            } else {
+                setDialogError(true);
+            }
+        }
+    }
+
+    return {
+        name, price, quantity, category, image, describe, dialogSuccess, dialogError,
+        setName, setPrice, setQuantity, setCategory, setImage, setDescribe, setDialogError, setDialogSuccess,
+        errorName, errorPrice, errorQuantity, errorCategory, errorImage, errorDescribe,
+        refName, refPrice, refQuantity, refCategory, refImage, refDescribe,
+        dataProduct, nameSearch,
+        searchProduct, setNameSearch,
+        deleteProduct, updateProduct
     }
 
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Order } from "../model/order.model";
+import OrderModel, { Order } from "../model/order.model";
 
 export class OrderService {
     static url = 'http://localhost:5000/order';
@@ -58,4 +58,6 @@ export class OrderService {
             console.log(err);
         }
     }
+
+
 }

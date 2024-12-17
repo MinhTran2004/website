@@ -4,26 +4,26 @@ import ModelCoupon from "../model/coupon.model";
 export default class CouponService {
     static url = 'http://localhost:5000/coupon';
 
-    static createCoupon = async (data:ModelCoupon) => {
-        try{
+    static createCoupon = async (data: ModelCoupon) => {
+        try {
             const reponse = (await axios.post(`${this.url}/createCoupon`, data)).data;
 
             return reponse.status;
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
-    
+
     static getAllCoupon = async () => {
-        try{
+        try {
             const reponse = (await axios.get(`${this.url}/getAllCoupon`)).data;
-            if(reponse.status){
+            if (reponse.status) {
                 return reponse.data;
-            }else{
+            } else {
                 return [];
             }
-            
-        }catch(err){
+
+        } catch (err) {
             console.log(err);
         }
     }
@@ -36,5 +36,18 @@ export default class CouponService {
             return false; // Nếu có lỗi xảy ra, trả về false
         }
     };
-    
+
+    static updateFullOrder = async (id: string, data: ModelCoupon) => {
+        try {
+            const reponse = (await axios.put(`${this.url}/updateFullOrder`, {
+                id: id,
+                data: data
+            })).data;
+
+            return reponse;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 }

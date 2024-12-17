@@ -76,7 +76,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -86,7 +86,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -98,6 +98,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
+              sx={{paddingLeft: 1}}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -260,12 +261,12 @@ const TableDashboard: React.FC<Props> = (props) => {
         />
 
         {/* nut bam */}
-        <ItemInputSearch
+        {/* <ItemInputSearch
           value={props.search}
           setValue={props.setSearch}
           placeholder="Nhập tên sản phẩm"
           onPressSearch={() => props.onSearch()}
-        />
+        /> */}
 
         <TableContainer>
           <Table
@@ -296,22 +297,12 @@ const TableDashboard: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox" sx={{
-                      with: '500px',
-                    }}>
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
+                      sx={{paddingLeft: 1}}
                     >
                       {row._id}
                     </TableCell>
@@ -335,9 +326,6 @@ const TableDashboard: React.FC<Props> = (props) => {
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.rate}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.describe}
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.status}
@@ -364,8 +352,6 @@ const TableDashboard: React.FC<Props> = (props) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ItemModal
-      />
     </Box>
   );
 }

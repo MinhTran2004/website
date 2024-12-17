@@ -3,6 +3,7 @@ import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
 import TableProduct from "../../component/table/TableProduct";
 
 const ManagerProduct = () => {
+
   const ViewModel = ViewModelManageProduct();
 
   const headCells = [
@@ -80,10 +81,11 @@ const ManagerProduct = () => {
         title="Quản lý sản phẩm"
         data={ViewModel.dataProduct}
         dataTableHeader={headCells}
-        search={ViewModel.name}         // Thêm giá trị tìm kiếm
-        setSearch={ViewModel.setName}   // Hàm cập nhật giá trị tìm kiếm
+        search={ViewModel.nameSearch}         // Thêm giá trị tìm kiếm
+        setSearch={ViewModel.setNameSearch}   // Hàm cập nhật giá trị tìm kiếm
         onSearch={ViewModel.searchProduct} // Hàm tìm kiếm sản phẩm
         onDelete={ViewModel.deleteProduct}
+        viewmodel = {ViewModel}
       />
     </Box>
   )

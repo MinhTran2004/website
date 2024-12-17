@@ -4,30 +4,34 @@ import ProductModel, { Product } from "../model/product.model";
 export default class ProductService {
     static url = 'http://localhost:5000/product';
 
-    static createProduct = async (data:ProductModel) => {
-        try{
+    static createProduct = async (data: ProductModel) => {
+        try {
             const reponse = (await axios.post(`${this.url}/createProduct`, data)).data;
             return reponse.status;
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
 
-    static getAllProduct = async () => {
-        try{
-            const reponse = (await axios.get(`${this.url}/getAllProduct`)).data;
-            console.log(reponse);
-            
-            if(reponse.status){
+    static getAllProduct = async (page: number) => {
+        try {
+            const reponse = (await axios.get(`${this.url}/getAllProduct`, {
+                params: {
+                    page: page
+                }
+            })).data;
+
+            if (reponse.status) {
                 return reponse.data;
-            }else{
-                return[];
+            } else {
+                return [];
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
-    static searchProductByName = async (name:string) => {
+    
+    static searchProductByName = async (name: string) => {
         try {
             const response = (await axios.get(`${this.url}/getProductByName`, {
                 params: { name }
@@ -51,5 +55,17 @@ export default class ProductService {
             return false; // Nếu có lỗi xảy ra, trả về false
         }
     };
-    
+
+    static updateProduct = async (id: string, data: ProductModel) => {
+        try {
+            const reponse = await axios.put(`${this.url}/updateProduct`, {
+                id: id,
+                data: data,
+            });
+            return reponse.data.status;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 }

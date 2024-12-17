@@ -61,6 +61,7 @@ const OrderWaiting = () => {
       label: 'Thay đổi',
     },
   ];
+  
   return (
     <Box>
       <TableOrderWaiting

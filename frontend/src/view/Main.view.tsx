@@ -129,6 +129,10 @@ export default function Main(props: any) {
 
   return (
     <AppProvider
+      branding={{
+        logo: <img src={require('../assets/images/image.png')}/>,
+        title: 'OrderFood'
+      }}
       navigation={NAVIGATION}
       router={router}
       theme={demoTheme}

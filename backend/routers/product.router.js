@@ -21,7 +21,9 @@ router.post('/createProduct', async (req, res) => {
 
 router.get('/getAllProduct', async (req, res) => {
     try{
-        const product = await Product.find().limit(10); 
+        // const {page} = req.query;
+        
+        const product = await Product.find(); 
 
         if(product.lenght != 0){
             res.send({status: true, data:product})
@@ -68,5 +70,16 @@ router.delete('/deleteProductById/:id', async (req, res) => {
         res.send({ status: false });
     }
 });
+
+router.put('/updateProduct', async (req, res) => {
+    const {id, data} = req.body;
+    const reponse = await Product.findByIdAndUpdate(id, data);
+
+    if (reponse != null) {
+        res.send({status: true});
+    }else{
+        res.send({status: false});
+    }
+})
 
 module.exports = router;

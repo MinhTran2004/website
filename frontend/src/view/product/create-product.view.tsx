@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormHelperText, MenuItem, Select, TextareaAutosize, TextField, Typography } from "@mui/material";
+import { Box, FormControl, MenuItem, Select, TextareaAutosize, Typography } from "@mui/material";
 import ViewModelCreateProduct from "../../viewmodel/create-product.viewmodel";
 import ItemInputText from "../../component/ItemInputText";
 import PrimaryButton from "../../component/PrimaryButton";

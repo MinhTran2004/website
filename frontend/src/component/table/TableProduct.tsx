@@ -22,6 +22,7 @@ import ItemInputSearch from '../ItemInputSearch';
 import { Button } from '@mui/material';
 import DialogManagerProduct from '../dialog/DialogManagerProduct';
 import { Product } from '../../model/product.model';
+import StatusModal from '../dialog/StatusModal';
 
 interface Data {
   id: number;
@@ -177,6 +178,7 @@ interface Props {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   onSearch: () => void;
   onDelete: (id: string) => void;
+  viewmodel: any;
 }
 
 const TableProduct: React.FC<Props> = (props) => {
@@ -338,12 +340,6 @@ const TableProduct: React.FC<Props> = (props) => {
                     <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.rate}
                     </TableCell>
-                    {/* <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.describe}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.status}
-                    </TableCell> */}
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {
@@ -381,8 +377,11 @@ const TableProduct: React.FC<Props> = (props) => {
           modal={modal}
           data={item}
           onPress={() => { setModal(false) }}
+          viewmodel={props.viewmodel}
         />
       }
+
+      
 
     </Box>
   );

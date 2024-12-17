@@ -61,4 +61,16 @@ router.get('/searchCouponByName', async (req, res) => {
     }
 });
 
+router.put('/updateFullOrder', async (req, res) => {
+    const {id, data} = req.body;
+
+    const reponse = await Coupon.findByIdAndUpdate(id, data);
+
+    if (reponse != null) {
+        res.send({status: true});
+    }else{
+        res.send({status: false});
+    }
+})
+
 module.exports = router;

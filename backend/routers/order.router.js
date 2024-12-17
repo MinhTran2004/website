@@ -8,6 +8,7 @@ router.get('/getAllBillByStatus', async (req, res) => {
     const { status } = req.query;
 
     const reponse = await Bill.find({ status: status }).limit(10);
+    
     if (reponse) {
         res.send({ status: true, data: reponse });
     } else {
@@ -32,7 +33,9 @@ router.patch('/updateStatusOrder', async (req, res) => {
 
     data.dataProduct.map(async (item) => {
         const itemProduct = await Product.findById(item.idProduct);
-        const updateProduct = await Product.findByIdAndUpdate(item.idProduct, {sold: (Number(itemProduct.sold) + Number(item.quantityCart)).toString()})
+        await Product.findByIdAndUpdate(item.idProduct, {sold: (Number(itemProduct.sold) + Number(item.quantityCart)).toString()})
+        await Product.findByIdAndUpdate(item.idProduct, {quantity: (Number(itemProduct.quantity) - Number(item.quantityCart)).toString()})
+        
     })
 
     const reponse = await Bill.findByIdAndUpdate(data._id, { status: status });

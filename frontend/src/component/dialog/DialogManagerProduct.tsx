@@ -11,11 +11,14 @@ import { Box, TextareaAutosize } from '@mui/material';
 import ItemInputText from '../ItemInputText';
 import ViewModelCreateProduct from '../../viewmodel/create-product.viewmodel';
 import { Product } from '../../model/product.model';
+import ViewModelManageProduct from '../../viewmodel/manager-product.viewmodel';
+import StatusModal from './StatusModal';
 
 interface Props {
     data: Product,
     modal: boolean,
     onPress: () => void,
+    viewmodel: any
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -29,7 +32,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const DialogManagerProduct: React.FC<Props> = (props) => {
 
-    const viewmodel = ViewModelCreateProduct();
+    React.useEffect(() => {
+        props.viewmodel.setName(props.data.name);
+        props.viewmodel.setPrice(props.data.price);
+        props.viewmodel.setQuantity(props.data.quantity);
+        props.viewmodel.setCategory(props.data.idCategory);
+        props.viewmodel.setImage(props.data.image);
+        props.viewmodel.setDescribe(props.data.describe);
+    }, [])
 
     return (
         <React.Fragment>
@@ -67,61 +77,91 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Tên sản phẩm"
-                            placeholder={props.data.name}
-                            inputRef={viewmodel.refName}
-                            value={viewmodel.name}
-                            setvalue={viewmodel.setName}
-                            textError={viewmodel.errorName}
+                            // placeholder={props.data.name}
+                            inputRef={props.viewmodel.refName}
+                            value={props.viewmodel.name}
+                            setvalue={props.viewmodel.setName}
+                            textError={props.viewmodel.errorName}
                         />
                         <ItemInputText
                             label="Giá sản phẩm"
-                            placeholder={props.data.price}
-                            inputRef={viewmodel.refPrice}
-                            value={viewmodel.price}
-                            setvalue={viewmodel.setPrice}
-                            textError={viewmodel.errorPrice}
+                            // placeholder={props.data.price}
+                            inputRef={props.viewmodel.refPrice}
+                            value={props.viewmodel.price}
+                            setvalue={props.viewmodel.setPrice}
+                            textError={props.viewmodel.errorPrice}
                         />
                         <ItemInputText
                             label="Số lượng sản phẩm"
-                            placeholder={props.data.quantity}
-                            inputRef={viewmodel.refQuantity}
-                            value={viewmodel.quantity}
-                            setvalue={viewmodel.setQuantity}
-                            textError={viewmodel.errorQuantity}
+                            // placeholder={props.data.quantity}
+                            inputRef={props.viewmodel.refQuantity}
+                            value={props.data.quantity}
+                            setvalue={props.viewmodel.setQuantity}
+                            textError={props.viewmodel.errorQuantity}
                         />
                         <ItemInputText
                             label="Thể loại sản phẩm"
-                            placeholder={props.data.idCategory}
-                            inputRef={viewmodel.refCategory}
-                            value={viewmodel.category}
-                            setvalue={viewmodel.setCategory}
-                            textError={viewmodel.errorCategory}
+                            // placeholder={props.data.idCategory}
+                            inputRef={props.viewmodel.refCategory}
+                            value={props.viewmodel.category}
+                            setvalue={props.viewmodel.setCategory}
+                            textError={props.viewmodel.errorCategory}
                         />
                         <ItemInputText
                             label="Ảnh sản phẩm"
-                            placeholder={props.data.image}
-                            inputRef={viewmodel.refImage}
-                            value={viewmodel.image}
-                            setvalue={viewmodel.setImage}
-                            textError={viewmodel.errorImage}
+                            // placeholder={props.data.image}
+                            inputRef={props.viewmodel.refImage}
+                            value={props.data.image}
+                            setvalue={props.viewmodel.setImage}
+                            textError={props.viewmodel.errorImage}
                         />
                         <TextareaAutosize
                             aria-label="minimum height"
                             minRows={5}
                             maxRows={10}
+                            value={props.data.describe}
+                            onChange={(text) => props.viewmodel.setDescribe(text.target.value)}
                             placeholder="Mô tả sản phẩm"
                             style={{ width: '100%' }} />
                     </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={() => {
-                        console.log(props.data);
-                        // viewmodel.createProduct;
+                        props.viewmodel.updateProduct(props.data._id);
                     }}>
                         Lưu thay đổi
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
+
+            <StatusModal
+                isModel={props.viewmodel.dialogSuccess}
+                title="Thông báo"
+                label="Thay đổi sản phẩm thành công"
+                layoutButton="single"
+                primaryButton={{
+                    label: "OK",
+                    onPress: () => {
+                        props.viewmodel.setDialogSuccess(!props.viewmodel.dialogSuccess);
+                        props.onPress();
+                    }
+                }}
+            />
+
+            <StatusModal
+                isModel={props.viewmodel.dialogError}
+                title="Thông báo"
+                label="Thay đổi sản phẩm thất bại"
+                layoutButton="single"
+                primaryButton={{
+                    label: "OK",
+                    onPress: () => {
+                        props.viewmodel.setDialogError(!props.viewmodel.dialogError);
+                        props.onPress();
+                    }
+                }}
+            />
+
         </React.Fragment>
     );
 }

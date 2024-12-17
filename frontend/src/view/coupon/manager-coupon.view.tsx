@@ -17,12 +17,6 @@ const ManagerCoupon = () => {
       disablePadding: false,
       label: 'Tên mã',
     },
-    // {
-    //   id: 'Account',
-    //   numeric: false,
-    //   disablePadding: false,
-    //   label: 'Thể loại',
-    // },
     {
       id: 'quantity',
       numeric: false,
@@ -64,8 +58,10 @@ const ManagerCoupon = () => {
     <Box>
       <TableCoupon
         title="Quản lý mã giảm giá"
-        data={ViewModel.dataCoupon} dataTableHeader={headCells}
-        onDelete={ViewModel.deleteCouponById} />
+        data={ViewModel.dataCoupon} 
+        dataTableHeader={headCells}
+        onDelete={ViewModel.deleteCouponById}
+        viewmodel={ViewModel} />
     </Box>
   )
 }

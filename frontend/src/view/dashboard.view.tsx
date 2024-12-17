@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import ItemDashboard from "../component/ItemDashboard";
-import TableDashboard from "../component/table/TableDashboard";
 import ViewModelManageProduct from "../viewmodel/manager-product.viewmodel";
 import ViewmodelDashboard from "../viewmodel/dashboard.viewmodel";
 import SimpleBarChart from "../component/SimpleBarChart";
+import TableDashboard from "../component/table/TableDashboard";
 
 export default function DashboardScreen() {
     const ViewModelProduct = ViewModelManageProduct();
@@ -59,12 +59,6 @@ export default function DashboardScreen() {
             label: 'Bình chọn',
         },
         {
-            id: 'Describe',
-            numeric: false,
-            disablePadding: false,
-            label: 'Mô tả',
-        },
-        {
             id: 'Status',
             numeric: false,
             disablePadding: false,
@@ -100,25 +94,18 @@ export default function DashboardScreen() {
                     monney={viewmodalDashBoard?.dataDate[11]?.order?.toString()}
                     icon={require('../assets/images/icon_product.png')}
                 />
-{/* 
-                <ItemDashboard
-                    title="Tài khoản"
-                    monney="20202020"
-                    icon={require('../assets/images/icon_user.png')}
-                /> */}
             </Box>
 
-
-            <SimpleBarChart data={viewmodalDashBoard.dataDate}/>
+            <SimpleBarChart data={viewmodalDashBoard.dataDate} />
 
             {/* <TableDashboard
                 title="Sản phẩm được mua nhiều nhất"
-                data={ViewModel.dataProduct}
+                data={ViewModelProduct.dataProduct}
                 dataTableHeader={headCells}
-                search={ViewModel.name}         // Thêm giá trị tìm kiếm
-                setSearch={ViewModel.setName}   // Hàm cập nhật giá trị tìm kiếm
-                onSearch={ViewModel.searchProduct} // Hàm tìm kiếm sản phẩm
-                onDelete={ViewModel.deleteProduct} /> */}
+                search={ViewModelProduct.nameSearch}         // Thêm giá trị tìm kiếm
+                setSearch={ViewModelProduct.setNameSearch}   // Hàm cập nhật giá trị tìm kiếm
+                onSearch={ViewModelProduct.searchProduct} // Hàm tìm kiếm sản phẩm
+                onDelete={ViewModelProduct.deleteProduct} /> */}
         </Box>
     )
 }
