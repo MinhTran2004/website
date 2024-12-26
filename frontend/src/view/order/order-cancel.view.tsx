@@ -17,13 +17,7 @@ const OrderCancel = () => {
       id: 'UserName',
       numeric: false,
       disablePadding: false,
-      label: 'ID khách hàng',
-    },
-    {
-      id: 'Account',
-      numeric: false,
-      disablePadding: false,
-      label: 'Số lượng',
+      label: 'Tên khách hàng',
     },
     {
       id: 'Password',
@@ -43,17 +37,17 @@ const OrderCancel = () => {
       disablePadding: false,
       label: 'Thời gian tạo',
     },
-    // {
-    //   id: 'Create At',
-    //   numeric: true,
-    //   disablePadding: false,
-    //   label: 'Thời gian hủy',
-    // },
     {
       id: 'Price',
       numeric: false,
       disablePadding: false,
       label: 'Tổng tiền',
+    },
+    {
+      id: 'PaymentMethod',
+      numeric: false,
+      disablePadding: false,
+      label: 'Phương thức thanh toán',
     },
     {
       id: 'Status',

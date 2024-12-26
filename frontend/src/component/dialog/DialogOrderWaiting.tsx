@@ -9,12 +9,12 @@ import { Box } from '@mui/material';
 import PrimaryButton from '../PrimaryButton';
 import { Order } from '../../model/order.model';
 
-
 interface Props {
     data?: Order,
     modal: boolean,
     onPress: () => void,
-    viewmodel: any
+    viewmodel: any,
+    handleClick: () => void
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -54,7 +54,6 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                         display: 'flex',
                         gap: 2,
                         padding: '10px',
-                        width: 450
                     }}>
                         <PrimaryButton
                             label='Hủy đơn hàng'
@@ -70,13 +69,15 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                                 props.onPress()
                             }}
                         />
+                        <PrimaryButton
+                            label='Xem chi tiết đơn hàng'
+                            onClick={() => {
+                                props.handleClick();
+                                props.onPress()
+                            }}
+                        />
                     </Box>
                 </DialogContent>
-                {/* <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
-                        Lưu thay đổi
-                    </Button>
-                </DialogActions> */}
             </BootstrapDialog>
         </React.Fragment>
     );

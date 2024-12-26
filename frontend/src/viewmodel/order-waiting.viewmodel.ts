@@ -4,6 +4,7 @@ import { Order } from "../model/order.model";
 
 const ViewModelOrderWaiting = () => {
     const [dataOrder, setDataOrder] = useState<Order[]>([]);
+    const [activeStep, setActiveStep] = useState(0);
 
 
     const getAllBillByStatus = async () => {
@@ -21,7 +22,7 @@ const ViewModelOrderWaiting = () => {
     }, [])
 
     return {
-        dataOrder, updateStatusOrder,
+        dataOrder, activeStep, setActiveStep, updateStatusOrder,
     }
 }
 

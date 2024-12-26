@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import ViewModelOrderWaiting from "../../viewmodel/order-waiting.viewmodel";
-import TableOrderWaiting from "../../component/table/TableOrderWaiting";
+import TapperOrder from "../../component/tapper/order.tapper";
 
 const OrderWaiting = () => {
   const viewmodel = ViewModelOrderWaiting();
@@ -61,15 +61,14 @@ const OrderWaiting = () => {
       label: 'Thay đổi',
     },
   ];
-  
+
   return (
-    <Box>
-      <TableOrderWaiting
-        title="Đơn hàng chờ xác nhận"
-        data={viewmodel.dataOrder}
-        dataTableHeader={headCells}
-        viewmodel = {viewmodel}
-         />
+    <Box sx={{ height: '100%', }}>
+      <TapperOrder
+        activeStep={viewmodel.activeStep}
+        setActiveStep={viewmodel.setActiveStep}
+        viewmodel={viewmodel}
+      />
     </Box>
   )
 }

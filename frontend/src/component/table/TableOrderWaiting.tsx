@@ -12,7 +12,6 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -20,7 +19,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
 import { Button } from '@mui/material';
-import OrderModel, { Order } from '../../model/order.model';
+import { Order } from '../../model/order.model';
 
 interface Data {
   id: number;
@@ -172,10 +171,11 @@ interface Props {
   data: any[],
   dataTableHeader: any[],
   viewmodel: any,
+  setSteps: (step: number) => void;
+  setDataDetailOrder: (data: any) => void;
 }
 
 // o day nay
-
 const TableOrderWaiting: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<any>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
@@ -203,23 +203,9 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
+  const handleClick = (data: any) => {
+    props.setSteps(1);
+    props.setDataDetailOrder(data);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -268,7 +254,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    // onClick={(event) => handleClick(event, row._id)}
+                    // onClick={() => handleClick(row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -276,33 +262,23 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
                       align='center'
+                      sx={{ paddingLeft: 1 }}
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.name}</TableCell>
                     <TableCell align="left">{row.address.detailAddress}</TableCell>
                     <TableCell align="left">{row.address.phone}</TableCell>
                     <TableCell align="left">{row.createAt}</TableCell>
                     <TableCell align="left">{row.totalCost}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
-                    {/* <TableCell align="left">{row.createdAt}</TableCell> */}
-                    {/* <TableCell align="left">{row.status}</TableCell> */}
+                    <TableCell align="left">{row.paymentMethod}</TableCell>
                     <TableCell align="left">
                       <Button variant="contained"
                         onClick={() => {
@@ -334,11 +310,11 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
         />
       </Paper>
 
-
       <DialogOrderWaiting
         data={dataOrder}
         modal={modal}
         viewmodel={props.viewmodel}
+        handleClick={() => handleClick(dataOrder)}
         onPress={() => setModal(false)}
       />
 

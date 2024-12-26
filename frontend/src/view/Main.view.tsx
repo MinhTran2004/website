@@ -122,7 +122,7 @@ const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
 export default function Main(props: any) {
   const { window } = props;
 
-  const router = useDemoRouter('/dashboard');
+  const router = useDemoRouter('/order-waiting');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
@@ -130,7 +130,7 @@ export default function Main(props: any) {
   return (
     <AppProvider
       branding={{
-        logo: <img src={require('../assets/images/image.png')}/>,
+        logo: <img src={require('../assets/images/image.png')} />,
         title: 'OrderFood'
       }}
       navigation={NAVIGATION}
@@ -138,9 +138,9 @@ export default function Main(props: any) {
       theme={demoTheme}
       window={demoWindow}
     >
-      <DashboardLayout sx={{ padding: '10px' }}>
+      <DashboardLayout sx={{ padding: '5px' }}>
 
-        <Box sx={{ padding: '10px' }}>
+        <Box sx={{ padding: '10px 10px 0', height: '85%' }}>
           {router.pathname === '/dashboard' && <DashboardScreen />}
           {router.pathname === '/account' && <ManagerAccount />}
           {router.pathname === '/create-product' && <CreateProduct />}

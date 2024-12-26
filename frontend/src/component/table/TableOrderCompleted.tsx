@@ -12,7 +12,6 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -287,15 +286,13 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.dataProduct.length}</TableCell>
+                    <TableCell align="left">{row.address.name}</TableCell>
                     <TableCell align="left">{row.address.detailAddress}</TableCell>
                     <TableCell align="left">{row.address.phone}</TableCell>
                     <TableCell align="left">{row.createAt}</TableCell>
                     <TableCell align="left">{row.totalCost}</TableCell>
+                    <TableCell align="left">{row.paymentMethod}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
-                    {/* <TableCell align="left">{row.createdAt}</TableCell> */}
-                    {/* <TableCell align="left">{row.status}</TableCell> */}
                   </TableRow>
                 );
               })}
