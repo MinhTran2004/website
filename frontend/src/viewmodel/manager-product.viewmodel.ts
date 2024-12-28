@@ -5,24 +5,21 @@ import { GetDay } from "../hook/GetDay";
 
 const ViewModelManageProduct = () => {
     const [dataProduct, setDataProduct] = useState<Product[]>([]);
-    const [nameSearch, setNameSearch] = useState("");
-    const [page, setPage] = useState(1);
 
     const getAllProduct = async () => {
-        // setPage(page + 1);
-        const reponse = await ProductService.getAllProduct(page);
+        const reponse = await ProductService.getAllProduct(0);
         setDataProduct(reponse);
     }
 
-
-    const searchProduct = async () => {
-        if (name.trim() === "") {
+    const searchProduct = async (nameSearch:string) => {
+        if (nameSearch.trim() === "") {
             await getAllProduct();
         } else {
-            const response = await ProductService.searchProductByName(name);
+            const response = await ProductService.searchProductByName(nameSearch);
             setDataProduct(response);
         }
     };
+    
     const deleteProduct = async (id: string) => {
         try {
             const success = await ProductService.deleteProductById(id);
@@ -39,9 +36,9 @@ const ViewModelManageProduct = () => {
     useEffect(() => {
         getAllProduct();
     }, [])
-    useEffect(() => {
-        searchProduct();
-    }, [nameSearch])
+    // useEffect(() => {
+    //     searchProduct();
+    // }, [nameSearch])
 
     // vale
     const [name, setName] = useState('');
@@ -95,8 +92,8 @@ const ViewModelManageProduct = () => {
         setName, setPrice, setQuantity, setCategory, setImage, setDescribe, setDialogError, setDialogSuccess,
         errorName, errorPrice, errorQuantity, errorCategory, errorImage, errorDescribe,
         refName, refPrice, refQuantity, refCategory, refImage, refDescribe,
-        dataProduct, nameSearch,
-        searchProduct, setNameSearch,
+        dataProduct,
+        searchProduct ,
         deleteProduct, updateProduct
     }
 

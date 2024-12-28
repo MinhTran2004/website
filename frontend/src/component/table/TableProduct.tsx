@@ -172,12 +172,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
 // truyen du lieu
 interface Props {
   title: string,
-  data: any[],
   dataTableHeader: any[],
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  onSearch: () => void;
-  onDelete: (id: string) => void;
   viewmodel: any;
 }
 
@@ -186,7 +181,8 @@ const TableProduct: React.FC<Props> = (props) => {
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [nameSearch, setNameSearch] = React.useState("");
 
   const [modal, setModal] = React.useState(false);
   const [item, setItem] = React.useState<Product>();
@@ -201,7 +197,7 @@ const TableProduct: React.FC<Props> = (props) => {
   };
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = props.data.map((n) => n._id);
+      const newSelected = props.viewmodel.dataProduct.map((n:any) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -238,16 +234,16 @@ const TableProduct: React.FC<Props> = (props) => {
 
   const handleDelete = () => {
     // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-    selected.forEach((id) => props.onDelete(id.toString()));
+    selected.forEach((id) => props.viewmodel.onDelete(id.toString()));
     setSelected([]); // Reset danh sách đã chọn
   };
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataProduct.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...props.data]
+      [...props.viewmodel.dataProduct]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, props.dataTableHeader],
@@ -264,10 +260,10 @@ const TableProduct: React.FC<Props> = (props) => {
 
         {/* nut bam */}
         <ItemInputSearch
-          value={props.search}
-          setValue={props.setSearch}
+          value={nameSearch}
+          setValue={setNameSearch}
           placeholder="Nhập tên sản phẩm"
-          onPressSearch={() => props.onSearch()}
+          onPressSearch={props.viewmodel.onSearch}
         />
 
         <TableContainer>
@@ -281,7 +277,7 @@ const TableProduct: React.FC<Props> = (props) => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.data.length}
+              rowCount={props.viewmodel.dataProduct.length}
               dataHeaderRow={props.dataTableHeader}
             />
             <TableBody>
@@ -291,7 +287,6 @@ const TableProduct: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -305,13 +300,14 @@ const TableProduct: React.FC<Props> = (props) => {
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
+                        onClick={(event) => handleClick(event, row._id)}
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
                       />
                     </TableCell>
                     <TableCell
-                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 1 }}
+                      sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}
                       component="th"
                       id={labelId}
                       scope="row"
@@ -319,7 +315,7 @@ const TableProduct: React.FC<Props> = (props) => {
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
+                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.name}
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
@@ -328,19 +324,13 @@ const TableProduct: React.FC<Props> = (props) => {
                     <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.idCategory}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, textOverflow: 'ellipsis', padding: 0 }}>
                       {row.image}
                     </TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.sold}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2, }}>
-                      {row.rate}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, zIndex: 999 }}>
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
@@ -352,18 +342,13 @@ const TableProduct: React.FC<Props> = (props) => {
                 );
               })}
 
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.data.length}
+          count={props.viewmodel.dataProduct.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -381,7 +366,7 @@ const TableProduct: React.FC<Props> = (props) => {
         />
       }
 
-      
+
 
     </Box>
   );

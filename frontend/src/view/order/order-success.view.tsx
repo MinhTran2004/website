@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import ViewModelOrderSuccess from "../../viewmodel/order-success.viewmodel";
 import TableOrderCompleted from "../../component/table/TableOrderCompleted";
+import TapperOrder from "../../component/tapper/order.tapper";
 
 const OrderSuccess = () => {
   const viewmodel = ViewModelOrderSuccess();
@@ -57,7 +58,12 @@ const OrderSuccess = () => {
   ];
   return (
     <Box>
-      <TableOrderCompleted title="Đơn hàng thành công" data={viewmodel.dataOrder} dataTableHeader={headCells} />
+      <TapperOrder 
+        title="Đơn hàng thành công"
+        headCells={headCells}
+        typeTable="order-success"
+        viewmodel={viewmodel}
+      />
     </Box>
   )
 }

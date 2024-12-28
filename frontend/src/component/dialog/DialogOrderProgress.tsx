@@ -26,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const DialogOrderWaiting: React.FC<Props> = (props) => {
+const DialogOrderProgress: React.FC<Props> = (props) => {
 
     return (
         <React.Fragment>
@@ -65,9 +65,9 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
                                 }}
                             />
                             <PrimaryButton
-                                label='Đang tiến hành'
+                                label='Hoàn thành đơn'
                                 onClick={() => {
-                                    props.viewmodel.updateStatusOrder(props.data?._id, 'Đang tiến hành');
+                                    props.viewmodel.updateStatusOrder(props.data?._id, 'Hoàn thành');
                                     props.onPress()
                                 }}
                             />
@@ -86,4 +86,4 @@ const DialogOrderWaiting: React.FC<Props> = (props) => {
     );
 }
 
-export default DialogOrderWaiting;
+export default DialogOrderProgress;

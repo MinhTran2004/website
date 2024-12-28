@@ -1,11 +1,9 @@
 import { Box } from "@mui/material";
-import ViewModelOrderCancel from "../../viewmodel/order-cancel.viewmodel";
-import TableOrderCancel from "../../component/table/TableOrderCancel";
+import ViewModelOrderProgress from "../../viewmodel/order-progress.viewmodel";
 import TapperOrder from "../../component/tapper/order.tapper";
 
-const OrderCancel = () => {
-  const viewmodel = ViewModelOrderCancel();
-  console.log(viewmodel.dataOrder);
+const OrderProgress = () => {
+  const viewmodel = ViewModelOrderProgress();
 
   const headCells = [
     {
@@ -45,28 +43,35 @@ const OrderCancel = () => {
       label: 'Tổng tiền',
     },
     {
-      id: 'PaymentMethod',
-      numeric: false,
-      disablePadding: false,
-      label: 'Phương thức thanh toán',
-    },
-    {
       id: 'Status',
       numeric: false,
       disablePadding: false,
       label: 'Trạng thái',
     },
+    {
+      id: 'PaymentMethod',
+      numeric: false,
+      disablePadding: false,
+      label: 'Phương thức',
+    },
+    {
+      id: 'Confirm',
+      numeric: false,
+      disablePadding: false,
+      label: 'Thay đổi',
+    },
   ];
+
   return (
-    <Box>
-      <TapperOrder 
-        title="Đơn hàng đã hủy"
+    <Box sx={{ height: '100%', }}>
+      <TapperOrder
+        title="Đơn hàng đang tiến hành"
+        typeTable="order-progress"
         headCells={headCells}
-        typeTable="order-cancel"
         viewmodel={viewmodel}
       />
     </Box>
   )
 }
 
-export default OrderCancel;
+export default OrderProgress;

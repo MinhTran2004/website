@@ -32,13 +32,13 @@ export class OrderService {
         }
     }
 
-    static updateStatusOrder = async (data:Order, status: string ) => {
+    static updateStatusOrder = async (id: string, status: string) => {
         try {
             const reponse = await axios.patch(`${this.url}/updateStatusOrder`, {
-                data :data,
+                id: id,
                 status: status,
             });
-
+            
             return reponse.data.status;
         } catch (err) {
             console.log(err);
@@ -46,15 +46,15 @@ export class OrderService {
     }
 
     static getOrderDataForDashboard = async () => {
-        try{
+        try {
             const reponse = (await axios.get(`${this.url}/getOrderDataForDashboard`)).data;
 
             if (reponse.status) {
                 return reponse.data;
-            }else{
+            } else {
                 return []
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }

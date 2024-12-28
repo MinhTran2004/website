@@ -9,30 +9,23 @@ const ViewModelAccount = () => {
         const reponse = await AccountService.getAllAccount();
         setDataAccount(reponse);
     }
-    const searchAccount = async (email:string) => {
-        const response = await AccountService.searchAccount(email);
-        setDataAccount(response);
-    };
-    const deleteAccountById = async (id: string) => {
-        try {
-            const success = await AccountService.deleteAccountById(id);
-            if (success) {
-                setDataAccount((prev) => prev.filter((account) => account._id !== id)); // Xóa khỏi danh sách hiện tại
-            } else {
-                alert("Không thể xóa tài khoản, thử lại sau!");
-            }
-        } catch (err) {
-            console.error("Có lỗi khi xóa tài khoản:", err);
-            alert("Có lỗi khi xóa tài khoản");
+
+    const searchAccount = async (nameSearch: string) => {
+        if (nameSearch.trim().length === 0) {
+            await getAllAccount()
+        } else {
+            const response = await AccountService.searchAccount(nameSearch.trim());
+            setDataAccount(response);
         }
     };
+
     useEffect(() => {
         getAllAccount()
     }, [])
 
-    return{
+    return {
         dataAccount,
-        searchAccount,deleteAccountById,
+        searchAccount,
     }
 }
 

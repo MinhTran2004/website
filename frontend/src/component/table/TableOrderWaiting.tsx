@@ -20,6 +20,7 @@ import { visuallyHidden } from '@mui/utils';
 import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
 import { Button } from '@mui/material';
 import { Order } from '../../model/order.model';
+import ItemInputSearch from '../ItemInputSearch';
 
 interface Data {
   id: number;
@@ -55,17 +56,14 @@ function getComparator<Key extends keyof any>(
 }
 
 interface EnhancedTableProps {
-  numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: any;
   orderBy: string;
-  rowCount: number;
   dataHeaderRow: any[],
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { order, orderBy, onRequestSort } =
     props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -75,17 +73,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -168,7 +155,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
 interface Props {
   title: string,
-  data: any[],
   dataTableHeader: any[],
   viewmodel: any,
   setSteps: (step: number) => void;
@@ -182,6 +168,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [nameSearch, setNameSearch] = React.useState("");
 
   const [modal, setModal] = React.useState(false);
   const [dataOrder, setDataOrder] = React.useState<Order>();
@@ -193,14 +180,6 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = props.data.map((n) => n._id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleClick = (data: any) => {
@@ -219,11 +198,11 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataOrder.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...props.data]
+      [...props.viewmodel.dataOrder]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, props.dataTableHeader],
@@ -234,17 +213,21 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
+          {/* nut bam */}
+          <ItemInputSearch
+            value={nameSearch}
+            setValue={setNameSearch}
+            placeholder="Nhập tên sản phẩm"
+            onPressSearch={props.viewmodel.onSearch}
+          />
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
           >
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.data.length}
               dataHeaderRow={props.dataTableHeader}
             />
             <TableBody>
@@ -259,7 +242,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+                    // selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
                     <TableCell
@@ -279,7 +262,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
                     <TableCell align="left">{row.totalCost}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
                     <TableCell align="left">{row.paymentMethod}</TableCell>
-                    <TableCell align="left">
+                    <TableCell align="left" >
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
@@ -302,7 +285,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.data.length}
+          count={props.viewmodel.dataOrder.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

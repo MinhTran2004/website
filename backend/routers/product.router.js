@@ -21,8 +21,6 @@ router.post('/createProduct', async (req, res) => {
 
 router.get('/getAllProduct', async (req, res) => {
     try{
-        // const {page} = req.query;
-        
         const product = await Product.find(); 
 
         if(product.lenght != 0){

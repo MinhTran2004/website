@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import TableCoupon from "../../component/table/TableCoupon";
 import ViewModelManageCoupon from "../../viewmodel/manager-coupon.viewmodel";
+import TapperOrder from "../../component/tapper/order.tapper";
 
 const ManagerCoupon = () => {
   const ViewModel = ViewModelManageCoupon();
@@ -56,11 +57,10 @@ const ManagerCoupon = () => {
   ];
   return (
     <Box>
-      <TableCoupon
+      <TapperOrder
         title="Quản lý mã giảm giá"
-        data={ViewModel.dataCoupon} 
-        dataTableHeader={headCells}
-        onDelete={ViewModel.deleteCouponById}
+        headCells={headCells}
+        typeTable="coupon"
         viewmodel={ViewModel} />
     </Box>
   )

@@ -32,6 +32,7 @@ export default class ProductService {
     }
     
     static searchProductByName = async (name: string) => {
+         
         try {
             const response = (await axios.get(`${this.url}/getProductByName`, {
                 params: { name }

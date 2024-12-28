@@ -12,14 +12,10 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from '../ItemInputSearch';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem, TextField } from '@mui/material';
 import DialogmanagerAccount from '../dialog/DialogManagerAccount';
 
 interface Data {
@@ -56,17 +52,14 @@ function getComparator<Key extends keyof any>(
 }
 
 interface EnhancedTableProps {
-  numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
-  rowCount: number;
   dataHeaderRow: any[],
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { order, orderBy, onRequestSort } =
     props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -76,17 +69,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -112,12 +94,58 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-  title: string
+
+
+// fillter name
+interface BasicMenu {
+  setFillterName: (text: string) => void
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
-  const { numSelected, onDelete } = props;
+
+const BasicMenu: React.FC<BasicMenu> = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event:any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (text:string) => {
+    props.setFillterName(text)
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <FilterListIcon />
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => handleClose('Profile')}>Profile</MenuItem>
+        <MenuItem onClick={() => handleClose('My account')}>My account</MenuItem>
+        <MenuItem onClick={() => handleClose('Logout')}>Logout</MenuItem>
+      </Menu>
+    </div> 
+  );
+}
+
+interface EnhancedTableToolbarProps {
+  title: string,
+  filterName: string,
+  setFilterName: (text: string) => void;
+}
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   return (
     <Toolbar
       sx={[
@@ -125,77 +153,44 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
         },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        },
+        {display: 'flex', justifyContent: 'space-between'}
       ]}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {props.title}
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={onDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Typography
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        {props.title}
+      </Typography>
+
+      {/* <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}>
+        <Typography>{props.filterName ? props.filterName : ''}</Typography>
+        <BasicMenu setFillterName={props.setFilterName} />
+      </Box> */}
     </Toolbar>
   );
 }
 
 interface Props {
   title: string,
-  data: any[],
   dataTableHeader: any[],
-  onSearch?: (email: string) => Promise<void>;
-  onDelete: (id: string) => void;
+  viewmodel: any
 }
 
 // o day nay
-
 const TableAccount: React.FC<Props> = (props) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const [fillterName, setFillterName] = React.useState('');
   const [modal, setModal] = React.useState(false);
 
-  // thuc hien chuc nang tim kiem
-  const [search, setSearch] = React.useState('');
-  const eventSearch = async () => {
-    if (props.onSearch) {
-      await props.onSearch(search); // Gọi hàm tìm kiếm từ ViewModel
-    }
-  };
-
-
-
+  const [nameSearch, setNameSearch] = React.useState('');
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -204,33 +199,6 @@ const TableAccount: React.FC<Props> = (props) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = props.data.map((n) => n._id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -241,19 +209,14 @@ const TableAccount: React.FC<Props> = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleDelete = () => {
-    // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-    selected.forEach((id) => props.onDelete(id.toString()));
-    setSelected([]); // Reset danh sách đã chọn
-  };
-
+  
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataAccount.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...props.data]
+      [...props.viewmodel.dataAccount]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, props.dataTableHeader],
@@ -263,15 +226,15 @@ const TableAccount: React.FC<Props> = (props) => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar
-          numSelected={selected.length}
           title={props.title}
-          onDelete={() => { }} // Truyền hàm xử lý xóa
+          setFilterName={setFillterName}
+          filterName={fillterName}
         />
         <ItemInputSearch
-          value={search}
-          setValue={setSearch}
+          value={nameSearch}
+          setValue={setNameSearch}
           placeholder='Nhập email tài khoản'
-          onPressSearch={eventSearch}
+          onPressSearch={props.viewmodel.searchAccount}
         />
         <TableContainer>
           <Table
@@ -279,50 +242,23 @@ const TableAccount: React.FC<Props> = (props) => {
             aria-labelledby="tableTitle"
           >
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.data.length}
               dataHeaderRow={props.dataTableHeader}
             />
             <TableBody>
               {visibleRows.map((row) => {
-                const isItemSelected = selected.includes(row._id);
-                const labelId = `enhanced-table-checkbox-${row._id}`;
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row._id)}
+                    // onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
-                    aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row._id}
-                    </TableCell>
-                    <TableCell align="left">{row.username}</TableCell>
                     <TableCell align="left">{row.account}</TableCell>
-                    {/* <TableCell align="left">{row.password}</TableCell> */}
-                    {/* <TableCell align="left">{row.image}</TableCell> */}
                     <TableCell align="left">{row.createdAt}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
@@ -347,7 +283,7 @@ const TableAccount: React.FC<Props> = (props) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.data.length}
+          count={props.viewmodel.dataAccount.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -358,7 +294,7 @@ const TableAccount: React.FC<Props> = (props) => {
 
       <DialogmanagerAccount
         modal={modal}
-        onPress={()=> {setModal(false)}}
+        onPress={() => { setModal(false) }}
       />
 
     </Box>

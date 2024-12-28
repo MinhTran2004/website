@@ -6,7 +6,7 @@ interface Props {
     value: string,
     setValue: (text: string) => void,
     placeholder: string,
-    onPressSearch: () => void,
+    onPressSearch: (text:string) => void,
 }
 
 const ItemInputSearch: React.FC<Props> = (props) => {
@@ -27,7 +27,7 @@ const ItemInputSearch: React.FC<Props> = (props) => {
             />
             <PrimaryButton
                 label="Tìm kiếm"
-                onClick={props.onPressSearch}
+                onClick={() => props.onPressSearch(props.value)}
                 styleButton={{ maxWidth: '150px' }}
             />
         </Box>

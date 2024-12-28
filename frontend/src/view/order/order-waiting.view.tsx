@@ -16,13 +16,7 @@ const OrderWaiting = () => {
       id: 'UserName',
       numeric: false,
       disablePadding: false,
-      label: 'ID khách hàng',
-    },
-    {
-      id: 'Account',
-      numeric: false,
-      disablePadding: false,
-      label: 'Số lượng',
+      label: 'Tên khách hàng',
     },
     {
       id: 'Password',
@@ -47,12 +41,18 @@ const OrderWaiting = () => {
       numeric: false,
       disablePadding: false,
       label: 'Tổng tiền',
-    }, ,
+    },
     {
       id: 'Status',
       numeric: false,
       disablePadding: false,
       label: 'Trạng thái',
+    },
+    {
+      id: 'PaymentMethod',
+      numeric: false,
+      disablePadding: false,
+      label: 'Phương thức',
     },
     {
       id: 'Confirm',
@@ -65,9 +65,10 @@ const OrderWaiting = () => {
   return (
     <Box sx={{ height: '100%', }}>
       <TapperOrder
-        activeStep={viewmodel.activeStep}
-        setActiveStep={viewmodel.setActiveStep}
+        title="Đơn hàng chờ xác nhận"
+        headCells={headCells}
         viewmodel={viewmodel}
+        typeTable="order-waiting"
       />
     </Box>
   )

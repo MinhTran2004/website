@@ -12,16 +12,16 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import ItemInputSearch from '../ItemInputSearch';
+import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
 import { Button } from '@mui/material';
-import { Coupon } from '../../model/coupon.model';
-import DialogManagerCoupon from '../dialog/DialogManagerCoupon';
+import { Order } from '../../model/order.model';
+import ItemInputSearch from '../ItemInputSearch';
+import DialogOrderProgress from '../dialog/DialogOrderProgress';
 
 interface Data {
   id: number;
@@ -42,10 +42,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
+// type Order = 'asc' | 'desc';
 
 function getComparator<Key extends keyof any>(
-  order: Order,
+  order: any,
   orderBy: Key,
 ): (
   a: { [key in Key]: number | string },
@@ -60,7 +60,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
+  order: any;
   orderBy: string;
   rowCount: number;
   dataHeaderRow: any[],
@@ -77,7 +77,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -87,7 +87,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {props.dataHeaderRow.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -117,8 +117,8 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
-  const { numSelected, onDelete } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const { numSelected } = props;
   return (
     <Toolbar
       sx={[
@@ -153,7 +153,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={onDelete}>
+          <IconButton>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -172,23 +172,21 @@ interface Props {
   title: string,
   dataTableHeader: any[],
   viewmodel: any,
-  setSteps: (step: number) => void,
-  setDataDetailOrder: (data: any) => void,
+  setSteps: (step: number) => void;
+  setDataDetailOrder: (data: any) => void;
 }
 
 // o day nay
-const TableCoupon: React.FC<Props> = (props) => {
-  const [order, setOrder] = React.useState<Order>('asc');
+const TableOrderProgress: React.FC<Props> = (props) => {
+  const [order, setOrder] = React.useState<any>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [nameSearch, setNameSearch] = React.useState("");
 
   const [modal, setModal] = React.useState(false);
-  const [item, setItem] = React.useState<Coupon>();
-
-  // thuc hien chuc nang tim kiem
-  const [nameSearch, setNameSearch] = React.useState('');
+  const [dataOrder, setDataOrder] = React.useState<Order>();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -200,30 +198,16 @@ const TableCoupon: React.FC<Props> = (props) => {
   };
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = props.viewmodel.dataCoupon.map((n: any) => n._id);
+      const newSelected = props.viewmodel.dataOrder.map((n: any) => n._id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
+  const handleClick = (data: any) => {
+    props.setSteps(1);
+    props.setDataDetailOrder(data);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -237,15 +221,11 @@ const TableCoupon: React.FC<Props> = (props) => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataCoupon.length) : 0;
-  const handleDelete = () => {
-    // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-    selected.forEach((id) => props.viewmodel.deleteCouponById(id.toString()));
-    setSelected([]); // Reset danh sách đã chọn
-  };
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataOrder.length) : 0;
+
   const visibleRows = React.useMemo(
     () =>
-      [...props.viewmodel.dataCoupon]
+      [...props.viewmodel.dataOrder]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, props.dataTableHeader],
@@ -254,20 +234,15 @@ const TableCoupon: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          title={props.title}
-          onDelete={handleDelete} // Truyền hàm xử lý xóa
-        />
-
-        {/* nut bam  */}
-        <ItemInputSearch
-          value={nameSearch}
-          setValue={setNameSearch}
-          placeholder='Nhập tên mã giảm giá'
-          onPressSearch={props.viewmodel.searchCoupon} />
-
+        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
+          {/* nut bam */}
+          <ItemInputSearch
+            value={nameSearch}
+            setValue={setNameSearch}
+            placeholder="Nhập tên sản phẩm"
+            onPressSearch={props.viewmodel.onSearch}
+          />
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
@@ -278,9 +253,10 @@ const TableCoupon: React.FC<Props> = (props) => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.viewmodel.dataCoupon.length}
+              rowCount={props.viewmodel.dataOrder.length}
               dataHeaderRow={props.dataTableHeader}
             />
+
             <TableBody>
               {visibleRows.map((row) => {
                 const isItemSelected = selected.includes(row._id);
@@ -288,6 +264,7 @@ const TableCoupon: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
+                    // onClick={() => handleClick(row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -295,52 +272,30 @@ const TableCoupon: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox" sx={{
-                      with: '500px',
-                    }}>
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        onClick={(event) => handleClick(event, row._id)}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
-                      align='left'
+                      align='center'
+                      sx={{ paddingLeft: 1 }}
                     >
                       {row._id}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '250px', overflow: 'hidden', WebkitLineClamp: 2 }}
-                    >{row.name}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
-                      {row.condition}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
-                      {row.startDate}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
-                      {row.endDate}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '100px', overflow: 'hidden', WebkitLineClamp: 2 }}>
-                      {row.status}
-                    </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
+                    <TableCell align="left">{row.address.name}</TableCell>
+                    <TableCell align="left">{row.address.detailAddress}</TableCell>
+                    <TableCell align="left">{row.address.phone}</TableCell>
+                    <TableCell align="left">{row.createAt}</TableCell>
+                    <TableCell align="left">{row.totalCost}</TableCell>
+                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left">{row.paymentMethod}</TableCell>
+                    <TableCell align="left">
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
-                          setItem(row);
+                          setDataOrder(row);
                         }}
-                      >Thay đổi</Button>
+                      >Chỉnh sửa</Button>
                     </TableCell>
                   </TableRow>
                 );
@@ -357,7 +312,7 @@ const TableCoupon: React.FC<Props> = (props) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.viewmodel.dataCoupon.length}
+          count={props.viewmodel.dataOrder.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -365,18 +320,16 @@ const TableCoupon: React.FC<Props> = (props) => {
         />
       </Paper>
 
-      {item !== undefined &&
-        <DialogManagerCoupon
-          viewmodel={props.viewmodel}
-          modal={modal}
-          data={item}
-          onPress={() => { setModal(false) }}
-        />
-      }
-
+      <DialogOrderProgress
+        data={dataOrder}
+        modal={modal}
+        viewmodel={props.viewmodel}
+        handleClick={() => handleClick(dataOrder)}
+        onPress={() => setModal(false)}
+      />
 
     </Box>
   );
 }
 
-export default TableCoupon;
+export default TableOrderProgress;

@@ -17,6 +17,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import ItemInputSearch from '../ItemInputSearch';
 
 interface Data {
   id: number;
@@ -165,8 +166,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
 interface Props {
   title: string,
-  data: any[],
   dataTableHeader: any[],
+  viewmodel: any,
+  setSteps: (step: number) => void,
+  setDataDetailOrder: (data: any) => void,
 }
 
 // o day nay
@@ -176,7 +179,8 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [nameSearch, setNameSearch] = React.useState("");
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -188,30 +192,16 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
   };
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = props.data.map((n) => n._id);
+      const newSelected = props.viewmodel.dataOrder.map((n:any) => n._id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
+  const handleClick = (data:any) => {
+    props.setSteps(1);
+    props.setDataDetailOrder(data);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -225,11 +215,11 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataOrder.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...props.data]
+      [...props.viewmodel.dataOrder]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, props.dataTableHeader],
@@ -239,6 +229,12 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
+        <ItemInputSearch
+            value={nameSearch}
+            setValue={setNameSearch}
+            placeholder="Nhập tên sản phẩm"
+            onPressSearch={props.viewmodel.onSearch}
+          />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -250,7 +246,7 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={props.data.length}
+              rowCount={props.viewmodel.dataOrder.length}
               dataHeaderRow={props.dataTableHeader}
             />
             <TableBody>
@@ -260,7 +256,7 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    // onClick={(event) => handleClick(event, row._id)}
+                    onClick={(event) => handleClick(row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -268,15 +264,6 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
@@ -296,7 +283,7 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
                   </TableRow>
                 );
               })}
-              
+
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
@@ -308,7 +295,7 @@ const TableOrderCompleted: React.FC<Props> = (props) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.data.length}
+          count={props.viewmodel.dataOrder.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

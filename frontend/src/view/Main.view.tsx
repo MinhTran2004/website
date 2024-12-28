@@ -16,6 +16,7 @@ import OrderCancel from './order/order-cancel.view';
 import CreateCoupon from './coupon/create-coupon.view';
 import ManagerCoupon from './coupon/manager-coupon.view';
 import DashboardScreen from './dashboard.view';
+import OrderProgress from './order/order-progress.view';
 
 const NAVIGATION: Navigation = [
   {
@@ -56,6 +57,11 @@ const NAVIGATION: Navigation = [
   {
     segment: 'order-waiting',
     title: 'Chờ xác nhận',
+    icon: <BarChartIcon />,
+  },
+  {
+    segment: 'order-progress',
+    title: 'Đang tiến hành',
     icon: <BarChartIcon />,
   },
   {
@@ -122,7 +128,7 @@ const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
 export default function Main(props: any) {
   const { window } = props;
 
-  const router = useDemoRouter('/order-waiting');
+  const router = useDemoRouter('/account');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
@@ -146,6 +152,7 @@ export default function Main(props: any) {
           {router.pathname === '/create-product' && <CreateProduct />}
           {router.pathname === '/manager-product' && <ManagerProduct />}
           {router.pathname === '/order-waiting' && <OrderWaiting />}
+          {router.pathname === '/order-progress' && <OrderProgress />}
           {router.pathname === '/order-success' && <OrderSuccess />}
           {router.pathname === '/order-cancel' && <OrderCancel />}
           {router.pathname === '/create-coupon' && <CreateCoupon />}

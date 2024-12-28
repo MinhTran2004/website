@@ -3,6 +3,7 @@ import ModelCoupon, { Coupon } from "../model/coupon.model"
 import CouponService from "../service/coupon.service";
 import { format } from 'date-fns';
 import { GetDay } from "../hook/GetDay";
+import axios from "axios";
 
 const ViewModelManageCoupon = () => {
     const [dataCoupon, setDataCoupon] = useState<Coupon[]>([]);
@@ -25,6 +26,16 @@ const ViewModelManageCoupon = () => {
             alert("Có lỗi khi xóa mã giảm giá");
         }
     };
+
+    const searchCoupon = async (nameSreach: string) => {
+        if (nameSreach.trim().length === 0) {
+            await getAllCoupon();
+        }else{
+            const reponse = await CouponService.searchCoupon(nameSreach);
+            setDataCoupon(reponse)
+        }
+    }
+
     useEffect(() => {
         getAllCoupon()
     }, [])
@@ -82,7 +93,7 @@ const ViewModelManageCoupon = () => {
     };
 
 
-    const updateCoupon = async (id:string) => {
+    const updateCoupon = async (id: string) => {
         const check = ModelCoupon.checkData(name, quantity, discount, condition, dateStart, dateEnd, describe,
             setErrorName, setErrorQuantity, setErrorDiscount, setErrorCondition, setErrorStartdate, setErrorEnddate, setErrorDescribe,
             refName, refQuantity, refDiscount, refCondition, refStartdate, refEnddate, refDescribe
@@ -103,11 +114,11 @@ const ViewModelManageCoupon = () => {
     return {
         dataCoupon,
         deleteCouponById,
-        name, quantity, discount,  condition,  dateStart, dateEnd, describe, dialogError, dialogSuccess,
-        setName, setQuantity, setDiscount,  setCondition,  setDateStart, setDateEnd, setDescribe, setDialogError, setDialogSuccess,
+        name, quantity, discount, condition, dateStart, dateEnd, describe, dialogError, dialogSuccess,
+        setName, setQuantity, setDiscount, setCondition, setDateStart, setDateEnd, setDescribe, setDialogError, setDialogSuccess,
         errorName, errorQuantity, errorDiscount, errorCondition, errorStartdate, errorEnddate, errorDescribe,
         refName, refQuantity, refDiscount, refCondition, refStartdate, refEnddate, refDescribe,
-        handleDateStart, handleDateEnd, datePickEnd, datePickStart,updateCoupon,
+        handleDateStart, handleDateEnd, datePickEnd, datePickStart, updateCoupon, searchCoupon,
     }
 }
 

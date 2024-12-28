@@ -16,7 +16,7 @@ router.post('/createCoupon', async (req, res) => {
 })
 
 router.get('/getAllCoupon', async (req, res) => {
-    const reponse = await Coupon.find().limit(10);
+    const reponse = await Coupon.find();
     if (reponse.length != 0) {
         res.send({ status: true, data: reponse })
     } else {

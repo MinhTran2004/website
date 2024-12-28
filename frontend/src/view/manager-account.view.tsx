@@ -1,41 +1,17 @@
 import { Box } from "@mui/material";
 import ViewModelAccount from "../viewmodel/manager-account.viewmodel";
-import TableAccount from "../component/table/TableAccount";
+import TapperOrder from "../component/tapper/order.tapper";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
 
     const headCells = [
         {
-            id: 'id',
-            numeric: false,
-            disablePadding: true,
-            label: 'ID',
-        },
-        {
-            id: 'UserName',
-            numeric: false,
-            disablePadding: false,
-            label: 'UserName',
-        },
-        {
             id: 'Account',
             numeric: false,
             disablePadding: false,
             label: 'Account',
         },
-        // {
-        //     id: 'Password',
-        //     numeric: false,
-        //     disablePadding: false,
-        //     label: 'Password',
-        // },
-        // {
-        //     id: 'Image',
-        //     numeric: false,
-        //     disablePadding: false,
-        //     label: 'Image',
-        // },
         {
             id: 'Create At',
             numeric: false,
@@ -58,12 +34,12 @@ const ManagerAccount = () => {
 
     return (
         <Box>
-            <TableAccount
+            <TapperOrder
                 title="Quản lý tài khoản"
-                data={viewmodel.dataAccount}
-                dataTableHeader={headCells}
-                onSearch={viewmodel.searchAccount}
-                onDelete={viewmodel.deleteAccountById} />
+                headCells={headCells}
+                typeTable="account"
+                viewmodel={viewmodel}
+            />
         </Box>
     )
 }

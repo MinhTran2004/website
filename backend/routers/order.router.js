@@ -6,9 +6,8 @@ const router = express.Router();
 
 router.get('/getAllBillByStatus', async (req, res) => {
     const { status } = req.query;
+    const reponse = await Bill.find({ status: status });
 
-    const reponse = await Bill.find({ status: status }).limit(10);
-    
     if (reponse) {
         res.send({ status: true, data: reponse });
     } else {
@@ -29,17 +28,9 @@ router.delete('/deleteBillById/:id', async (req, res) => {
 })
 
 router.patch('/updateStatusOrder', async (req, res) => {
-    const { data, status } = req.body;
-
-    data.dataProduct.map(async (item) => {
-        const itemProduct = await Product.findById(item.idProduct);
-        await Product.findByIdAndUpdate(item.idProduct, {sold: (Number(itemProduct.sold) + Number(item.quantityCart)).toString()})
-        await Product.findByIdAndUpdate(item.idProduct, {quantity: (Number(itemProduct.quantity) - Number(item.quantityCart)).toString()})
-        
-    })
-
-    const reponse = await Bill.findByIdAndUpdate(data._id, { status: status });
-
+    const { id, status } = req.body;
+    
+    const reponse = await Bill.findByIdAndUpdate(id, { status: status });
     if (reponse != null) {
         res.send({ status: true });
     } else {

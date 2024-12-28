@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import ViewModelManageProduct from "../../viewmodel/manager-product.viewmodel";
 import TableProduct from "../../component/table/TableProduct";
+import TapperOrder from "../../component/tapper/order.tapper";
 
 const ManagerProduct = () => {
 
-  const ViewModel = ViewModelManageProduct();
+  const viewmodel = ViewModelManageProduct();
 
   const headCells = [
     {
@@ -38,35 +39,11 @@ const ManagerProduct = () => {
       label: 'Ảnh',
     },
     {
-      id: 'Role',
+      id: 'Create At',
       numeric: false,
       disablePadding: false,
       label: 'Đã bán',
     },
-    {
-      id: 'Create At',
-      numeric: false,
-      disablePadding: false,
-      label: 'Còn lại',
-    },
-    {
-      id: 'Vote',
-      numeric: false,
-      disablePadding: false,
-      label: 'Đánh giá',
-    },
-    // {
-    //   id: 'Describe',
-    //   numeric: false,
-    //   disablePadding: false,
-    //   label: 'Mô tả',
-    // },
-    // {
-    //   id: 'Status',
-    //   numeric: false,
-    //   disablePadding: false,
-    //   label: 'Trạng thái',
-    // },
     {
       id: "action",
       numeric: false,
@@ -77,15 +54,12 @@ const ManagerProduct = () => {
 
   return (
     <Box>
-      <TableProduct
+      <TapperOrder
         title="Quản lý sản phẩm"
-        data={ViewModel.dataProduct}
-        dataTableHeader={headCells}
-        search={ViewModel.nameSearch}         // Thêm giá trị tìm kiếm
-        setSearch={ViewModel.setNameSearch}   // Hàm cập nhật giá trị tìm kiếm
-        onSearch={ViewModel.searchProduct} // Hàm tìm kiếm sản phẩm
-        onDelete={ViewModel.deleteProduct}
-        viewmodel = {ViewModel}
+        headCells={headCells}
+        typeTable="product"
+        onSearch={viewmodel.searchProduct}
+        viewmodel={viewmodel}
       />
     </Box>
   )

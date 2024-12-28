@@ -14,6 +14,21 @@ export default class CouponService {
         }
     }
 
+    static searchCoupon = async (name:string) => {
+        try {
+            const response = (await axios.get(`${this.url}/searchCouponByName`, { params: { name: name } })).data;
+
+            if (response.status) {
+                return response.data;
+            } else {
+                return [];
+            }
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    };
+
     static getAllCoupon = async () => {
         try {
             const reponse = (await axios.get(`${this.url}/getAllCoupon`)).data;
