@@ -5,26 +5,29 @@ import { GetDay } from "../hook/GetDay";
 
 const ViewModelManageProduct = () => {
     const [dataProduct, setDataProduct] = useState<Product[]>([]);
+    const [dialogDeleteSuccess, setDialogDeleteSuccess] = useState(false);
+    
 
     const getAllProduct = async () => {
         const reponse = await ProductService.getAllProduct(0);
         setDataProduct(reponse);
     }
 
-    const searchProduct = async (nameSearch:string) => {
+    const searchProduct = async (filter: string, nameSearch: string) => {
         if (nameSearch.trim() === "") {
             await getAllProduct();
         } else {
-            const response = await ProductService.searchProductByName(nameSearch);
+            const response = await ProductService.searchProductByName(filter.trim(), nameSearch.trim());
             setDataProduct(response);
         }
     };
-    
+
     const deleteProduct = async (id: string) => {
         try {
             const success = await ProductService.deleteProductById(id);
             if (success) {
-                setDataProduct((prev) => prev.filter((product) => product._id !== id)); // Xóa khỏi danh sách hiện tại
+                setDataProduct((prev) => prev.filter((product) => product._id !== id)); 
+                setDialogDeleteSuccess(true)
             } else {
                 alert("Không thể xóa sản phẩm, thử lại sau!");
             }
@@ -36,9 +39,6 @@ const ViewModelManageProduct = () => {
     useEffect(() => {
         getAllProduct();
     }, [])
-    // useEffect(() => {
-    //     searchProduct();
-    // }, [nameSearch])
 
     // vale
     const [name, setName] = useState('');
@@ -88,12 +88,12 @@ const ViewModelManageProduct = () => {
     }
 
     return {
-        name, price, quantity, category, image, describe, dialogSuccess, dialogError,
-        setName, setPrice, setQuantity, setCategory, setImage, setDescribe, setDialogError, setDialogSuccess,
+        name, price, quantity, category, image, describe, dialogSuccess, dialogError,dialogDeleteSuccess, 
+        setName, setPrice, setQuantity, setCategory, setImage, setDescribe, setDialogError, setDialogSuccess, setDialogDeleteSuccess,
         errorName, errorPrice, errorQuantity, errorCategory, errorImage, errorDescribe,
         refName, refPrice, refQuantity, refCategory, refImage, refDescribe,
         dataProduct,
-        searchProduct ,
+        searchProduct,
         deleteProduct, updateProduct
     }
 

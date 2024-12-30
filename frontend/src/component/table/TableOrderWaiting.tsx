@@ -18,7 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import DialogOrderWaiting from '../dialog/DialogOrderWaiting';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { Order } from '../../model/order.model';
 import ItemInputSearch from '../ItemInputSearch';
 
@@ -98,12 +98,57 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
+
+// fillter name
+interface BasicMenu {
+  setFillterName: (text: string) => void
+}
+
+const BasicMenu: React.FC<BasicMenu> = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (text: string) => {
+    props.setFillterName(text)
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <FilterListIcon />
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => handleClose('_ID')}>ID</MenuItem>
+        <MenuItem onClick={() => handleClose('Name')}>Tên khách hàng</MenuItem>
+        <MenuItem onClick={() => handleClose('Phone')}>Số điện thoại</MenuItem>
+      </Menu>
+    </div>
+  );
+}
+
 interface EnhancedTableToolbarProps {
-  numSelected: number;
-  title: string
+  title: string,
+  filterName: string,
+  setFilterName: (text: string) => void;
 }
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
   return (
     <Toolbar
       sx={[
@@ -111,44 +156,24 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
         },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        },
+        { display: 'flex', justifyContent: 'space-between' }
       ]}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {props.title}
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Typography
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        {props.title}
+      </Typography>
+
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}>
+        <Typography>{props.filterName ? "Tìm kiếm theo: " + props.filterName : ''}</Typography>
+        <BasicMenu setFillterName={props.setFilterName} />
+      </Box>
     </Toolbar>
   );
 }
@@ -169,6 +194,7 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [nameSearch, setNameSearch] = React.useState("");
+  const [fillterName, setFillterName] = React.useState('');
 
   const [modal, setModal] = React.useState(false);
   const [dataOrder, setDataOrder] = React.useState<Order>();
@@ -211,14 +237,19 @@ const TableOrderWaiting: React.FC<Props> = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
+        <EnhancedTableToolbar
+          title={props.title}
+          setFilterName={setFillterName}
+          filterName={fillterName}
+        />
         <TableContainer>
           {/* nut bam */}
           <ItemInputSearch
             value={nameSearch}
             setValue={setNameSearch}
             placeholder="Nhập tên sản phẩm"
-            onPressSearch={props.viewmodel.onSearch}
+            onPressSearch={props.viewmodel.getAllOrderByFilter}
+            fillter={fillterName}
           />
           <Table
             sx={{ minWidth: 750 }}

@@ -183,6 +183,7 @@ const TableCoupon: React.FC<Props> = (props) => {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [fillterName, setFillterName] = React.useState('');
 
   const [modal, setModal] = React.useState(false);
   const [item, setItem] = React.useState<Coupon>();
@@ -265,6 +266,7 @@ const TableCoupon: React.FC<Props> = (props) => {
           value={nameSearch}
           setValue={setNameSearch}
           placeholder='Nhập tên mã giảm giá'
+          fillter={fillterName}
           onPressSearch={props.viewmodel.searchCoupon} />
 
         <TableContainer>

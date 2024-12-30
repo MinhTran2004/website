@@ -13,6 +13,7 @@ import ViewModelCreateProduct from '../../viewmodel/create-product.viewmodel';
 import { Product } from '../../model/product.model';
 import ViewModelManageProduct from '../../viewmodel/manager-product.viewmodel';
 import StatusModal from './StatusModal';
+import { data } from 'react-router-dom';
 
 interface Props {
     data: Product,
@@ -39,7 +40,7 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
         props.viewmodel.setCategory(props.data.idCategory);
         props.viewmodel.setImage(props.data.image);
         props.viewmodel.setDescribe(props.data.describe);
-    }, [])
+    }, [props.data])
 
     return (
         <React.Fragment>
@@ -77,7 +78,6 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Tên sản phẩm"
-                            // placeholder={props.data.name}
                             inputRef={props.viewmodel.refName}
                             value={props.viewmodel.name}
                             setvalue={props.viewmodel.setName}
@@ -85,7 +85,6 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Giá sản phẩm"
-                            // placeholder={props.data.price}
                             inputRef={props.viewmodel.refPrice}
                             value={props.viewmodel.price}
                             setvalue={props.viewmodel.setPrice}
@@ -93,7 +92,6 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Số lượng sản phẩm"
-                            // placeholder={props.data.quantity}
                             inputRef={props.viewmodel.refQuantity}
                             value={props.data.quantity}
                             setvalue={props.viewmodel.setQuantity}
@@ -101,7 +99,6 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Thể loại sản phẩm"
-                            // placeholder={props.data.idCategory}
                             inputRef={props.viewmodel.refCategory}
                             value={props.viewmodel.category}
                             setvalue={props.viewmodel.setCategory}
@@ -109,7 +106,6 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                         />
                         <ItemInputText
                             label="Ảnh sản phẩm"
-                            // placeholder={props.data.image}
                             inputRef={props.viewmodel.refImage}
                             value={props.data.image}
                             setvalue={props.viewmodel.setImage}

@@ -1,5 +1,4 @@
 import axios from "axios";
-import OrderModel, { Order } from "../model/order.model";
 
 export class OrderService {
     static url = 'http://localhost:5000/order';
@@ -23,6 +22,27 @@ export class OrderService {
         }
     }
 
+    static getAllOrderByFilter = async (filter: string, name: string, status: string) => {
+        try {
+            const reponse = await axios.get(`${this.url}/getAllOrderByFilter`, {
+                params: {
+                    filter: filter.trim().toLocaleLowerCase(),
+                    name: name.trim().toLocaleLowerCase(),
+                    status: status.trim(),
+                }
+            })
+
+            if (reponse.data.status) {
+                return reponse.data.data;
+            } else {
+                return [];
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     static deteleBillById = async (id: string) => {
         try {
             const reponse = await (await axios.delete(`${this.url}/deleteBillById/${id}`)).data;
@@ -32,13 +52,14 @@ export class OrderService {
         }
     }
 
-    static updateStatusOrder = async (id: string, status: string) => {
+    static updateStatusOrder = async (id: string, status: string, time: string) => {
         try {
             const reponse = await axios.patch(`${this.url}/updateStatusOrder`, {
                 id: id,
                 status: status,
+                time: time,
             });
-            
+
             return reponse.data.status;
         } catch (err) {
             console.log(err);

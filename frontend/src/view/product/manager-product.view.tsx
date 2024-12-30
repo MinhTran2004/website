@@ -54,11 +54,9 @@ const ManagerProduct = () => {
 
   return (
     <Box>
-      <TapperOrder
+      <TableProduct
         title="Quản lý sản phẩm"
-        headCells={headCells}
-        typeTable="product"
-        onSearch={viewmodel.searchProduct}
+        dataTableHeader={headCells}
         viewmodel={viewmodel}
       />
     </Box>

@@ -17,6 +17,7 @@ import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from '../ItemInputSearch';
 import { Button, Menu, MenuItem, TextField } from '@mui/material';
 import DialogmanagerAccount from '../dialog/DialogManagerAccount';
+import StatusModal from '../dialog/StatusModal';
 
 interface Data {
   id: number;
@@ -104,10 +105,10 @@ interface BasicMenu {
 const BasicMenu: React.FC<BasicMenu> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event:any) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (text:string) => {
+  const handleClose = (text: string) => {
     props.setFillterName(text)
     setAnchorEl(null);
   };
@@ -132,11 +133,10 @@ const BasicMenu: React.FC<BasicMenu> = (props) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => handleClose('Profile')}>Profile</MenuItem>
-        <MenuItem onClick={() => handleClose('My account')}>My account</MenuItem>
-        <MenuItem onClick={() => handleClose('Logout')}>Logout</MenuItem>
+        <MenuItem onClick={() => handleClose('_ID')}>ID</MenuItem>
+        <MenuItem onClick={() => handleClose('Account')}>Account</MenuItem>
       </Menu>
-    </div> 
+    </div>
   );
 }
 
@@ -153,7 +153,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
         },
-        {display: 'flex', justifyContent: 'space-between'}
+        { display: 'flex', justifyContent: 'space-between' }
       ]}
     >
       <Typography
@@ -164,13 +164,13 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         {props.title}
       </Typography>
 
-      {/* <Box sx={{
+      <Box sx={{
         display: 'flex',
         alignItems: 'center',
       }}>
-        <Typography>{props.filterName ? props.filterName : ''}</Typography>
+        <Typography>{props.filterName ? "Tìm kiếm theo: " + props.filterName : ''}</Typography>
         <BasicMenu setFillterName={props.setFilterName} />
-      </Box> */}
+      </Box>
     </Toolbar>
   );
 }
@@ -189,6 +189,7 @@ const TableAccount: React.FC<Props> = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [fillterName, setFillterName] = React.useState('');
   const [modal, setModal] = React.useState(false);
+  const [detailData, setDetailData] = React.useState('');
 
   const [nameSearch, setNameSearch] = React.useState('');
 
@@ -209,7 +210,7 @@ const TableAccount: React.FC<Props> = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.viewmodel.dataAccount.length) : 0;
@@ -233,7 +234,8 @@ const TableAccount: React.FC<Props> = (props) => {
         <ItemInputSearch
           value={nameSearch}
           setValue={setNameSearch}
-          placeholder='Nhập email tài khoản'
+          placeholder='Nhập thông tin cần tìm'
+          fillter={fillterName}
           onPressSearch={props.viewmodel.searchAccount}
         />
         <TableContainer>
@@ -252,19 +254,21 @@ const TableAccount: React.FC<Props> = (props) => {
                 return (
                   <TableRow
                     hover
-                    // onClick={(event) => handleClick(event, row._id)}
                     role="checkbox"
                     tabIndex={-1}
                     key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
+                    <TableCell align="left">{row._id}</TableCell>
                     <TableCell align="left">{row.account}</TableCell>
                     <TableCell align="left">{row.createdAt}</TableCell>
+                    <TableCell align="left">{row.role}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {
                           setModal(true);
+                          setDetailData(row);
                         }}
                       >Thay đổi</Button>
                     </TableCell>
@@ -295,6 +299,21 @@ const TableAccount: React.FC<Props> = (props) => {
       <DialogmanagerAccount
         modal={modal}
         onPress={() => { setModal(false) }}
+        detailData={detailData}
+        viewmodel={props.viewmodel}
+      />
+
+      <StatusModal
+        isModel={props.viewmodel.dialog}
+        title='Thông báo'
+        label='Thay đổi thành công'
+        layoutButton='single'
+        primaryButton={{
+          label: 'Xác nhận',
+          onPress: () => {
+            props.viewmodel.setDialog(false)
+          }
+        }}
       />
 
     </Box>

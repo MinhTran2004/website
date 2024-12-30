@@ -1,11 +1,18 @@
 import { Box } from "@mui/material";
 import ViewModelAccount from "../viewmodel/manager-account.viewmodel";
 import TapperOrder from "../component/tapper/order.tapper";
+import TableAccount from "../component/table/TableAccount";
 
 const ManagerAccount = () => {
     const viewmodel = ViewModelAccount();
 
     const headCells = [
+        {
+            id: 'ID',
+            numeric: false,
+            disablePadding: false,
+            label: 'ID',
+        },
         {
             id: 'Account',
             numeric: false,
@@ -17,6 +24,12 @@ const ManagerAccount = () => {
             numeric: false,
             disablePadding: false,
             label: 'Ngày tạo',
+        },
+        {
+            id: 'role',
+            numeric: false,
+            disablePadding: false,
+            label: 'Chức vụ',
         },
         {
             id: 'Status',
@@ -34,10 +47,9 @@ const ManagerAccount = () => {
 
     return (
         <Box>
-            <TapperOrder
+            <TableAccount
                 title="Quản lý tài khoản"
-                headCells={headCells}
-                typeTable="account"
+                dataTableHeader={headCells}
                 viewmodel={viewmodel}
             />
         </Box>

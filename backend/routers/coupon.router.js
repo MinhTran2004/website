@@ -43,8 +43,6 @@ router.get('/searchCouponByName', async (req, res) => {
     }
 
     try {
-        console.log('Received name:', name);
-
         // Tạo regex từ chuỗi nhận được
         const regex = new RegExp(name, 'i'); // Không phân biệt hoa/thường
         console.log('Regex:', regex);

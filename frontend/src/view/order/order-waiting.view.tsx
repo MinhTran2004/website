@@ -34,7 +34,7 @@ const OrderWaiting = () => {
       id: 'Role',
       numeric: false,
       disablePadding: false,
-      label: 'Thời gian tạo',
+      label: 'Thời gian',
     },
     {
       id: 'Price',

@@ -19,7 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import ItemInputSearch from '../ItemInputSearch';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import DialogManagerProduct from '../dialog/DialogManagerProduct';
 import { Product } from '../../model/product.model';
 import StatusModal from '../dialog/StatusModal';
@@ -114,13 +114,58 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-  title: string
-}
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () => void }) {
-  const { numSelected, onDelete } = props;
 
+// fillter name
+interface BasicMenu {
+  setFillterName: (text: string) => void
+}
+
+const BasicMenu: React.FC<BasicMenu> = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (text: string) => {
+    props.setFillterName(text)
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <FilterListIcon />
+      </Button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => handleClose('_ID')}>ID</MenuItem>
+        <MenuItem onClick={() => handleClose('Name')}>Tên sản phẩm</MenuItem>
+      </Menu>
+    </div>
+  );
+}
+
+interface EnhancedTableToolbarProps {
+  title: string,
+  filterName: string,
+  numSelected: number;
+  setFilterName: (text: string) => void;
+  onDelete: () => void,
+}
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   return (
     <Toolbar
       sx={[
@@ -128,47 +173,38 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { onDelete: () 
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
         },
-        numSelected > 0 && {
-          bgcolor: (theme: any) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        },
+        { display: 'flex', justifyContent: 'space-between' }
       ]}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {props.title}
-        </Typography>
-      )}
-      {numSelected > 0 ? (
+      <Typography
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        {props.title}
+      </Typography>
+
+
+      {props.numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={onDelete}>
+          <IconButton onClick={props.onDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <Typography>{props.filterName ? "Tìm kiếm theo: " + props.filterName : ''}</Typography>
+          <BasicMenu setFillterName={props.setFilterName} />
+        </Box>
       )}
+
     </Toolbar>
   );
 }
+
 // truyen du lieu
 interface Props {
   title: string,
@@ -183,6 +219,7 @@ const TableProduct: React.FC<Props> = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [nameSearch, setNameSearch] = React.useState("");
+  const [fillterName, setFillterName] = React.useState('');
 
   const [modal, setModal] = React.useState(false);
   const [item, setItem] = React.useState<Product>();
@@ -197,7 +234,7 @@ const TableProduct: React.FC<Props> = (props) => {
   };
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = props.viewmodel.dataProduct.map((n:any) => n._id);
+      const newSelected = props.viewmodel.dataProduct.map((n: any) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -234,7 +271,7 @@ const TableProduct: React.FC<Props> = (props) => {
 
   const handleDelete = () => {
     // Duyệt qua danh sách đã chọn và gọi props.onDelete với từng id
-    selected.forEach((id) => props.viewmodel.onDelete(id.toString()));
+    selected.forEach((id) => props.viewmodel.deleteProduct(id.toString()));
     setSelected([]); // Reset danh sách đã chọn
   };
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -255,15 +292,18 @@ const TableProduct: React.FC<Props> = (props) => {
         <EnhancedTableToolbar
           numSelected={selected.length}
           title={props.title}
-          onDelete={handleDelete} // Truyền hàm xử lý xóa
+          setFilterName={setFillterName}
+          filterName={fillterName}
+          onDelete={handleDelete}
         />
 
         {/* nut bam */}
         <ItemInputSearch
           value={nameSearch}
           setValue={setNameSearch}
-          placeholder="Nhập tên sản phẩm"
-          onPressSearch={props.viewmodel.onSearch}
+          placeholder="Nhập thông tin sản phẩm cần tìm"
+          fillter={fillterName}
+          onPressSearch={props.viewmodel.searchProduct}
         />
 
         <TableContainer>
@@ -330,11 +370,11 @@ const TableProduct: React.FC<Props> = (props) => {
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       {row.sold}
                     </TableCell>
-                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, zIndex: 999 }}>
+                    <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2 }}>
                       <Button variant="contained"
                         onClick={() => {
-                          setModal(true);
                           setItem(row);
+                          setModal(true);
                         }}
                       >Thay đổi</Button>
                     </TableCell>
@@ -366,7 +406,18 @@ const TableProduct: React.FC<Props> = (props) => {
         />
       }
 
-
+      <StatusModal
+        isModel={props.viewmodel.dialogDeleteSuccess}
+        title='Thông báo'
+        label='Xóa sản phẩm thành công'
+        layoutButton='single'
+        primaryButton={{
+          label: 'Xác nhận',
+          onPress: () => {
+            props.viewmodel.setDialogDeleteSuccess(false)
+          }
+        }}
+      />
 
     </Box>
   );

@@ -13,8 +13,39 @@ router.get('/getAllBillByStatus', async (req, res) => {
     } else {
         res.send({ status: false });
     }
-
 })
+
+router.get('/getAllOrderByFilter', async (req, res) => {
+    const { filter, name, status } = req.query;
+    console.log(filter, name, status);
+
+    try {
+        // Tạo đối tượng query động
+        const query = {};
+        query.status = status;
+        if (filter === '_id') {
+            query._id = name
+        } else {
+            query['address.' + filter] = { $regex: name, $options: 'i' };
+        }
+        // Tìm kiếm tài khoản trong database với query đã tạo
+        const reponse = await Bill.find(query);
+        console.log(query);
+
+        if (reponse.length != 0) {
+            res.send({ status: true, data: reponse })
+        } else {
+            res.send({ status: false })
+        }
+
+    } catch (error) {
+        console.error("Error searching accounts:", error);
+        res.status(500).send({
+            message: 'Error searching accounts',
+            error: error.message
+        });
+    }
+});
 
 router.delete('/deleteBillById/:id', async (req, res) => {
     const { id } = req.params;
@@ -29,7 +60,7 @@ router.delete('/deleteBillById/:id', async (req, res) => {
 
 router.patch('/updateStatusOrder', async (req, res) => {
     const { id, status } = req.body;
-    
+
     const reponse = await Bill.findByIdAndUpdate(id, { status: status });
     if (reponse != null) {
         res.send({ status: true });

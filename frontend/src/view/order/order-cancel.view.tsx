@@ -36,7 +36,7 @@ const OrderCancel = () => {
       id: 'Role',
       numeric: false,
       disablePadding: false,
-      label: 'Thời gian tạo',
+      label: 'Thời gian',
     },
     {
       id: 'Price',
@@ -55,6 +55,12 @@ const OrderCancel = () => {
       numeric: false,
       disablePadding: false,
       label: 'Trạng thái',
+    },
+    {
+      id: 'update',
+      numeric: false,
+      disablePadding: false,
+      label: 'Thay đổi',
     },
   ];
   return (

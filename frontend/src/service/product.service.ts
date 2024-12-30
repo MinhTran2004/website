@@ -30,12 +30,11 @@ export default class ProductService {
             console.log(err);
         }
     }
-    
-    static searchProductByName = async (name: string) => {
-         
+
+    static searchProductByName = async (filter: string, name: string) => {
         try {
             const response = (await axios.get(`${this.url}/getProductByName`, {
-                params: { name }
+                params: { name:name.toLocaleLowerCase(), filter:filter.toLocaleLowerCase() }
             })).data;
             if (response.products) {
                 return response.products;

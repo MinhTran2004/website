@@ -14,7 +14,6 @@ interface Props {
   title: string,
   headCells: { id: string; numeric: boolean; disablePadding: boolean; label: string; }[];
   viewmodel: any;
-  onSearch?: (email: string) => void;
   typeTable: 'account' | 'product' | 'order-waiting' | 'order-progress' | 'order-cancel' | 'order-success' | 'coupon',
 }
 
@@ -24,22 +23,6 @@ const TapperOrder: React.FC<Props> = (props) => {
 
   const SelectTable = () => {
     switch (props.typeTable) {
-      case 'account': return (
-        <TableAccount
-          title={props.title}
-          viewmodel={props.viewmodel}
-          dataTableHeader={props.headCells}
-        />
-      )
-
-      case 'product': return (
-        <TableProduct
-          title={props.title}
-          dataTableHeader={props.headCells}
-          viewmodel={props.viewmodel}
-        />
-      )
-
       case 'order-waiting': return (
         <TableOrderWaiting
           title={props.title}

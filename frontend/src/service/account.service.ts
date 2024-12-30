@@ -4,21 +4,26 @@ export default class AccountService {
     static url = 'http://localhost:5000/account';
 
     static getAllAccount = async () => {
-        try{
+        try {
             const reponse = (await axios.get(`${this.url}/getAllAccount`)).data;
-            
+
             if (reponse.status) {
                 return reponse.data;
-            }else{
+            } else {
                 return [];
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
-     static searchAccount = async (email:string) => {
+    static searchAccount = async (fillter: string, email: string) => {
         try {
-            const response = (await axios.get(`${this.url}/getAccountByEmail`, { params: { account: email } })).data;
+            const response = (await axios.get(`${this.url}/getAccountByEmail`, {
+                params: {
+                    filter: fillter.toLocaleLowerCase().toString(),
+                    account: email
+                }
+            })).data;
 
             if (response.message === 'success') {
                 return response.accounts;
@@ -39,5 +44,18 @@ export default class AccountService {
             return false; // Nếu có lỗi xảy ra, trả về false
         }
     };
-    
+
+    static updateStatusAccountById = async (id: string, status: string) => {
+        try {
+            const reponse = await axios.patch(`${this.url}/updateStatusAccountById`, {
+                id: id,
+                status: status
+            })
+
+            return reponse.status;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 }

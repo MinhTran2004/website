@@ -1,20 +1,18 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import { Box, FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import PrimaryButton from '../PrimaryButton';
-
 
 interface Props {
     modal: boolean,
     onPress: () => void,
+    detailData: any,
+    viewmodel: any
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -27,11 +25,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const DialogmanagerAccount: React.FC<Props> = (props) => {
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
-    };
+    console.log(props.detailData);
 
     return (
         <React.Fragment>
@@ -63,20 +57,17 @@ const DialogmanagerAccount: React.FC<Props> = (props) => {
                         padding: '20px 40px'
                     }}>
                         <PrimaryButton
+                            disabled={props.detailData.status === "Đang sử dụng" ? true : false}
                             label='Đang sử dụng'
-                            onClick={() => { }} //su kien xoa
+                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData._id, 'Đang sử dụng') }} //su kien xoa
                         />
                         <PrimaryButton
+                            disabled={props.detailData.status === "Đang sử dụng" ? false : true}
                             label='Hạn chế'
-                            onClick={() => { }} //Xac nhận
+                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData._id, 'Hạn chế') }} //Xac nhận
                         />
                     </Box>
                 </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={props.onPress}>
-                        Save changes
-                    </Button>
-                </DialogActions>
             </BootstrapDialog>
         </React.Fragment>
     );

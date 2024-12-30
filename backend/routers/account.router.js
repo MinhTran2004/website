@@ -5,16 +5,16 @@ const router = express.Router();
 
 router.get('/getAllAccount', async (req, res) => {
     const reponse = await Account.find().limit(10);
-    
+
     if (reponse.length != 0) {
-        res.send({status: true, data:reponse})
-    }else{
-        res.send({status:false});
+        res.send({ status: true, data: reponse })
+    } else {
+        res.send({ status: false });
     }
 })
 
 router.get('/getAccountByEmail', async (req, res) => {
-    const { account } = req.query;
+    const { filter, account } = req.query;
 
     try {
         if (!account) {
@@ -23,9 +23,16 @@ router.get('/getAccountByEmail', async (req, res) => {
             });
         }
 
-        const accounts = await Account.find({
-            account: { $regex: account, $options: 'i' } // Tìm kiếm gần đúng, không phân biệt hoa thường
-        });
+        // Tạo đối tượng query động
+        const query = {};
+
+        if (filter === '_id') {
+            query._id = account
+        } else {
+            query[filter] = { $regex: account, $options: 'i' };
+        }
+        // Tìm kiếm tài khoản trong database với query đã tạo
+        const accounts = await Account.find(query);
 
         res.status(200).send({
             message: 'success',
@@ -40,6 +47,7 @@ router.get('/getAccountByEmail', async (req, res) => {
     }
 });
 
+
 router.delete('/deleteAccountById/:id', async (req, res) => {
     const { id } = req.params;
     const reponse = await Account.findByIdAndDelete(id);
@@ -50,5 +58,16 @@ router.delete('/deleteAccountById/:id', async (req, res) => {
         res.send({ status: false });
     }
 });
+
+router.patch('/updateStatusAccountById', async (req, res) => {
+    const { id, status } = req.body;
+
+    const reponse = await Account.findOneAndUpdate({ _id: id }, { status: status });
+    if (reponse.length != 0) {
+        res.send({ status: true })
+    } else {
+        res.send({ status: false });
+    }
+})
 
 module.exports = router;

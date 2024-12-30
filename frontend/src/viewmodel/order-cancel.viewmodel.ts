@@ -10,12 +10,22 @@ const ViewModelOrderCancel = () => {
         setDataOrder(reponse);
     }
 
+    const getAllOrderByFilter = async (filter: string, name: string) => {
+        const reponse = await OrderService.getAllOrderByFilter(filter, name, 'Người bán đã hủy');
+
+        if (!name) {
+            await getAllBillByStatus();
+        } else if (reponse != null) {
+            setDataOrder(reponse);
+        }
+    }
+
     useEffect(() => {
         getAllBillByStatus();
     }, [])
 
     return {
-        dataOrder,
+        dataOrder, getAllOrderByFilter,
     }
 }
 
