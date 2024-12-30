@@ -2,7 +2,7 @@ import axios from "axios";
 import ModelCoupon from "../model/coupon.model";
 
 export default class CouponService {
-    static url = 'http://localhost:5000/coupon';
+    static url = 'http://localhost:5001/coupon';
 
     static createCoupon = async (data: ModelCoupon) => {
         try {

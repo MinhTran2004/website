@@ -9,7 +9,7 @@ const couponRoute = require('./routers/coupon.router');
 const orderRoute = require('./routers/order.router');
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 connectDB();
 

@@ -1,8 +1,8 @@
 import axios from "axios";
-import ProductModel, { Product } from "../model/product.model";
+import ProductModel from "../model/product.model";
 
 export default class ProductService {
-    static url = 'http://localhost:5000/product';
+    static url = 'http://localhost:5001/product';
 
     static createProduct = async (data: ProductModel) => {
         try {

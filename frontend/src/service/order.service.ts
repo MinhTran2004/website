@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class OrderService {
-    static url = 'http://localhost:5000/order';
+    static url = 'http://localhost:5001/order';
 
     static getAllBillByStatus = async (status: string) => {
         try {

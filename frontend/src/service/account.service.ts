@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class AccountService {
-    static url = 'http://localhost:5000/account';
+    static url = 'http://localhost:5001/account';
 
     static getAllAccount = async () => {
         try {

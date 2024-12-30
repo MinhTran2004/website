@@ -36,14 +36,6 @@ const CreateProduct = () => {
 
             </Box>
 
-            {/* <ItemInputText
-                label="Thể loại sản phẩm"
-                inputRef={viewmodel.refCategory}
-                value={viewmodel.category}
-                setvalue={viewmodel.setCategory}
-                textError={viewmodel.errorCategory}
-            /> */}
-
             <FormControl>
                 <Select
                     value={viewmodel.category}
