@@ -133,7 +133,7 @@ const BasicMenu: React.FC<BasicMenu> = (props) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => handleClose('_ID')}>ID</MenuItem>
+        <MenuItem onClick={() => handleClose('ID')}>ID</MenuItem>
         <MenuItem onClick={() => handleClose('Account')}>Account</MenuItem>
       </Menu>
     </div>
@@ -311,7 +311,8 @@ const TableAccount: React.FC<Props> = (props) => {
         primaryButton={{
           label: 'Xác nhận',
           onPress: () => {
-            props.viewmodel.setDialog(false)
+            props.viewmodel.setDialog(false);
+            setModal(false);
           }
         }}
       />

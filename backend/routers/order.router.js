@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/getAllBillByStatus', async (req, res) => {
     const { status } = req.query;
-    const reponse = await Bill.find({ status: status });
+    const reponse = await Bill.find({ status: status }).sort({ createAt: -1 });
 
     if (reponse) {
         res.send({ status: true, data: reponse });

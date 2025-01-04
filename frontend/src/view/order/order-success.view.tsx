@@ -55,6 +55,12 @@ const OrderSuccess = () => {
       disablePadding: false,
       label: 'Trạng thái',
     },
+    {
+      id: 'update',
+      numeric: false,
+      disablePadding: false,
+      label: 'Thay đổi',
+    },
   ];
   return (
     <Box>

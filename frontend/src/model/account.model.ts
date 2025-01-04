@@ -1,15 +1,9 @@
-import { RefObject } from "react";
-
 export interface Account {
     _id: string;
-    username: string;
     account: string;
     password: string;
-    image: string;
-    phone: string;
     role: string;
     createdAt: String;
-    updatedAt: String;
     status: string;
 }
 

@@ -25,8 +25,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const DialogmanagerAccount: React.FC<Props> = (props) => {
-    console.log(props.detailData);
-
     return (
         <React.Fragment>
             <BootstrapDialog

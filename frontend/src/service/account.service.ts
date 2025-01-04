@@ -1,35 +1,53 @@
 import axios from "axios";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { db } from "../config/firebase-config";
 
 export default class AccountService {
     static url = 'http://localhost:5001/account';
 
     static getAllAccount = async () => {
         try {
-            const reponse = (await axios.get(`${this.url}/getAllAccount`)).data;
-
-            if (reponse.status) {
-                return reponse.data;
-            } else {
-                return [];
-            }
+            const accountsCollectionRef = collection(db, "accounts");
+            const querySnapshot = await getDocs(accountsCollectionRef);
+            const reponse = querySnapshot.docs.map((item) => {
+                const data = item.data();
+                return {
+                    _id: item.id,
+                    account: data.account,
+                    password: data.password,
+                    role: data.role,
+                    createdAt: data.createAt,
+                    status: data.status,
+                }
+            })
+            return reponse || [];
         } catch (err) {
             console.log(err);
         }
     }
-    static searchAccount = async (fillter: string, email: string) => {
+    static searchAccount = async (filter: string, email: string) => {
         try {
-            const response = (await axios.get(`${this.url}/getAccountByEmail`, {
-                params: {
-                    filter: fillter.toLocaleLowerCase().toString(),
-                    account: email
-                }
-            })).data;
+            const accountsCollectionRef = collection(db, "accounts");
 
-            if (response.message === 'success') {
-                return response.accounts;
-            } else {
-                return [];
-            }
+            const q = query(
+                accountsCollectionRef,
+                where(filter.toLocaleLowerCase(), ">=", email),  // Tìm kiếm chuỗi có chứa
+                where(filter.toLocaleLowerCase(), "<=", email + "\uf8ff")  // Kết thúc tìm kiếm
+            );
+
+            const querySnapshot = await getDocs(q);
+            const reponse = querySnapshot.docs.map((item) => {
+                const data = item.data();
+                return {
+                    _id: item.id,
+                    account: data.account,
+                    password: data.password,
+                    role: data.role,
+                    createdAt: data.createAt,
+                    status: data.status,
+                }
+            })
+            return reponse || [];
         } catch (err) {
             console.log(err);
             return [];
@@ -47,12 +65,9 @@ export default class AccountService {
 
     static updateStatusAccountById = async (id: string, status: string) => {
         try {
-            const reponse = await axios.patch(`${this.url}/updateStatusAccountById`, {
-                id: id,
-                status: status
-            })
-
-            return reponse.status;
+            const accountDocRef = doc(db, "accounts", id);
+            await updateDoc(accountDocRef, { status });
+            return true;
         } catch (err) {
             console.log(err);
         }
