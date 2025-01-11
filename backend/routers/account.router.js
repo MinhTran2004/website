@@ -1,42 +1,47 @@
 const express = require('express');
 const Account = require('../model/account');
+const admin = require('firebase-admin');
 
+admin.initializeApp({
+    credential: admin.credential.cert(require('../firebase.json'))
+});
 const router = express.Router();
 
 router.get('/getAllAccount', async (req, res) => {
-    const reponse = await Account.find().limit(10);
-
-    if (reponse.length != 0) {
-        res.send({ status: true, data: reponse })
-    } else {
-        res.send({ status: false });
+    try {
+        const data = [];
+        const reponse = await admin.auth().listUsers(1000)
+        if (reponse.length != 0) {
+            reponse.users.map((user) => {
+                data.push({
+                    id: user.uid,
+                    email: user.email,
+                    disabled: user.disabled,
+                })
+            });
+            res.send({ status: true, data: data })
+        } else {
+            res.send({ status: false, data: [] })
+        }
+    } catch (e) {
+        console.log(e);
     }
 })
 
 router.get('/getAccountByEmail', async (req, res) => {
     const { filter, account } = req.query;
+    const listUsersResult = await admin.auth().listUsers();
 
     try {
-        if (!account) {
-            return res.status(400).send({
-                message: 'Please provide an account (email) to search',
-            });
+        let data = [];
+        if (filter.toLocaleLowerCase() === 'id') {
+            data = listUsersResult.users.find(user => user.uid === account);
+        } else if (filter.toLocaleLowerCase() === 'email') {
+            data = listUsersResult.users.find(user => user.email === account);
         }
-
-        // Tạo đối tượng query động
-        const query = {};
-
-        if (filter === '_id') {
-            query._id = account
-        } else {
-            query[filter] = { $regex: account, $options: 'i' };
-        }
-        // Tìm kiếm tài khoản trong database với query đã tạo
-        const accounts = await Account.find(query);
-
         res.status(200).send({
             message: 'success',
-            accounts: accounts,
+            data: [{ id: data.uid, email: data.email, disabled: data.disabled }],
         });
     } catch (error) {
         console.error("Error searching accounts:", error);
@@ -61,8 +66,13 @@ router.delete('/deleteAccountById/:id', async (req, res) => {
 
 router.patch('/updateStatusAccountById', async (req, res) => {
     const { id, status } = req.body;
+    const uid = id;
+    const reponse = await admin.auth().updateUser(uid, {
+        disabled: status,
+    });
 
-    const reponse = await Account.findOneAndUpdate({ _id: id }, { status: status });
+    console.log(id, status);
+    
     if (reponse.length != 0) {
         res.send({ status: true })
     } else {

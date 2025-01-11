@@ -134,7 +134,7 @@ const BasicMenu: React.FC<BasicMenu> = (props) => {
         }}
       >
         <MenuItem onClick={() => handleClose('ID')}>ID</MenuItem>
-        <MenuItem onClick={() => handleClose('Account')}>Account</MenuItem>
+        <MenuItem onClick={() => handleClose('Email')}>Email</MenuItem>
       </Menu>
     </div>
   );
@@ -259,11 +259,10 @@ const TableAccount: React.FC<Props> = (props) => {
                     key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell align="left">{row._id}</TableCell>
-                    <TableCell align="left">{row.account}</TableCell>
-                    <TableCell align="left">{row.createdAt}</TableCell>
-                    <TableCell align="left">{row.role}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
+                    <TableCell align="left">{row.id}</TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">Khách hàng</TableCell>
+                    <TableCell align="left">{!row.disabled ? "Đang sử dụng" : "Hạn chế"}</TableCell>
                     <TableCell align="left" sx={{ maxWidth: '200px', overflow: 'hidden', WebkitLineClamp: 2, }}>
                       <Button variant="contained"
                         onClick={() => {

@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
 import PrimaryButton from '../PrimaryButton';
+import StatusModal from './StatusModal';
 
 interface Props {
     modal: boolean,
@@ -55,14 +56,14 @@ const DialogmanagerAccount: React.FC<Props> = (props) => {
                         padding: '20px 40px'
                     }}>
                         <PrimaryButton
-                            disabled={props.detailData.status === "Đang sử dụng" ? true : false}
+                            disabled={props.detailData.disabled ? false : true}
                             label='Đang sử dụng'
-                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData._id, 'Đang sử dụng') }} //su kien xoa
+                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData.id, false) }} //su kien xoa
                         />
                         <PrimaryButton
-                            disabled={props.detailData.status === "Đang sử dụng" ? false : true}
+                            disabled={props.detailData.disabled ? true : false}
                             label='Hạn chế'
-                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData._id, 'Hạn chế') }} //Xac nhận
+                            onClick={() => { props.viewmodel.updateStatusAccountById(props.detailData.id, true) }} //Xac nhận
                         />
                     </Box>
                 </DialogContent>

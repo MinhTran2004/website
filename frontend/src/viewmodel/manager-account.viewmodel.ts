@@ -7,8 +7,8 @@ const ViewModelAccount = () => {
     const [dialog, setDialog] = useState(false);
 
     const getAllAccount = async () => {
-       const reponse = await AccountService.getAllAccount();
-        setDataAccount(reponse || []);
+        const reponse = await AccountService.getAllAccount();
+        setDataAccount(reponse.data || []);
     }
 
     const searchAccount = async (filtter: string, nameSearch: string) => {

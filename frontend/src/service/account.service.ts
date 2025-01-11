@@ -7,19 +7,7 @@ export default class AccountService {
 
     static getAllAccount = async () => {
         try {
-            const accountsCollectionRef = collection(db, "accounts");
-            const querySnapshot = await getDocs(accountsCollectionRef);
-            const reponse = querySnapshot.docs.map((item) => {
-                const data = item.data();
-                return {
-                    _id: item.id,
-                    account: data.account,
-                    password: data.password,
-                    role: data.role,
-                    createdAt: data.createAt,
-                    status: data.status,
-                }
-            })
+            const reponse = (await axios.get(`${this.url}/getAllAccount`)).data;
             return reponse || [];
         } catch (err) {
             console.log(err);
@@ -27,27 +15,13 @@ export default class AccountService {
     }
     static searchAccount = async (filter: string, email: string) => {
         try {
-            const accountsCollectionRef = collection(db, "accounts");
-
-            const q = query(
-                accountsCollectionRef,
-                where(filter.toLocaleLowerCase(), ">=", email),  // Tìm kiếm chuỗi có chứa
-                where(filter.toLocaleLowerCase(), "<=", email + "\uf8ff")  // Kết thúc tìm kiếm
-            );
-
-            const querySnapshot = await getDocs(q);
-            const reponse = querySnapshot.docs.map((item) => {
-                const data = item.data();
-                return {
-                    _id: item.id,
-                    account: data.account,
-                    password: data.password,
-                    role: data.role,
-                    createdAt: data.createAt,
-                    status: data.status,
+            const response = (await axios.get(`${this.url}/getAccountByEmail`, {
+                params: {
+                    filter: filter,
+                    account: email
                 }
-            })
-            return reponse || [];
+            })).data;
+            return response.data || [];
         } catch (err) {
             console.log(err);
             return [];
@@ -65,9 +39,10 @@ export default class AccountService {
 
     static updateStatusAccountById = async (id: string, status: string) => {
         try {
-            const accountDocRef = doc(db, "accounts", id);
-            await updateDoc(accountDocRef, { status });
-            return true;
+            const response = (await axios.patch(`${this.url}/updateStatusAccountById`, {
+                id, status,
+            })).data;
+            return response;
         } catch (err) {
             console.log(err);
         }
