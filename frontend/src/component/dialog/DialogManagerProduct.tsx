@@ -147,7 +147,7 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
             <StatusModal
                 isModel={props.viewmodel.dialogError}
                 title="Thông báo"
-                label="Thay đổi sản phẩm thất bại"
+                label="Thay đổi đơn hàng thất bại"
                 layoutButton="single"
                 primaryButton={{
                     label: "OK",

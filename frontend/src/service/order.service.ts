@@ -37,7 +37,6 @@ export class OrderService {
             } else {
                 return [];
             }
-
         } catch (err) {
             console.log(err);
         }
@@ -49,6 +48,22 @@ export class OrderService {
             return reponse.status;
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    static updateQuantityProductBuy = async (id:string) => {
+        try {
+            const reponse = await axios.get(`${this.url}/updateQuantityProductBuy`, {
+                params: {
+                    id: id
+                }
+            });
+            console.log(reponse.data.status + 123);
+            
+            return reponse.data; 
+        } catch (err) {
+            console.log(err);
+
         }
     }
 
@@ -66,9 +81,13 @@ export class OrderService {
         }
     }
 
-    static getOrderDataForDashboard = async () => {
+    static getOrderDataForDashboard = async (year: string) => {
         try {
-            const reponse = (await axios.get(`${this.url}/getOrderDataForDashboard`)).data;
+            const reponse = (await axios.get(`${this.url}/getOrderDataForDashboard`, {
+                params: {
+                    year: year
+                }
+            })).data;
 
             if (reponse.status) {
                 return reponse.data;

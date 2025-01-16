@@ -128,7 +128,7 @@ const Skeleton = styled('div')<{ height: number }>(({ theme, height }) => ({
 export default function Main(props: any) {
   const { window } = props;
 
-  const router = useDemoRouter('/account');
+  const router = useDemoRouter('/dashboard');
 
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;

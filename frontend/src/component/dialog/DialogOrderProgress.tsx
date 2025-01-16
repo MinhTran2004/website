@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
 import PrimaryButton from '../PrimaryButton';
 import { Order } from '../../model/order.model';
+import StatusModal from './StatusModal';
 
 interface Props {
     data?: Order,
@@ -67,7 +68,7 @@ const DialogOrderProgress: React.FC<Props> = (props) => {
                             <PrimaryButton
                                 label='Hoàn thành đơn'
                                 onClick={() => {
-                                    props.viewmodel.updateStatusOrder(props.data?._id, 'Hoàn thành');
+                                    props.viewmodel.updateQuantityProductBuy(props.data?._id);
                                     props.onPress()
                                 }}
                             />
@@ -80,6 +81,21 @@ const DialogOrderProgress: React.FC<Props> = (props) => {
                             }}
                         />
                     </Box>
+
+                    <StatusModal
+                        isModel={props.viewmodel.dialogError}
+                        title="Thông báo"
+                        label="Thay đổi sản phẩm thất bại"
+                        layoutButton="single"
+                        primaryButton={{
+                            label: "OK",
+                            onPress: () => {
+                                props.viewmodel.setDialogError(!props.viewmodel.dialogError);
+                                props.onPress();
+                            }
+                        }}
+                    />
+
                 </DialogContent>
             </BootstrapDialog>
         </React.Fragment>

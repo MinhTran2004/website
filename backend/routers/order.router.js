@@ -1,11 +1,12 @@
 const express = require('express');
-const Product = require('../model/product');
 const Bill = require('../model/order');
+const Product = require('../model/product');
 
 const router = express.Router();
 
 router.get('/getAllBillByStatus', async (req, res) => {
     const { status } = req.query;
+
     const reponse = await Bill.find({ status: status }).sort({ createAt: -1 });
 
     if (reponse) {
@@ -13,11 +14,32 @@ router.get('/getAllBillByStatus', async (req, res) => {
     } else {
         res.send({ status: false });
     }
+});
+
+router.get('/updateQuantityProductBuy', async (req, res) => {
+    const { id } = req.query;
+
+    const order = await Bill.findById(id);
+    if (order.length != 0) {
+        order.dataProduct.map(async (item) => {
+            const product = await Product.findById(item.idProduct);
+            const updateSold = Number(product.sold) + Number(item.quantityCart);
+            await Product.findByIdAndUpdate(item.idProduct, { sold: updateSold });
+        });
+        const reponse = await Bill.findByIdAndUpdate(id, { status: "Hoàn thành" });
+
+        if (reponse) {
+            res.send({ status: true });
+        } else {
+            res.send({ status: false });
+        }
+    } else {
+        res.send({ status: false })
+    }
 })
 
 router.get('/getAllOrderByFilter', async (req, res) => {
     const { filter, name, status } = req.query;
-    console.log(filter, name, status);
 
     try {
         // Tạo đối tượng query động
@@ -30,7 +52,6 @@ router.get('/getAllOrderByFilter', async (req, res) => {
         }
         // Tìm kiếm tài khoản trong database với query đã tạo
         const reponse = await Bill.find(query);
-        console.log(query);
 
         if (reponse.length != 0) {
             res.send({ status: true, data: reponse })
@@ -69,18 +90,9 @@ router.patch('/updateStatusOrder', async (req, res) => {
     }
 })
 
-// dashboard
-const getYearAndMonthPart = (year, month) => {
-    let pastMonth = Number(month) - 11;
-    let pastYear = Number(year);
-    if (pastMonth < 1) {
-        pastMonth = 12 + pastMonth;
-        pastYear = pastYear - 1;
-    }
-    return { pastYear, pastMonth };
-}
-
 router.get('/getOrderDataForDashboard', async (req, res) => {
+    const { year } = req.query;
+
     try {
         const dataOrder = await Bill.find({ status: 'Hoàn thành' });
         const monthlyRevenue = {};
@@ -113,12 +125,7 @@ router.get('/getOrderDataForDashboard', async (req, res) => {
             orderCountByMonth[key] += 1;
         });
 
-        const fullTime = new Date();
-
-        const yearNow = Number(fullTime.getFullYear()); //2025
-        const monthNow = Number(fullTime.getMonth() + 1); //2
-
-        const fullTimePast = getYearAndMonthPart(yearNow, monthNow)
+        const fullTimePast = { pastMonth: 1, pastYear: Number(year) };
 
         // Tạo mảng chứa 12 tháng từ tháng 3 năm 2024 đến tháng 3 năm 2025
         const last12Months = [];

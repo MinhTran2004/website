@@ -6,7 +6,7 @@ import { GetDay } from "../hook/GetDay";
 const ViewModelOrderProgress = () => {
     const [dataOrder, setDataOrder] = useState<Order[]>([]);
     const [activeStep, setActiveStep] = useState(0);
-
+    const [dialogError, setDialogError] = useState(false);
 
     const getAllBillByStatus = async () => {
         const reponse = await OrderService.getAllBillByStatus('Đang tiến hành');
@@ -32,12 +32,22 @@ const ViewModelOrderProgress = () => {
         }
     }
 
+    const updateQuantityProductBuy = async (id: string) => {
+        const reponse = await OrderService.updateQuantityProductBuy(id);
+
+        if (reponse.status) {
+            await getAllBillByStatus();
+        } else {
+            setDialogError(true);
+        }
+    }
+
     useEffect(() => {
         getAllBillByStatus();
     }, [])
 
     return {
-        dataOrder, activeStep, setActiveStep, updateStatusOrder, getAllOrderByFilter,
+        dataOrder, activeStep, setActiveStep, updateStatusOrder, getAllOrderByFilter, updateQuantityProductBuy, dialogError, setDialogError
     }
 }
 

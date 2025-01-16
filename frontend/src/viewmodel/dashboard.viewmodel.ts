@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { OrderService } from "../service/order.service";
 
-export interface DataDate{
+export interface DataDate {
     year: number,
     month: number,
     revenue: number,
-    order:number,
+    order: number,
 }
 
 const ViewmodelDashboard = () => {
     const [dataDate, setDataDate] = useState<DataDate[]>([]);
+    const [year, setYear] = useState('2025');
+    const [errorYear, setErrorYear] = useState('');
 
     const getOrderDataForDashboard = async () => {
-        const reponse = await OrderService.getOrderDataForDashboard();
+        const reponse = await OrderService.getOrderDataForDashboard(year);
         setDataDate(reponse);
     }
 
@@ -20,9 +22,9 @@ const ViewmodelDashboard = () => {
         getOrderDataForDashboard();
     }, [])
 
-return {
-    dataDate,
-}
+    return {
+        dataDate, year, setYear, errorYear, setErrorYear,getOrderDataForDashboard,
+    }
 
 }
 

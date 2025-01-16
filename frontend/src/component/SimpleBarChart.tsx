@@ -13,8 +13,6 @@ export interface Props {
 }
 
 const SimpleBarChart: React.FC<Props> = (props) => {
-  console.log(props.data);
-
   const chartContainerRef = React.useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
   const [containerHeight, setContainerHeight] = React.useState<number>(400); // Default height
@@ -53,29 +51,24 @@ const SimpleBarChart: React.FC<Props> = (props) => {
   return (
     <Box sx={{
       width: '100%',
-      '@media (min-width: 1100px)': {
-        height: 800
-      },
-      '@media (max-width: 1100px)': {
-        height: 500
+      '@media (max-width: 1800px)': {
+        height: 650
       },
       '@media (max-width: 900px)': {
-        height: 400
+        height: 500
       },
       '@media (max-width: 600px)': {
-        height: 300
+        height: 400
       }
 
     }}>
       <BarChart
-      sx={{padding: 1}}
-        // width={containerWidth}    // Set width to 100% of parent
-        // height={containerHeight}  // Set height to 100% of parent
+        sx={{ paddingLeft: 1 }}
         series={[
           { data: listRevenue, label: 'Doanh thu', id: 'pvId' },
-          // { data: uData, label: 'uv', id: 'uvId' },
         ]}
         xAxis={[{ data: listDate, scaleType: 'band' }]}
+        onAxisClick={(data) => {console.log(data);}}
       />
     </Box >
   );

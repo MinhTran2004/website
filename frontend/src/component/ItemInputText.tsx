@@ -10,12 +10,15 @@ interface Props {
     placeholder?: string,
     inputRef?: React.RefObject<HTMLInputElement>
     styteLayout?: React.CSSProperties,
+    styteContainer?: React.CSSProperties,
+    type?: string,
 }
 
 const ItemInputText: React.FC<Props> = (props) => {
     return (
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ flex: 1, ...props.styteContainer }}>
             <TextField
+                type={props.type}
                 disabled={props.disabled}
                 label={props.label}
                 value={props.value}
