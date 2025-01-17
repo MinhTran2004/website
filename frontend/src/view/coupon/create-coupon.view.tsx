@@ -30,6 +30,7 @@ const CreateCoupon = () => {
                     value={viewmodel.discount}
                     setvalue={viewmodel.setDiscount}
                     textError={viewmodel.errorDiscount}
+                    type="number"
                 />
                 <ItemInputText
                     label="Số lượng"
@@ -37,6 +38,7 @@ const CreateCoupon = () => {
                     value={viewmodel.quantity}
                     setvalue={viewmodel.setQuantity}
                     textError={viewmodel.errorQuantity}
+                    type="number"
                 />
             </Box>
 
@@ -46,6 +48,7 @@ const CreateCoupon = () => {
                 value={viewmodel.condition}
                 setvalue={viewmodel.setCondition}
                 textError={viewmodel.errorCondition}
+                type="number"
             />
 
             <Box sx={{ display: 'grid', gridTemplateColumns: 'auto auto', gap: 1 }}>

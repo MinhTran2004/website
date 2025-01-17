@@ -68,7 +68,6 @@ const SimpleBarChart: React.FC<Props> = (props) => {
           { data: listRevenue, label: 'Doanh thu', id: 'pvId' },
         ]}
         xAxis={[{ data: listDate, scaleType: 'band' }]}
-        onAxisClick={(data) => {console.log(data);}}
       />
     </Box >
   );

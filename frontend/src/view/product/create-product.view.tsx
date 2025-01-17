@@ -25,6 +25,7 @@ const CreateProduct = () => {
                     value={viewmodel.price}
                     setvalue={viewmodel.setPrice}
                     textError={viewmodel.errorPrice}
+                    type="number"
                 />
                 <ItemInputText
                     label="Số lượng sản phẩm"
@@ -32,6 +33,7 @@ const CreateProduct = () => {
                     value={viewmodel.quantity}
                     setvalue={viewmodel.setQuantity}
                     textError={viewmodel.errorQuantity}
+                    type="number"
                 />
 
             </Box>

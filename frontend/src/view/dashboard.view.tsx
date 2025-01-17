@@ -13,14 +13,17 @@ export default function DashboardScreen() {
             flex: 1,
         }}>
             <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', width: '100%', gap: 1 }}>
-                <ItemInputText
-                    label="Nhập năm"
-                    value={viewmodalDashBoard.year}
-                    setvalue={viewmodalDashBoard.setYear}
-                    textError={viewmodalDashBoard.errorYear}
-                    styteContainer={{ maxWidth: '200px' }}
+                <input
+                    placeholder="Nhập năm"
                     type="number"
-                />
+                    value={viewmodalDashBoard.year}
+                    onChange={(e) => {
+                        if (e.target.value.length <= 4) {
+                            viewmodalDashBoard.setYear(e.target.value);
+                        }
+                    }}
+                    style={{ padding: 10, borderRadius: 5, borderWidth: 2, borderColor: 'white' }} />
+
                 <PrimaryButton
                     label="Tìm kiếm"
                     onClick={() => {

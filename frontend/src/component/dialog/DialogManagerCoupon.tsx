@@ -128,6 +128,7 @@ const DialogManagerCoupon: React.FC<Props> = (props) => {
                             value={props.viewmodel.quantity}
                             setvalue={props.viewmodel.setQuantity}
                             textError={props.viewmodel.errorQuantity}
+                            type='number'
                         />
                         <ItemInputText
                             label="Giảm giá"
@@ -135,6 +136,7 @@ const DialogManagerCoupon: React.FC<Props> = (props) => {
                             value={props.viewmodel.discount}
                             setvalue={props.viewmodel.setDiscount}
                             textError={props.viewmodel.errorDiscount}
+                            type='number'
                         />
                         <ItemInputText
                             label="Điều kiện đơn hàng"

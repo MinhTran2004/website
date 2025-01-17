@@ -89,6 +89,7 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                             value={props.viewmodel.price}
                             setvalue={props.viewmodel.setPrice}
                             textError={props.viewmodel.errorPrice}
+                            type='number'
                         />
                         <ItemInputText
                             label="Số lượng sản phẩm"
@@ -96,6 +97,7 @@ const DialogManagerProduct: React.FC<Props> = (props) => {
                             value={props.data.quantity}
                             setvalue={props.viewmodel.setQuantity}
                             textError={props.viewmodel.errorQuantity}
+                            type='number'
                         />
                         <ItemInputText
                             label="Thể loại sản phẩm"
