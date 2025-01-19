@@ -31,7 +31,7 @@ const NAVIGATION: Navigation = [
   {
     segment: 'account',
     title: 'Tài khoản người dùng',
-    icon: <ShoppingCartIcon />,
+    icon: <LayersIcon />,
   },
   {
     kind: 'divider',
@@ -43,7 +43,7 @@ const NAVIGATION: Navigation = [
   {
     segment: 'create-product',
     title: 'Tạo sản phẩm',
-    icon: <BarChartIcon />,
+    icon: <LayersIcon />,
   },
   {
     segment: 'manager-product',
@@ -57,12 +57,12 @@ const NAVIGATION: Navigation = [
   {
     segment: 'order-waiting',
     title: 'Chờ xác nhận',
-    icon: <BarChartIcon />,
+    icon: <LayersIcon />,
   },
   {
     segment: 'order-progress',
     title: 'Đang tiến hành',
-    icon: <BarChartIcon />,
+    icon: <LayersIcon />,
   },
   {
     segment: 'order-success',
@@ -81,7 +81,7 @@ const NAVIGATION: Navigation = [
   {
     segment: 'create-coupon',
     title: 'Tạo mã giảm giá',
-    icon: <BarChartIcon />,
+    icon: <LayersIcon />,
   },
   {
     segment: 'manager-coupon',

@@ -62,17 +62,6 @@ const TapperOrder: React.FC<Props> = (props) => {
           setDataDetailOrder={setDetailOrder}
         />
       )
-
-      case 'coupon': return (
-        <TableCoupon
-          title={props.title}
-          dataTableHeader={props.headCells}
-          viewmodel={props.viewmodel}
-          setSteps={setStep}
-          setDataDetailOrder={setDetailOrder}
-        />
-      )
-
       default: return <Box />
     }
   }

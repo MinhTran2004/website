@@ -1,6 +1,7 @@
 const express = require('express');
 const Bill = require('../model/order');
 const Product = require('../model/product');
+const Coupon = require('../model/coupon');
 
 const router = express.Router();
 
@@ -20,14 +21,24 @@ router.get('/updateQuantityProductBuy', async (req, res) => {
     const { id } = req.query;
 
     const order = await Bill.findById(id);
+
     if (order.length != 0) {
-        order.dataProduct.map(async (item) => {
-            const product = await Product.findById(item.idProduct);
-            const updateSold = Number(product.sold) + Number(item.quantityCart);
-            await Product.findByIdAndUpdate(item.idProduct, { sold: updateSold });
-        });
+        // order.dataProduct.map(async (item) => {
+        //     const product = await Product.findById(item.idProduct);
+        //     const updateSold = Number(product.sold) + Number(item.quantityCart);
+        //     await Product.findByIdAndUpdate(item.idProduct, { sold: updateSold });
+        // });
         const reponse = await Bill.findByIdAndUpdate(id, { status: "Hoàn thành" });
 
+        if (order.coupon._id != '') {
+            const reponse = await Coupon.findById(order.coupon._id);
+            if (Number(reponse.quantity) > 1) {
+                const updateQuantity = Number(reponse.quantity) - 1;
+                await Coupon.findByIdAndUpdate(reponse._id, { quantity: updateQuantity });
+            }else{
+                await Coupon.findByIdAndDelete(reponse._id);
+            }
+        }
         if (reponse) {
             res.send({ status: true });
         } else {

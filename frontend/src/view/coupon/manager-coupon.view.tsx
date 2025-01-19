@@ -62,6 +62,11 @@ const ManagerCoupon = () => {
         headCells={headCells}
         typeTable="coupon"
         viewmodel={ViewModel} />
+          <TableCoupon
+          title={"Quản lý mã giảm giá"}
+          dataTableHeader={headCells}
+          viewmodel={ViewModel}
+        />
     </Box>
   )
 }

@@ -172,8 +172,6 @@ interface Props {
   title: string,
   dataTableHeader: any[],
   viewmodel: any,
-  setSteps: (step: number) => void,
-  setDataDetailOrder: (data: any) => void,
 }
 
 // o day nay
